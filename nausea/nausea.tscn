@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2fpiuj2xxby6"]
+
+[ext_resource type="Script" path="res://nausea/nausea.gd" id="1_rm5cu"]
+
+[node name="Nausea" type="Node"]
+script = ExtResource("1_rm5cu")

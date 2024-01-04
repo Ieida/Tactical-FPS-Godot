@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://r60v8078b8a7"]
+
+[ext_resource type="Script" path="res://gun/gun.gd" id="1_bq8bq"]
+[ext_resource type="PackedScene" uid="uid://dbasf1n23uca0" path="res://models/Pistol_Full_West.glb" id="1_ttrhm"]
+
+[node name="Pistol" type="Node3D" node_paths=PackedStringArray("muzzle")]
+script = ExtResource("1_bq8bq")
+muzzle = NodePath(".")
+_rpm = 400.0
+
+[node name="Pistol_Full_West2" parent="." instance=ExtResource("1_ttrhm")]
+transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0, 0)

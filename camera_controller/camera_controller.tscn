@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ruerilo0cqxx"]
+
+[ext_resource type="Script" path="res://camera_controller/camera_controller.gd" id="1_qcp6o"]
+
+[node name="CameraController" type="Node"]
+script = ExtResource("1_qcp6o")

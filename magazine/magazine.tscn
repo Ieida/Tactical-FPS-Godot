@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccswfa1xq6aj5"]
+
+[ext_resource type="Script" path="res://magazine/magazine.gd" id="1_d0gg1"]
+
+[node name="Magazine" type="Node3D"]
+script = ExtResource("1_d0gg1")
