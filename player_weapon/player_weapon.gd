@@ -54,7 +54,7 @@ func reload():
 		var mag = weapon.unload_magazine()
 		animation_player.play("reload")
 		
-		await get_tree().create_timer(reload_time).timeout
+		await animation_player.animation_finished
 		
 		load_mag(mag)
 		weapon.load_magazine(mag)
