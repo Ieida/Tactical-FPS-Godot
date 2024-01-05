@@ -50,6 +50,10 @@ shadow_enabled = true
 
 [node name="Buildings" type="Node" parent="."]
 
+[node name="GPUParticlesCollisionHeightField3D" type="GPUParticlesCollisionHeightField3D" parent="Buildings"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -16)
+size = Vector3(20, 6, 20)
+
 [node name="Floor" type="MeshInstance3D" parent="Buildings"]
 mesh = SubResource("PlaneMesh_dwm2c")
 skeleton = NodePath("../..")

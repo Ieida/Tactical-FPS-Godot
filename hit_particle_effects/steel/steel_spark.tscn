@@ -1,10 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://ccl7o1ye124a4"]
+[gd_scene load_steps=9 format=3 uid="uid://ccl7o1ye124a4"]
 
 [sub_resource type="Gradient" id="Gradient_42vv3"]
 colors = PackedColorArray(1, 1, 0, 1, 1, 0, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_e8hht"]
 gradient = SubResource("Gradient_42vv3")
+
+[sub_resource type="Curve" id="Curve_t82nh"]
+max_value = 10.0
+_data = [Vector2(0, 10), 0.0, -10.0, 0, 1, Vector2(1, 0), -10.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_vlv37"]
+curve = SubResource("Curve_t82nh")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vugrx"]
 inherit_velocity_ratio = 1.0
@@ -16,9 +24,14 @@ scale_min = 0.1
 scale_max = 0.2
 scale_over_velocity_max = 1.0
 color_ramp = SubResource("GradientTexture1D_e8hht")
+emission_curve = SubResource("CurveTexture_vlv37")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7grg1"]
 vertex_color_use_as_albedo = true
+emission_enabled = true
 billboard_mode = 3
 billboard_keep_scale = true
 particles_anim_h_frames = 1
