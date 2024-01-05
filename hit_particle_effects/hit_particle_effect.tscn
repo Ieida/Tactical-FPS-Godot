@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ebwds7eaxfnk"]
+[gd_scene load_steps=9 format=3 uid="uid://ebwds7eaxfnk"]
 
 [sub_resource type="Curve" id="Curve_t7bdl"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -7,16 +7,10 @@ point_count = 2
 [sub_resource type="CurveTexture" id="CurveTexture_uoho7"]
 curve = SubResource("Curve_t7bdl")
 
-[sub_resource type="Curve" id="Curve_gdbt8"]
-max_value = 100.0
-_data = [Vector2(0, 0), 0.0, 100.0, 0, 1, Vector2(1, 100), 100.0, 0.0, 1, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_xrltb"]
-curve = SubResource("Curve_gdbt8")
-
 [sub_resource type="Curve" id="Curve_agfrg"]
-_data = [Vector2(0, 0), 0.0, 1.0, 0, 1, Vector2(1, 1), 1.0, 0.0, 1, 0]
+min_value = 1.0
+max_value = 1.5
+_data = [Vector2(0, 1), 0.0, 0.5, 0, 1, Vector2(1, 1.5), 0.5, 0.0, 1, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_y3pp4"]
@@ -26,15 +20,13 @@ curve = SubResource("Curve_agfrg")
 direction = Vector3(0, 0, -1)
 spread = 20.0
 initial_velocity_min = 2.0
-initial_velocity_max = 4.0
+initial_velocity_max = 3.0
 gravity = Vector3(0, 3, 0)
-damping_max = 1.0
-damping_curve = SubResource("CurveTexture_xrltb")
-scale_min = 2.0
-scale_max = 6.0
+damping_min = 8.0
+damping_max = 8.0
 scale_curve = SubResource("CurveTexture_y3pp4")
 scale_over_velocity_max = 1.0
-color = Color(0.498039, 0.498039, 0.498039, 1)
+color = Color(0.752941, 0.752941, 0.752941, 1)
 alpha_curve = SubResource("CurveTexture_uoho7")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wr3tm"]

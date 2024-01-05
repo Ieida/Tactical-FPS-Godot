@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=20 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dgueiygo0ljxc" path="res://health/health.tscn" id="5_v7jk3"]
 [ext_resource type="Script" path="res://magazine/magazine.gd" id="6_7fstl"]
 [ext_resource type="PackedScene" uid="uid://d4bhp4yeabe7e" path="res://bullet/bullet.tscn" id="7_i1ag6"]
+[ext_resource type="PackedScene" uid="uid://483bq5b351pk" path="res://smg/smg.tscn" id="8_6ao76"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yy7gy"]
 height = 1.5
@@ -20,84 +21,60 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Pistol:position")
+tracks/0/path = NodePath("SMG:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.05, -0.09, -0.07)]
+"values": [Vector3(0.05, -0.08, -0.22)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Pistol:rotation")
+tracks/1/path = NodePath("SMG:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, 0.331613)]
+"values": [Vector3(0.0238237, -1.83981e-10, 0.165806)]
 }
 
 [sub_resource type="Animation" id="Animation_bu5vc"]
 resource_name = "rack_slide"
 length = 0.1
 step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Pistol:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0.05, -0.09, -0.07), Vector3(0.05, -0.09, -0.135581), Vector3(0.05, -0.09, -0.07)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Pistol:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0.331613), Vector3(0, 0, 0.331613), Vector3(0, 0, 0.331613)]
-}
 
 [sub_resource type="Animation" id="Animation_tqkit"]
 resource_name = "recoil"
-length = 0.2
+length = 0.3
 step = 0.02
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Pistol:position")
+tracks/0/path = NodePath("SMG:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.04, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.04, 0.08, 0.12, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0.05, -0.09, -0.07), Vector3(0.0445897, -0.0742874, -0.0543754), Vector3(0.05, -0.09, -0.07)]
+"values": [Vector3(0.05, -0.08, -0.22), Vector3(0.05, -0.08, -0.195), Vector3(0.05, -0.08, -0.22), Vector3(0.05, -0.08, -0.225), Vector3(0.05, -0.08, -0.22)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Pistol:rotation")
+tracks/1/path = NodePath("SMG:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.04, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.04, 0.08, 0.12, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0.331613), Vector3(0.373751, 0.135454, 0.357262), Vector3(0, 0, 0.331613)]
+"values": [Vector3(0, 0, 0.165806), Vector3(0.0238237, -1.83981e-10, 0.165806), Vector3(0, 0, 0.165806), Vector3(0.00626573, -3.04825e-10, 0.165806), Vector3(0, 0, 0.165806)]
 }
 
 [sub_resource type="Animation" id="Animation_g7t13"]
@@ -106,26 +83,26 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Pistol:position")
+tracks/0/path = NodePath("SMG:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.5, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0.05, -0.09, -0.07), Vector3(0.05, -0.111685, -0.07), Vector3(0.05, -0.09, -0.07)]
+"values": [Vector3(0.05, -0.08, -0.22), Vector3(0.163392, -0.08, -0.22), Vector3(0.05, -0.199328, -0.22), Vector3(0.05, -0.199328, -0.22), Vector3(0.05, -0.08, -0.22)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Pistol:rotation")
+tracks/1/path = NodePath("SMG:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 1, 2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.5, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0.331613), Vector3(-0.45204, 0, 0.331613), Vector3(0, 0, 0.331613)]
+"values": [Vector3(0, 0, 0.165806), Vector3(8.08004e-09, -0.468254, 1.10502), Vector3(-0.554544, 2.78777e-09, 0.165806), Vector3(-0.554544, 2.78777e-09, 0.165806), Vector3(0, 0, 0.165806)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y3yaa"]
@@ -194,23 +171,49 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 
-[node name="PlayerWeapon" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera" node_paths=PackedStringArray("weapon", "camera", "animation_player")]
+[node name="PlayerPistol" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera" node_paths=PackedStringArray("weapon", "camera", "animation_player", "magazine")]
+process_mode = 4
+visible = false
 script = ExtResource("4_pbdc1")
 weapon = NodePath("Pistol")
 camera = NodePath("..")
 reload_time = 2.0
 bullet = ExtResource("7_i1ag6")
 animation_player = NodePath("AnimationPlayer")
+magazine = NodePath("Pistol/Magazine")
 
-[node name="Pistol" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerWeapon" node_paths=PackedStringArray("magazine") instance=ExtResource("4_ujl8y")]
+[node name="Pistol" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerPistol" node_paths=PackedStringArray("magazine") instance=ExtResource("4_ujl8y")]
 transform = Transform3D(0.945519, -0.325569, 0, 0.325569, 0.945519, 0, 0, 0, 1, 0.05, -0.09, -0.07)
 magazine = NodePath("Magazine")
 
-[node name="Magazine" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerWeapon/Pistol"]
+[node name="Magazine" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerPistol/Pistol"]
 script = ExtResource("6_7fstl")
 max_rounds = 10
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerWeapon"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerPistol"]
+libraries = {
+"": SubResource("AnimationLibrary_y3yaa")
+}
+
+[node name="PlayerSMG" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera" node_paths=PackedStringArray("weapon", "camera", "animation_player", "magazine")]
+script = ExtResource("4_pbdc1")
+weapon = NodePath("SMG")
+camera = NodePath("..")
+reload_time = 2.0
+bullet = ExtResource("7_i1ag6")
+animation_player = NodePath("AnimationPlayer")
+magazine = NodePath("SMG/Magazine")
+
+[node name="SMG" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerSMG" node_paths=PackedStringArray("magazine", "muzzle") instance=ExtResource("8_6ao76")]
+transform = Transform3D(0.986286, -0.165048, -1.83929e-10, 0.165001, 0.986007, -0.0238214, 0.00393167, 0.0234948, 0.999716, 0.05, -0.08, -0.22)
+magazine = NodePath("Magazine")
+muzzle = NodePath(".")
+
+[node name="Magazine" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerSMG/SMG"]
+script = ExtResource("6_7fstl")
+max_rounds = 30
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerSMG"]
 libraries = {
 "": SubResource("AnimationLibrary_y3yaa")
 }
@@ -222,8 +225,8 @@ process_mode = 4
 camera = NodePath("../../CharacterBody3D/Node3D/PlayerCamera")
 length = 10.0
 duration = 0.5
-speed = 60.0
-angle = 90.0
+speed = 45.0
+angle = 180.0
 
 [node name="Health" parent="Components" instance=ExtResource("5_v7jk3")]
 

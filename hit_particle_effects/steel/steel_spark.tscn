@@ -21,7 +21,6 @@ initial_velocity_max = 4.0
 scale_min = 0.3
 scale_max = 0.3
 scale_over_velocity_max = 1.0
-color = Color(1, 0.498039, 0, 1)
 color_ramp = SubResource("GradientTexture1D_a8ieb")
 alpha_curve = SubResource("CurveTexture_uoho7")
 

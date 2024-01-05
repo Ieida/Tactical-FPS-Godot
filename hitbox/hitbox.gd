@@ -1,4 +1,4 @@
-extends CollisionObject3D
+extends Node3D
 class_name Hitbox
 
 @export var health: Health

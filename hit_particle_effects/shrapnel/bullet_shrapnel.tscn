@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://bwl7ljega0ebu"]
+
+[sub_resource type="Curve" id="Curve_t7bdl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_uoho7"]
+curve = SubResource("Curve_t7bdl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wq0y3"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, -1)
+emission_ring_height = 0.0
+emission_ring_radius = 0.1
+emission_ring_inner_radius = 0.1
+inherit_velocity_ratio = 1.0
+spread = 90.0
+radial_velocity_min = 2.0
+radial_velocity_max = 4.0
+radial_accel_min = 2.0
+radial_accel_max = 4.0
+scale_min = 0.1
+scale_max = 0.2
+scale_over_velocity_max = 1.0
+color = Color(0.498039, 0.498039, 0.498039, 1)
+alpha_curve = SubResource("CurveTexture_uoho7")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wr3tm"]
+transparency = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_bnxp2"]
+material = SubResource("StandardMaterial3D_wr3tm")
+size = Vector2(0.2, 0.2)
+
+[sub_resource type="GDScript" id="GDScript_oq8qu"]
+resource_name = "hpe"
+script/source = "extends GPUParticles3D
+
+func _ready():
+	restart()
+"
+
+[node name="BulletShrapnel" type="GPUParticles3D"]
+emitting = false
+amount = 4
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_wq0y3")
+draw_pass_1 = SubResource("QuadMesh_bnxp2")
+script = SubResource("GDScript_oq8qu")

@@ -7,6 +7,8 @@
 script = ExtResource("1_bq8bq")
 muzzle = NodePath(".")
 _rpm = 400.0
+recoil_multiplier = 1.0
+spread_multiplier = 1.0
 
 [node name="Pistol_Full_West2" parent="." instance=ExtResource("1_ttrhm")]
 transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0, 0)

@@ -5,22 +5,26 @@ extends Node3D
 @export var reload_time: float
 @export var bullet: PackedScene
 @export var animation_player: AnimationPlayer
+@export var magazine: Magazine
 
 func _ready():
 	weapon.recoil.connect(_on_weapon_recoil)
-	load_mag($Pistol/Magazine)
+	load_mag(magazine)
 	rack_slide()
 
 func _process(_delta):
-	if Input.is_action_just_pressed("shoot"):
-		shoot()
+	if Input.is_action_just_pressed("trigger"):
+		press_trigger()
+	elif Input.is_action_just_released("trigger"):
+		release_trigger()
 	if Input.is_action_just_pressed("reload"):
 		reload()
 	#if Input.is_action_just_pressed("rack_slide"):
 	#	rack_slide()
 
-func _on_weapon_recoil(amount: float):
-	camera.look_x(amount)
+func _on_weapon_recoil(vector: Vector2):
+	camera.look_x(vector.y)
+	camera.look_y(vector.x)
 	animation_player.stop(true)
 	animation_player.play("recoil")
 
@@ -35,12 +39,17 @@ func load_mag(mag: Magazine):
 #endregion
 
 #region Weapon Functions
-func shoot():
+func press_trigger():
 	if weapon is Gun:
 		weapon.press_trigger()
 
+func release_trigger():
+	if weapon is Gun:
+		weapon.release_trigger()
+
 func reload():
 	if weapon is Gun:
+		release_trigger()
 		set_process(false)
 		var mag = weapon.unload_magazine()
 		animation_player.play("reload")
