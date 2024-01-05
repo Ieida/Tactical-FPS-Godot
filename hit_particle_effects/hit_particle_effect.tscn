@@ -31,7 +31,6 @@ alpha_curve = SubResource("CurveTexture_uoho7")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wr3tm"]
 transparency = 1
-shading_mode = 0
 vertex_color_use_as_albedo = true
 billboard_mode = 3
 billboard_keep_scale = true

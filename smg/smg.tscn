@@ -11,3 +11,8 @@ recoil_multiplier = 0.5
 spread_multiplier = 0.25
 
 [node name="SMG_Full_West2" parent="." instance=ExtResource("2_46lpo")]
+
+[node name="SMG_Full_West" parent="SMG_Full_West2/SMG_Full_West_Rig/Skeleton3D" index="0"]
+cast_shadow = 0
+
+[editable path="SMG_Full_West2"]
