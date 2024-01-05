@@ -5,6 +5,7 @@ extends Node3D
 @export var reload_time: float
 @export var bullet: PackedScene
 @export var animation_player: AnimationPlayer
+@export var weapon_animation_player: AnimationPlayer
 @export var magazine: Magazine
 
 func _ready():
@@ -19,6 +20,10 @@ func _process(_delta):
 		release_trigger()
 	if Input.is_action_just_pressed("reload"):
 		reload()
+	if Input.is_action_just_pressed("aim_down_sights"):
+		aim_down_sights()
+	elif Input.is_action_just_released("aim_down_sights"):
+		aim_hip()
 	#if Input.is_action_just_pressed("rack_slide"):
 	#	rack_slide()
 
@@ -39,6 +44,12 @@ func load_mag(mag: Magazine):
 #endregion
 
 #region Weapon Functions
+func aim_down_sights():
+	weapon_animation_player.play("aim_down_sights")
+
+func aim_hip():
+	weapon_animation_player.play_backwards("aim_down_sights")
+
 func press_trigger():
 	if weapon is Gun:
 		weapon.press_trigger()

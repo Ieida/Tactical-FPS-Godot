@@ -11,6 +11,7 @@ signal recoil(vector: Vector2)
 @export var fire_mode: FireMode = FireMode.SINGLE
 @export_range(0.0, 1.0) var recoil_multiplier: float
 @export_range(0.0, 1.0) var spread_multiplier: float
+@export var muzzle_flash: GPUParticles3D
 var _chambered_bullet: Bullet
 var _time_since_last_shot: float
 var _time_between_shots: float
@@ -52,6 +53,9 @@ func _shoot():
 		_shoot_bullet()
 
 func _shoot_bullet():
+	# Muzzle flash
+	muzzle_flash.restart()
+	
 	# Spread
 	var sprd = _chambered_bullet.spread * spread_multiplier * 45.0
 	_chambered_bullet.rotate_object_local(Vector3.BACK, deg_to_rad(randf_range(-180.0, 180.0)))

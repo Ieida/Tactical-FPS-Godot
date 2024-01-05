@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=28 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -15,6 +15,107 @@
 height = 1.5
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_d8cd5"]
+
+[sub_resource type="Animation" id="Animation_1x0hq"]
+resource_name = "rack_slide"
+
+[sub_resource type="Animation" id="Animation_dd5lv"]
+resource_name = "recoil"
+
+[sub_resource type="Animation" id="Animation_ej3cw"]
+resource_name = "reload"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_02dpj"]
+_data = {
+"rack_slide": SubResource("Animation_1x0hq"),
+"recoil": SubResource("Animation_dd5lv"),
+"reload": SubResource("Animation_ej3cw")
+}
+
+[sub_resource type="Animation" id="Animation_2t8t8"]
+resource_name = "aim_down_sights"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SMG:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.05, -0.08, -0.22), Vector3(0, -0.063, -0.22)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SMG:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0.165806), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:fov")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [75.0, 50.0]
+}
+
+[sub_resource type="Animation" id="Animation_gqc1y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SMG:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.05, -0.08, -0.22)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SMG:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0.165806)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:fov")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [75.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_owug2"]
+_data = {
+"RESET": SubResource("Animation_gqc1y"),
+"aim_down_sights": SubResource("Animation_2t8t8")
+}
 
 [sub_resource type="Animation" id="Animation_2qp58"]
 length = 0.001
@@ -42,6 +143,42 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0.165806)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:fov")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [75.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_bu5vc"]
 resource_name = "rack_slide"
@@ -50,14 +187,26 @@ step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SMG:position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.05, 0.1),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [Vector3(0.05, -0.08, -0.22), Vector3(0.05, -0.08, -0.2), Vector3(0.05, -0.08, -0.22)]
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.02), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_tqkit"]
@@ -67,26 +216,26 @@ step = 0.02
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("SMG:position")
+tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.04, 0.08, 0.12, 0.3),
+"times": PackedFloat32Array(0, 0.04, 0.08, 0.14, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0.05, -0.08, -0.22), Vector3(0.05, -0.08, -0.195), Vector3(0.05, -0.08, -0.22), Vector3(0.05, -0.08, -0.225), Vector3(0.05, -0.08, -0.22)]
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.025), Vector3(0, 0, 0), Vector3(0, 0, -0.005), Vector3(0, 0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("SMG:rotation")
+tracks/1/path = NodePath(".:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.04, 0.08, 0.12, 0.3),
+"times": PackedFloat32Array(0, 0.04, 0.08, 0.14, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0.165806), Vector3(0.0238237, -1.83981e-10, 0.165806), Vector3(0, 0, 0.165806), Vector3(0.00626573, -3.04825e-10, 0.165806), Vector3(0, 0, 0.165806)]
+"values": [Vector3(0, 0, 0), Vector3(0.0244346, 0, 0), Vector3(0, 0, 0), Vector3(-0.00698132, 0, 0), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_g7t13"]
@@ -95,14 +244,42 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 1.6, 1.7, 1.8, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-0.444504, 0.196405, -0.477048), Vector3(-0.390082, 0.105109, -0.270627), Vector3(-0.390082, 0.105109, -0.270627), Vector3(-0.277159, 0.117668, -0.34956), Vector3(-0.277159, 0.117668, -0.34956), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7ki1c"]
+resource_name = "aim_down_sights"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
 tracks/0/path = NodePath("SMG:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.3, 1.6, 1.7, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0.05, -0.08, -0.22), Vector3(0.163392, -0.08, -0.22), Vector3(0.0347883, -0.199328, -0.22), Vector3(0.0347883, -0.199328, -0.22), Vector3(0.0347883, -0.176807, -0.22), Vector3(0.0347883, -0.199328, -0.22), Vector3(0.05, -0.08, -0.22)]
+"values": [Vector3(0.05, -0.08, -0.22), Vector3(0, -0.063, -0.19)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -111,15 +288,28 @@ tracks/1/path = NodePath("SMG:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.3, 1.6, 1.7, 1.8, 2),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0.165806), Vector3(8.08004e-09, -0.468254, 1.10502), Vector3(-0.395111, 0.460766, -0.533742), Vector3(-0.395111, 0.460766, -0.533742), Vector3(-0.328358, 0.427181, -0.51408), Vector3(-0.395111, 0.460766, -0.533742), Vector3(0, 0, 0.165806)]
+"values": [Vector3(0, 0, 0.165806), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("..:fov")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [75.0, 60.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_y3yaa"]
 _data = {
 "RESET": SubResource("Animation_2qp58"),
+"aim_down_sights": SubResource("Animation_7ki1c"),
 "rack_slide": SubResource("Animation_bu5vc"),
 "recoil": SubResource("Animation_tqkit"),
 "reload": SubResource("Animation_g7t13")
@@ -180,6 +370,7 @@ shape = SubResource("SeparationRayShape3D_d8cd5")
 
 [node name="PlayerCamera" type="Camera3D" parent="CharacterBody3D/Node3D" node_paths=PackedStringArray("body")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+current = true
 script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 
@@ -204,26 +395,33 @@ max_rounds = 10
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerPistol"]
 libraries = {
-"": SubResource("AnimationLibrary_y3yaa")
+"": SubResource("AnimationLibrary_02dpj")
 }
 
-[node name="PlayerSMG" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera" node_paths=PackedStringArray("weapon", "camera", "animation_player", "magazine")]
+[node name="PlayerSMG" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera" node_paths=PackedStringArray("weapon", "camera", "animation_player", "weapon_animation_player", "magazine")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("4_pbdc1")
 weapon = NodePath("SMG")
 camera = NodePath("..")
 reload_time = 2.0
 bullet = ExtResource("7_i1ag6")
 animation_player = NodePath("AnimationPlayer")
+weapon_animation_player = NodePath("SMG/AnimationPlayer")
 magazine = NodePath("SMG/Magazine")
 
-[node name="SMG" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerSMG" node_paths=PackedStringArray("magazine", "muzzle") instance=ExtResource("8_6ao76")]
+[node name="SMG" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerSMG" node_paths=PackedStringArray("magazine") instance=ExtResource("8_6ao76")]
 transform = Transform3D(0.986285, -0.165048, 0, 0.165048, 0.986286, 0, 0, 0, 1, 0.05, -0.08, -0.22)
 magazine = NodePath("Magazine")
-muzzle = NodePath(".")
 
 [node name="Magazine" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerSMG/SMG"]
 script = ExtResource("6_7fstl")
 max_rounds = 30
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerSMG/SMG"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_owug2")
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/PlayerSMG"]
 libraries = {
