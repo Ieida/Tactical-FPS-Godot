@@ -20,10 +20,10 @@ func _process(_delta):
 		release_trigger()
 	if Input.is_action_just_pressed("reload"):
 		reload()
-	if Input.is_action_just_pressed("aim_down_sights"):
-		aim_down_sights()
-	elif Input.is_action_just_released("aim_down_sights"):
-		aim_hip()
+	#if Input.is_action_just_pressed("aim_down_sights"):
+	#	aim_down_sights()
+	#elif Input.is_action_just_released("aim_down_sights"):
+	#	aim_hip()
 	#if Input.is_action_just_pressed("rack_slide"):
 	#	rack_slide()
 
@@ -31,7 +31,9 @@ func _on_weapon_recoil(vector: Vector2):
 	camera.look_x(vector.y)
 	camera.look_y(vector.x)
 	animation_player.stop(true)
+	animation_player.clear_queue()
 	animation_player.play("recoil")
+	animation_player.queue("idle")
 
 #region Testing Purposes
 func load_mag(mag: Magazine):
@@ -44,36 +46,36 @@ func load_mag(mag: Magazine):
 #endregion
 
 #region Weapon Functions
-func aim_down_sights():
-	weapon_animation_player.play("aim_down_sights")
-
-func aim_hip():
-	weapon_animation_player.play_backwards("aim_down_sights")
-
+var is_trigger_pressed = false
 func press_trigger():
-	if weapon is Gun:
+	if weapon is Gun and not is_reloading:
+		is_trigger_pressed = true
 		weapon.press_trigger()
 
 func release_trigger():
 	if weapon is Gun:
+		is_trigger_pressed = false
 		weapon.release_trigger()
 
+var is_reloading = false
 func reload():
-	if weapon is Gun:
-		release_trigger()
-		set_process(false)
+	if weapon is Gun and weapon.magazine and not is_trigger_pressed:
+		is_reloading = true
 		var mag = weapon.unload_magazine()
-		animation_player.play("reload")
+		if weapon._chambered_bullet:
+			animation_player.play("reload")
+		else:
+			animation_player.play("reload_empty")
+		animation_player.queue("idle")
 		
 		await animation_player.animation_finished
 		
 		load_mag(mag)
 		weapon.load_magazine(mag)
 		if not weapon._chambered_bullet: rack_slide()
-		set_process(true)
+		is_reloading = false
 
 func rack_slide():
 	if weapon is Gun:
 		weapon.rack_slide()
-		animation_player.play("rack_slide")
 #endregion

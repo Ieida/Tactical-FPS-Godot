@@ -22,7 +22,7 @@ script = ExtResource("1_06nhw")
 muzzle = NodePath("Muzzle")
 _rpm = 650.0
 fire_mode = 2
-recoil_multiplier = 0.5
+recoil_multiplier = 0.25
 spread_multiplier = 0.25
 muzzle_flash = NodePath("Muzzle/GPUParticles3D")
 
