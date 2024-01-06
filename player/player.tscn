@@ -226,7 +226,7 @@ current = true
 script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 
-[node name="Weapons" type="Node" parent="CharacterBody3D/Node3D/PlayerCamera"]
+[node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
 [node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("weapon", "camera", "animation_player", "weapon_animation_player", "magazine")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
