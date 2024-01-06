@@ -51,7 +51,7 @@ shadow_enabled = true
 [node name="Buildings" type="Node" parent="."]
 
 [node name="GPUParticlesCollisionHeightField3D" type="GPUParticlesCollisionHeightField3D" parent="Buildings"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -16)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -10)
 size = Vector3(20, 6, 20)
 
 [node name="Floor" type="MeshInstance3D" parent="Buildings"]
