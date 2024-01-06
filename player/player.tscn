@@ -226,26 +226,28 @@ current = true
 script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 
-[node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera" node_paths=PackedStringArray("weapon", "camera", "animation_player", "weapon_animation_player", "magazine")]
+[node name="Weapons" type="Node" parent="CharacterBody3D/Node3D/PlayerCamera"]
+
+[node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("weapon", "camera", "animation_player", "weapon_animation_player", "magazine")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("4_pbdc1")
 weapon = NodePath("SMG")
-camera = NodePath("..")
+camera = NodePath("../..")
 reload_time = 2.0
 bullet = ExtResource("7_i1ag6")
 animation_player = NodePath("AnimationPlayer")
 weapon_animation_player = NodePath("AnimationPlayer")
 magazine = NodePath("SMG/Magazine")
 
-[node name="SMG" parent="CharacterBody3D/Node3D/PlayerCamera/SMGViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_6ao76")]
+[node name="SMG" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_6ao76")]
 transform = Transform3D(0.986285, -0.165048, 0, 0.165048, 0.986286, 0, 0, 0, 0.999999, 0.05, -0.08, -0.22)
 magazine = NodePath("Magazine")
 
-[node name="Magazine" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/SMGViewmodel/SMG"]
+[node name="Magazine" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel/SMG"]
 script = ExtResource("6_7fstl")
 max_rounds = 30
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/SMGViewmodel"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel"]
 libraries = {
 "": SubResource("AnimationLibrary_7ix2q")
 }
