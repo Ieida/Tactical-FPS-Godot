@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Tactical FPS"
-run/main_scene="res://level_0/level_0.tscn"
+run/main_scene="res://main_menu/main_menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
