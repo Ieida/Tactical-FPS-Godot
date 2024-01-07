@@ -1,6 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bfc5uoymqgvht"]
-
-[ext_resource type="PackedScene" uid="uid://j4mdajbofnrt" path="res://level_0/level_0.tscn" id="1_r6qav"]
+[gd_scene load_steps=7 format=3 uid="uid://bfc5uoymqgvht"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nqc85"]
 bg_color = Color(1, 1, 1, 1)
@@ -20,15 +18,15 @@ expand_margin_right = 32.0
 resource_name = "play_test_button"
 script/source = "extends Button
 
-@onready var preloader = $\"../ResourcePreloader\"
-var test_scene: PackedScene
+var path_string = \"res://level_0/level_0.tscn\"
 
 func _ready():
 	pressed.connect(_on_pressed)
-	test_scene = preloader.get_resource(\"test_level\")
+	ResourceLoader.load_threaded_request(path_string)
 
 func _on_pressed():
-	get_tree().change_scene_to_packed(test_scene)
+	var scene = ResourceLoader.load_threaded_get(path_string)
+	get_tree().change_scene_to_packed(scene)
 "
 
 [sub_resource type="GDScript" id="GDScript_opjt4"]
@@ -49,9 +47,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="ResourcePreloader" type="ResourcePreloader" parent="."]
-resources = [PackedStringArray("test_level"), [ExtResource("1_r6qav")]]
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
