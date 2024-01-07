@@ -15,6 +15,36 @@ height = 1.5
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_d8cd5"]
 
+[sub_resource type="Animation" id="Animation_ldht1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hvp41"]
+resource_name = "aim_down_sights"
+
 [sub_resource type="Animation" id="Animation_ea20d"]
 resource_name = "idle"
 tracks/0/type = "value"
@@ -40,36 +70,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_hvp41"]
-resource_name = "aim_down_sights"
-
-[sub_resource type="Animation" id="Animation_xrct2"]
-resource_name = "reload"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-0.429735, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_rgfdn"]
@@ -101,8 +101,8 @@ tracks/1/keys = {
 "values": [Vector3(0.0174533, 0, -0.0383972), Vector3(0.00872665, 0, -0.0383972)]
 }
 
-[sub_resource type="Animation" id="Animation_ldht1"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_xrct2"]
+resource_name = "reload"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -110,7 +110,7 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.1),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
@@ -122,10 +122,10 @@ tracks/1/path = NodePath(".:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.1),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0, 0)]
+"values": [Vector3(-0.429735, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_53r8d"]
@@ -229,7 +229,6 @@ body = NodePath("../..")
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
 [node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("weapon", "camera", "animation_player", "weapon_animation_player", "magazine")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 script = ExtResource("4_pbdc1")
 weapon = NodePath("SMG")
 camera = NodePath("../..")

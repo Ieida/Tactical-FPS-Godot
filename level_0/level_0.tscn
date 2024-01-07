@@ -16,6 +16,8 @@ sky_material = SubResource("ProceduralSkyMaterial_f6ngm")
 [sub_resource type="Environment" id="Environment_5ktl4"]
 background_mode = 2
 sky = SubResource("Sky_o8cxe")
+ambient_light_source = 3
+reflected_light_source = 2
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_171rf"]
 
