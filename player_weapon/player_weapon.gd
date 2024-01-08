@@ -1,11 +1,11 @@
 extends Node3D
 
+class_name PlayerWeapon
+
 @export var weapon: Weapon
 @export var camera: PlayerCamera
-@export var reload_time: float
 @export var bullet: PackedScene
 @export var animation_player: AnimationPlayer
-@export var weapon_animation_player: AnimationPlayer
 @export var magazine: Magazine
 
 func _ready():
@@ -34,6 +34,21 @@ func _on_weapon_recoil(vector: Vector2):
 	animation_player.clear_queue()
 	animation_player.play("recoil")
 	animation_player.queue("idle")
+
+func can_holster() -> bool:
+	return not is_trigger_pressed and not is_reloading
+
+func holster():
+	set_process(false)
+	animation_player.play("holster")
+	await animation_player.animation_finished
+	hide()
+
+func unholster():
+	show()
+	animation_player.play("unholster")
+	await animation_player.animation_finished
+	set_process(true)
 
 #region Testing Purposes
 func load_mag(mag: Magazine):

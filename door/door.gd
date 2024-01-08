@@ -9,7 +9,7 @@ func _ready():
 	body.axis_lock_linear_y = true
 	body.axis_lock_linear_z = true
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if not is_closed and body.rotation_degrees.y < 0.1:
 		is_closed = true
 		body.axis_lock_angular_y = true

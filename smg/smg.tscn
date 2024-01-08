@@ -9,12 +9,12 @@ angle_max = 360.0
 gravity = Vector3(0, 0, 0)
 color = Color(1, 1, 0, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7pwe1"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3t1jq"]
 shading_mode = 0
 vertex_color_use_as_albedo = true
 
 [sub_resource type="QuadMesh" id="QuadMesh_bnddl"]
-material = SubResource("StandardMaterial3D_7pwe1")
+material = SubResource("StandardMaterial3D_3t1jq")
 size = Vector2(0.1, 0.1)
 
 [node name="SMG" type="Node3D" node_paths=PackedStringArray("muzzle", "muzzle_flash")]
