@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=47 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dhymfg2xx2csw" path="res://icon.svg" id="10_80gfq"]
 [ext_resource type="PackedScene" uid="uid://cshig8ls0eyly" path="res://grenade/grenade.tscn" id="10_i1x3m"]
 [ext_resource type="Script" path="res://player_grenade/player_grenade.gd" id="10_vop7b"]
+[ext_resource type="Script" path="res://hitbox/hitbox.gd" id="12_viptu"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yy7gy"]
 height = 1.5
@@ -578,6 +579,8 @@ func _on_area_exited(area: Area3D):
 [sub_resource type="SphereShape3D" id="SphereShape3D_lsy5n"]
 radius = 1.5
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2yv3a"]
+
 [sub_resource type="GDScript" id="GDScript_27n7l"]
 resource_name = "weapon_switcher"
 script/source = "extends Node
@@ -748,6 +751,14 @@ script = SubResource("GDScript_6y26x")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Interactor"]
 shape = SubResource("SphereShape3D_lsy5n")
+
+[node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
+monitoring = false
+script = ExtResource("12_viptu")
+health = NodePath("../../Components/Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Hitbox"]
+shape = SubResource("CapsuleShape3D_2yv3a")
 
 [node name="Components" type="Node" parent="."]
 

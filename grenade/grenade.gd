@@ -5,14 +5,16 @@ class_name Grenade
 @export var time_to_explode: float = 5.0
 @onready var rb: RigidBody3D = $RigidBody3D as RigidBody3D
 @export var explosion_effect: PackedScene
+@export var damage: Damage
 
 func _ready():
 	rb.freeze = true
 
 func _explode():
-	for body in $RigidBody3D/Area3D.get_overlapping_bodies():
-		# Deal damage
-		pass
+	for area in $RigidBody3D/Area3D.get_overlapping_areas():
+		print(area)
+		if area is Hitbox and area.health:
+			damage.apply_to(area.health)
 	
 	var ee = explosion_effect.instantiate()
 	get_tree().root.add_child(ee)

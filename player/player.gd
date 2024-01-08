@@ -11,6 +11,8 @@ func _ready():
 	health.damaged.connect(_on_health_subtracted)
 	health.depleted.connect(_on_health_reached_zero)
 	health.started_bleeding.connect(_on_health_started_bleeding)
+	
+	body.add_collision_exception_with($CharacterBody3D/Hitbox)
 
 func _process(_delta):
 	pass

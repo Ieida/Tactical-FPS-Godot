@@ -1,7 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://cshig8ls0eyly"]
+[gd_scene load_steps=8 format=3 uid="uid://cshig8ls0eyly"]
 
 [ext_resource type="Script" path="res://grenade/grenade.gd" id="1_n4aub"]
 [ext_resource type="PackedScene" uid="uid://t5gaeuju6qsa" path="res://grenade/explosion_effect.tscn" id="2_1ir7l"]
+[ext_resource type="Script" path="res://damage/damage.gd" id="3_aarl6"]
+
+[sub_resource type="Resource" id="Resource_u6vck"]
+script = ExtResource("3_aarl6")
+amount = 50.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wxd7k"]
 radius = 0.1
@@ -16,6 +21,7 @@ radius = 5.0
 [node name="Grenade" type="Node3D"]
 script = ExtResource("1_n4aub")
 explosion_effect = ExtResource("2_1ir7l")
+damage = SubResource("Resource_u6vck")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 continuous_cd = true
