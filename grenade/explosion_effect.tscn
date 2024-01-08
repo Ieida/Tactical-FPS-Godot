@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://t5gaeuju6qsa"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b2ycg"]
+direction = Vector3(0, 1, 0)
+spread = 80.0
+initial_velocity_min = 20.0
+initial_velocity_max = 20.0
+scale_min = 0.1
+scale_max = 0.1
+color = Color(0.498039, 0.498039, 0.498039, 1)
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tsad1"]
+transparency = 1
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_7qkc7"]
+material = SubResource("StandardMaterial3D_tsad1")
+
+[sub_resource type="GDScript" id="GDScript_ahbl2"]
+resource_name = "explosion_effect"
+script/source = "extends GPUParticles3D
+
+func _ready():
+	restart()
+	await finished
+	queue_free()
+"
+
+[node name="ExplosionEffect" type="GPUParticles3D"]
+emitting = false
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_b2ycg")
+draw_pass_1 = SubResource("QuadMesh_7qkc7")
+script = SubResource("GDScript_ahbl2")

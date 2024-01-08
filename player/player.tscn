@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=45 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" uid="uid://r60v8078b8a7" path="res://pistol/pistol.tscn" id="8_udj60"]
 [ext_resource type="PackedScene" uid="uid://ccswfa1xq6aj5" path="res://magazine/magazine.tscn" id="9_xpc40"]
 [ext_resource type="Texture2D" uid="uid://dhymfg2xx2csw" path="res://icon.svg" id="10_80gfq"]
+[ext_resource type="PackedScene" uid="uid://cshig8ls0eyly" path="res://grenade/grenade.tscn" id="10_i1x3m"]
+[ext_resource type="Script" path="res://player_grenade/player_grenade.gd" id="10_vop7b"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yy7gy"]
 height = 1.5
@@ -423,6 +425,131 @@ _data = {
 "unholster": SubResource("Animation_3q6sr")
 }
 
+[sub_resource type="Animation" id="Animation_wk011"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gpamu"]
+resource_name = "holster"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.194131, -0.177326, 0.0568526)]
+}
+
+[sub_resource type="Animation" id="Animation_6a04e"]
+resource_name = "unholster"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_w6ayh"]
+resource_name = "throw"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.2, 0, 0), Vector3(-0.2, 0.09, -0.07)]
+}
+
+[sub_resource type="Animation" id="Animation_lj6gj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_r6ahw"]
+resource_name = "reload"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rg55g"]
+_data = {
+"RESET": SubResource("Animation_lj6gj"),
+"holster": SubResource("Animation_gpamu"),
+"idle": SubResource("Animation_wk011"),
+"reload": SubResource("Animation_r6ahw"),
+"throw": SubResource("Animation_w6ayh"),
+"unholster": SubResource("Animation_6a04e")
+}
+
 [sub_resource type="GDScript" id="GDScript_6y26x"]
 resource_name = "interactor"
 script/source = "extends Area3D
@@ -457,11 +584,14 @@ script/source = "extends Node
 
 @export var primary: PlayerWeapon
 @export var secondary: PlayerWeapon
+@export var grenade: PlayerWeapon
 var active_weapon: PlayerWeapon
 
 func _ready():
 	secondary.hide()
 	secondary.holster()
+	grenade.hide()
+	grenade.holster()
 	switch_to(primary)
 
 func _process(_delta):
@@ -469,6 +599,8 @@ func _process(_delta):
 		switch_to(primary)
 	elif Input.is_action_just_pressed(\"secondary\"):
 		switch_to(secondary)
+	elif Input.is_action_just_pressed(\"grenade\"):
+		switch_to(grenade)
 
 func switch_to(weapon: PlayerWeapon):
 	if weapon == active_weapon or (active_weapon and not active_weapon.can_holster()): return
@@ -570,6 +702,7 @@ playback_default_blend_time = 0.5
 
 [node name="PistolViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("weapon", "camera", "animation_player", "magazine")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+visible = false
 script = ExtResource("4_pbdc1")
 weapon = NodePath("Pistol")
 camera = NodePath("../..")
@@ -587,6 +720,25 @@ max_rounds = 10
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/PistolViewmodel"]
 libraries = {
 "": SubResource("AnimationLibrary_4rby2")
+}
+playback_default_blend_time = 0.5
+
+[node name="GrenadeViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("grenade", "player_body", "weapon", "camera", "animation_player")]
+script = ExtResource("10_vop7b")
+grenade = NodePath("Grenade")
+player_body = NodePath("../../../..")
+throw_force = 15.0
+grenade_scene = ExtResource("10_i1x3m")
+weapon = NodePath("Grenade")
+camera = NodePath("../..")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="Grenade" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/GrenadeViewmodel" instance=ExtResource("10_i1x3m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.205, -0.23, -0.335)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/GrenadeViewmodel"]
+libraries = {
+"": SubResource("AnimationLibrary_rg55g")
 }
 playback_default_blend_time = 0.5
 
@@ -609,10 +761,11 @@ angle = 180.0
 
 [node name="Health" parent="Components" instance=ExtResource("5_v7jk3")]
 
-[node name="WeaponSwitcher" type="Node" parent="Components" node_paths=PackedStringArray("primary", "secondary")]
+[node name="WeaponSwitcher" type="Node" parent="Components" node_paths=PackedStringArray("primary", "secondary", "grenade")]
 script = SubResource("GDScript_27n7l")
 primary = NodePath("../../CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel")
 secondary = NodePath("../../CharacterBody3D/Node3D/PlayerCamera/Weapons/PistolViewmodel")
+grenade = NodePath("../../CharacterBody3D/Node3D/PlayerCamera/Weapons/GrenadeViewmodel")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3

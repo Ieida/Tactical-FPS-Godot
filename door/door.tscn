@@ -44,6 +44,7 @@ material = SubResource("StandardMaterial3D_c4om4")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, -0.1)
+continuous_cd = true
 script = ExtResource("2_bx0oe")
 hit_particle_effects = ExtResource("3_gdfu4")
 

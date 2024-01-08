@@ -48,6 +48,8 @@ script/source = "extends GPUParticles3D
 
 func _ready():
 	restart()
+	await finished
+	queue_free()
 "
 
 [node name="HitParticleEffect" type="GPUParticles3D"]

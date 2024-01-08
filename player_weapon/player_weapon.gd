@@ -9,9 +9,10 @@ class_name PlayerWeapon
 @export var magazine: Magazine
 
 func _ready():
-	weapon.recoil.connect(_on_weapon_recoil)
-	load_mag(magazine)
-	rack_slide()
+	if weapon is Gun:
+		weapon.recoil.connect(_on_weapon_recoil)
+		load_mag(magazine)
+		rack_slide()
 
 func _process(_delta):
 	if Input.is_action_just_pressed("trigger"):
@@ -48,6 +49,7 @@ func unholster():
 	show()
 	animation_player.play("unholster")
 	await animation_player.animation_finished
+	animation_player.play("idle")
 	set_process(true)
 
 #region Testing Purposes

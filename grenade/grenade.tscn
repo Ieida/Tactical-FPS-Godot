@@ -1,0 +1,33 @@
+[gd_scene load_steps=6 format=3 uid="uid://cshig8ls0eyly"]
+
+[ext_resource type="Script" path="res://grenade/grenade.gd" id="1_n4aub"]
+[ext_resource type="PackedScene" uid="uid://t5gaeuju6qsa" path="res://grenade/explosion_effect.tscn" id="2_1ir7l"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_wxd7k"]
+radius = 0.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_l5nt8"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5vbrs"]
+radius = 5.0
+
+[node name="Grenade" type="Node3D"]
+script = ExtResource("1_n4aub")
+explosion_effect = ExtResource("2_1ir7l")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+continuous_cd = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_wxd7k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = SubResource("SphereMesh_l5nt8")
+
+[node name="Area3D" type="Area3D" parent="RigidBody3D"]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/Area3D"]
+shape = SubResource("SphereShape3D_5vbrs")
