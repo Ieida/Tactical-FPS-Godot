@@ -16,10 +16,8 @@ func _physics_process(delta):
 		body.axis_lock_linear_x = true
 		body.axis_lock_linear_y = true
 		body.axis_lock_linear_z = true
-		print("is closed")
 	elif is_closed and body.rotation_degrees.y > 0.1:
 		is_closed = false
-		print("is open")
 
 func open_or_close():
 	if is_closed: open()
