@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://t5gaeuju6qsa"]
+[gd_scene load_steps=8 format=3 uid="uid://t5gaeuju6qsa"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_b2ycg"]
 direction = Vector3(0, 1, 0)
@@ -30,9 +30,21 @@ script/source = "extends GPUParticles3D
 
 func _ready():
 	restart()
+	$GPUParticles3D.restart()
 	await finished
 	queue_free()
 "
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ahhc8"]
+gravity = Vector3(0, 0, 0)
+color = Color(1, 0.74902, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7tt61"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_o8h1t"]
+material = SubResource("StandardMaterial3D_7tt61")
 
 [node name="ExplosionEffect" type="GPUParticles3D"]
 emitting = false
@@ -41,3 +53,12 @@ explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_b2ycg")
 draw_pass_1 = SubResource("QuadMesh_7qkc7")
 script = SubResource("GDScript_ahbl2")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 1
+lifetime = 0.1
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_ahhc8")
+draw_pass_1 = SubResource("SphereMesh_o8h1t")
