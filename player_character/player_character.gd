@@ -5,6 +5,7 @@ extends CharacterBody3D
 @export var max_speed: float = 3
 @export var speed: float = 3
 
+var push_force = 0.8
 func _physics_process(_delta):
 	if not is_on_floor():
 		velocity.y += -gravity
@@ -18,3 +19,8 @@ func _physics_process(_delta):
 	velocity.z = mv.z
 	
 	move_and_slide()
+	
+	for i in get_slide_collision_count():
+		var c = get_slide_collision(i)
+		if c.get_collider() is RigidBody3D:
+			c.get_collider().apply_central_impulse(-c.get_normal() * push_force)

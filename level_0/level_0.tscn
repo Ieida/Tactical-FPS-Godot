@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://j4mdajbofnrt"]
+[gd_scene load_steps=18 format=3 uid="uid://j4mdajbofnrt"]
 
 [ext_resource type="PackedScene" uid="uid://cwtrpjm3y5u7k" path="res://player/player.tscn" id="1_spnw0"]
 [ext_resource type="Texture2D" uid="uid://c21jiwsaawmby" path="res://addons/kenney_prototype_textures/dark/texture_01.png" id="2_0o3qh"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bhfincabr2ivc" path="res://addons/kenney_prototype_textures/dark/texture_13.png" id="4_2w71m"]
 [ext_resource type="Texture2D" uid="uid://1bm83c3o22q0" path="res://addons/kenney_prototype_textures/orange/texture_01.png" id="4_btoih"]
 [ext_resource type="PackedScene" uid="uid://caglokhhtscog" path="res://shooting_target/shooting_target_set.tscn" id="4_ea6rt"]
+[ext_resource type="PackedScene" uid="uid://clsq0anpy7xqb" path="res://door/door.tscn" id="8_wx27o"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f6ngm"]
 
@@ -163,3 +164,6 @@ hit_particle_effects = ExtResource("3_0r2ke")
 
 [node name="Player" parent="." instance=ExtResource("1_spnw0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 4)
+
+[node name="Door" parent="." instance=ExtResource("8_wx27o")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.2, 1.1, 2)
