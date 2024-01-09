@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://cupa3ej4bslnb"]
+
+[ext_resource type="Script" path="res://menu_button/menu_button.tres.gd" id="1_ct32w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_twcu7"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+
+[node name="MenuButton" type="Button"]
+offset_right = 154.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_twcu7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_twcu7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_twcu7")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_twcu7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_twcu7")
+text = "PLACEHOLDER TEXT"
+script = ExtResource("1_ct32w")
+stylebox = SubResource("StyleBoxFlat_twcu7")
+duration = 0.4

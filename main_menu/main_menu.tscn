@@ -1,22 +1,14 @@
 [gd_scene load_steps=7 format=3 uid="uid://bfc5uoymqgvht"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nqc85"]
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b122x"]
+resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0rt44"]
-bg_color = Color(1, 1, 1, 1)
-expand_margin_right = 64.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6iyhf"]
-bg_color = Color(1, 1, 1, 0.498039)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3bob7"]
-bg_color = Color(1, 1, 1, 1)
-expand_margin_right = 32.0
-
-[sub_resource type="GDScript" id="GDScript_7nmdu"]
-resource_name = "play_test_button"
-script/source = "extends Button
+[sub_resource type="GDScript" id="GDScript_ysa8p"]
+resource_name = "play_test"
+script/source = "extends GameMenuButton
 
 var path_string = \"res://level_0/level_0.tscn\"
 
@@ -29,16 +21,17 @@ func _on_pressed():
 	get_tree().change_scene_to_packed(scene)
 "
 
-[sub_resource type="GDScript" id="GDScript_opjt4"]
-resource_name = "quit_button"
-script/source = "extends Button
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbqke"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
 
-func _ready():
-	pressed.connect(_on_pressed)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s8my8"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 0.25098)
 
-func _on_pressed():
-	get_tree().quit()
-"
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dx85"]
+resource_local_to_scene = true
+bg_color = Color(0.498039, 0, 0.121569, 1)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -57,62 +50,82 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="PlayTestButton" type="Button" parent="."]
+[node name="PlayTest" parent="." instance=ExtResource("1_p7dyk")]
 layout_mode = 1
-offset_right = 256.0
-offset_bottom = 64.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_nqc85")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0rt44")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6iyhf")
-theme_override_styles/focus = SubResource("StyleBoxFlat_3bob7")
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_right = 150.0
+offset_bottom = 75.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_b122x")
+theme_override_styles/hover = SubResource("StyleBoxFlat_b122x")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_b122x")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_b122x")
+theme_override_styles/focus = SubResource("StyleBoxFlat_b122x")
 text = "PLAY TEST"
-script = SubResource("GDScript_7nmdu")
+script = SubResource("GDScript_ysa8p")
 
-[node name="PlayButton" type="Button" parent="."]
+[node name="Play" parent="." instance=ExtResource("1_p7dyk")]
 layout_mode = 1
-anchors_preset = 4
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = -32.0
-offset_right = 256.0
-offset_bottom = 32.0
+offset_left = -150.0
+offset_top = -122.5
+offset_right = 150.0
+offset_bottom = -47.5
+grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_nqc85")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0rt44")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6iyhf")
-theme_override_styles/focus = SubResource("StyleBoxFlat_3bob7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hbqke")
+theme_override_styles/hover = SubResource("StyleBoxFlat_hbqke")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hbqke")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_hbqke")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hbqke")
 text = "PLAY"
+stylebox = SubResource("StyleBoxFlat_hbqke")
 
-[node name="QuitButton" type="Button" parent="."]
+[node name="Settings" parent="." instance=ExtResource("1_p7dyk")]
 layout_mode = 1
-anchors_preset = 4
+anchors_preset = 8
+anchor_left = 0.5
 anchor_top = 0.5
+anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = 32.0
-offset_right = 256.0
-offset_bottom = 96.0
+offset_left = -150.0
+offset_top = -37.5
+offset_right = 150.0
+offset_bottom = 37.5
+grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_nqc85")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0rt44")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6iyhf")
-theme_override_styles/focus = SubResource("StyleBoxFlat_3bob7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_s8my8")
+theme_override_styles/hover = SubResource("StyleBoxFlat_s8my8")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_s8my8")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_s8my8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_s8my8")
+text = "SETTINGS"
+stylebox = SubResource("StyleBoxFlat_s8my8")
+
+[node name="Quit" parent="." instance=ExtResource("1_p7dyk")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = 47.5
+offset_right = 150.0
+offset_bottom = 122.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_1dx85")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1dx85")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_1dx85")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_1dx85")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1dx85")
 text = "QUIT"
-script = SubResource("GDScript_opjt4")
+stylebox = SubResource("StyleBoxFlat_1dx85")
