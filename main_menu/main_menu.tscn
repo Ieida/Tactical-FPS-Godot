@@ -1,6 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://bfc5uoymqgvht"]
+[gd_scene load_steps=11 format=3 uid="uid://bfc5uoymqgvht"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
+[ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="2_61ntr"]
 
 [sub_resource type="GDScript" id="GDScript_05nvt"]
 resource_name = "main_menu"
@@ -234,6 +235,7 @@ offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_hcjw5")
+sens = ExtResource("2_61ntr")
 
 [node name="Label" type="Label" parent="SettingsMenu/HSlider"]
 layout_mode = 1
