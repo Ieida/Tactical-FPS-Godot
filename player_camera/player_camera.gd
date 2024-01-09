@@ -2,14 +2,14 @@ extends Camera3D
 class_name PlayerCamera
 
 @export var body: Node3D
-@export var sensitivity: float = 50
+@export var sensitivity: Sensitivity
 var x: float
 var y: float
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		look_x(-event.relative.y / 1080.0 * sensitivity)
-		look_y(-event.relative.x / 1920.0 * sensitivity)
+		look_x(-event.relative.y / 1080.0 * sensitivity.value)
+		look_y(-event.relative.x / 1920.0 * sensitivity.value)
 
 func _process(_delta):
 	basis = Basis()

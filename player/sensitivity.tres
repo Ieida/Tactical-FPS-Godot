@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="Sensitivity" load_steps=2 format=3 uid="uid://dvnrjkojje818"]
+
+[ext_resource type="Script" path="res://sensitivity/sensitivity.gd" id="1_n0m1f"]
+
+[resource]
+script = ExtResource("1_n0m1f")
+value = 50.0
