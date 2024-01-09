@@ -12,7 +12,6 @@ func _ready():
 
 func _explode():
 	for area in $RigidBody3D/Area3D.get_overlapping_areas():
-		print(area)
 		if area is Hitbox and area.health:
 			damage.apply_to(area.health)
 	
