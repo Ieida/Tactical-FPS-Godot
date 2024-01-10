@@ -651,8 +651,8 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8ouod"]
 shader = SubResource("Shader_sm83g")
 shader_parameter/size = Vector2(32, 28)
-shader_parameter/color = Color(0.25098, 1, 0.25098, 1)
-shader_parameter/intensity = 10.0
+shader_parameter/color = Color(0.752941, 1, 0.752941, 1)
+shader_parameter/intensity = 50.0
 
 [sub_resource type="GDScript" id="GDScript_jfra3"]
 resource_name = "night_vision"
@@ -756,7 +756,7 @@ body = NodePath("../..")
 sensitivity = ExtResource("4_7jfg2")
 
 [node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
-light_energy = 0.01
+light_energy = 0.02
 spot_range = 10.0
 
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
@@ -779,7 +779,10 @@ max_rounds = 30
 
 [node name="SpotLight3D" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel/SMG"]
 transform = Transform3D(1, -2.08616e-07, 0, 4.47035e-08, 1, 0, 0, 0, 1, -2.98023e-08, -0.0289856, -0.192745)
+light_energy = 5.0
 spot_range = 10.0
+spot_angle = 30.0
+spot_angle_attenuation = 20.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel"]
 libraries = {
