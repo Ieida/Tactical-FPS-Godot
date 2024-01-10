@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=51 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -557,24 +557,37 @@ resource_name = "interactor"
 script/source = "extends Area3D
 
 var interactable: Interactable
+@export var sprite: Sprite2D
+@export var camera: Camera3D
 
 func _ready():
+	sprite.hide()
 	area_entered.connect(_on_area_entered)
 	area_exited.connect(_on_area_exited)
 
 func _process(_delta):
 	if Input.is_action_just_pressed(\"interact\") and interactable:
 		interactable.interact()
+	
+	if interactable:
+		if camera.is_position_in_frustum(interactable.global_position):
+			sprite.show()
+			var pos = camera.unproject_position(interactable.global_position)
+			sprite.position = pos
+			sprite.scale = Vector2.ONE / interactable.global_position.distance_to(camera.global_position)
+		else: sprite.hide()
 
 func _on_area_entered(area: Area3D):
 	if area is Interactable:
 		area.show()
 		interactable = area
+		sprite.show()
 
 func _on_area_exited(area: Area3D):
 	if area == interactable:
 		area.hide()
 		interactable = null
+		sprite.hide()
 "
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_lsy5n"]
@@ -615,6 +628,69 @@ func switch_to(weapon: PlayerWeapon):
 	active_weapon = weapon
 	await weapon.unholster()
 	set_process(true)
+"
+
+[sub_resource type="Shader" id="Shader_sm83g"]
+code = "shader_type canvas_item;
+
+uniform vec2 size = vec2(32.0, 28.0);
+// If you intend to read from mipmaps with `textureLod()` LOD values greater than `0.0`,
+// use `filter_nearest_mipmap` instead. This shader doesn't require it.
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+
+uniform vec4 color: source_color;
+uniform float intensity;
+
+void fragment() {
+        vec4 pixel_color = texture(screen_texture, SCREEN_UV);
+		float brightness = (pixel_color.r + pixel_color.g + pixel_color.b) / 3.0;
+		vec4 greyscale = vec4(brightness, brightness, brightness, pixel_color.a);
+		COLOR = greyscale * color * intensity;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8ouod"]
+shader = SubResource("Shader_sm83g")
+shader_parameter/size = Vector2(32, 28)
+shader_parameter/color = Color(0.25098, 1, 0.25098, 1)
+shader_parameter/intensity = 10.0
+
+[sub_resource type="GDScript" id="GDScript_jfra3"]
+resource_name = "night_vision"
+script/source = "extends ColorRect
+
+@export var light: SpotLight3D
+@export var intensity: float = 3.0
+var tween
+var _intst: float:
+	set(value):
+		_intst = value
+		material.set_shader_parameter(\"intensity\", value)
+var light_energy: float
+
+func _ready():
+	_intst = 0
+	light_energy = light.light_energy
+	light.light_energy = 0.0
+
+func _process(_delta):
+	if Input.is_action_just_pressed(\"night_vision\"):
+		if is_on: turn_off()
+		else: turn_on()
+
+var is_on = false
+func turn_on():
+	is_on = true
+	tween = create_tween().set_parallel(true)
+	tween.tween_property(self, \"_intst\", intensity, 1.0).set_ease(1).set_trans(5)
+	tween.tween_property(light, \"light_energy\", light_energy, 1.0).set_ease(1).set_trans(5)
+
+func turn_off():
+	is_on = false
+	if tween:
+		tween.kill()
+		tween = null
+	_intst = 0.0
+	light.light_energy = 0.0
 "
 
 [sub_resource type="GDScript" id="GDScript_hh8np"]
@@ -679,10 +755,13 @@ script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 sensitivity = ExtResource("4_7jfg2")
 
+[node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
+light_energy = 0.01
+spot_range = 10.0
+
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
 [node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("weapon", "camera", "animation_player", "magazine")]
-visible = false
 script = ExtResource("4_pbdc1")
 weapon = NodePath("SMG")
 camera = NodePath("../..")
@@ -697,6 +776,10 @@ magazine = NodePath("Magazine")
 [node name="Magazine" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel/SMG"]
 script = ExtResource("6_7fstl")
 max_rounds = 30
+
+[node name="SpotLight3D" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel/SMG"]
+transform = Transform3D(1, -2.08616e-07, 0, 4.47035e-08, 1, 0, 0, 0, 1, -2.98023e-08, -0.0289856, -0.192745)
+spot_range = 10.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel"]
 libraries = {
@@ -727,6 +810,7 @@ libraries = {
 playback_default_blend_time = 0.5
 
 [node name="GrenadeViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("grenade", "player_body", "weapon", "camera", "animation_player")]
+visible = false
 script = ExtResource("10_vop7b")
 grenade = NodePath("Grenade")
 player_body = NodePath("../../../..")
@@ -745,9 +829,11 @@ libraries = {
 }
 playback_default_blend_time = 0.5
 
-[node name="Interactor" type="Area3D" parent="CharacterBody3D"]
+[node name="Interactor" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("sprite", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 script = SubResource("GDScript_6y26x")
+sprite = NodePath("../../UILayer/UI/InteractableSprite")
+camera = NodePath("../Node3D/PlayerCamera")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Interactor"]
 shape = SubResource("SphereShape3D_lsy5n")
@@ -778,7 +864,9 @@ primary = NodePath("../../CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmod
 secondary = NodePath("../../CharacterBody3D/Node3D/PlayerCamera/Weapons/PistolViewmodel")
 grenade = NodePath("../../CharacterBody3D/Node3D/PlayerCamera/Weapons/GrenadeViewmodel")
 
-[node name="UI" type="Control" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="UI" type="Control" parent="UILayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -786,7 +874,25 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DeathFade" type="ColorRect" parent="UI"]
+[node name="NightVisionLayer" type="CanvasLayer" parent="UILayer/UI"]
+layer = 0
+
+[node name="NightVision" type="ColorRect" parent="UILayer/UI/NightVisionLayer" node_paths=PackedStringArray("light")]
+material = SubResource("ShaderMaterial_8ouod")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+script = SubResource("GDScript_jfra3")
+light = NodePath("../../../../CharacterBody3D/Node3D/PlayerCamera/NightVisionLight")
+intensity = 10.0
+
+[node name="InteractableSprite" type="Sprite2D" parent="UILayer/UI"]
+texture = ExtResource("10_80gfq")
+
+[node name="DeathFade" type="ColorRect" parent="UILayer/UI"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -797,10 +903,10 @@ color = Color(0, 0, 0, 0)
 script = SubResource("GDScript_hh8np")
 from = Color(0, 0, 0, 0)
 
-[node name="Pause" type="Node" parent="UI"]
+[node name="Pause" type="Node" parent="UILayer/UI"]
 script = SubResource("GDScript_t5u88")
 
-[node name="Menu" type="Control" parent="UI/Pause"]
+[node name="Menu" type="Control" parent="UILayer/UI/Pause"]
 process_mode = 2
 layout_mode = 3
 anchors_preset = 15
@@ -809,13 +915,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Damage" type="Button" parent="UI/Pause/Menu"]
+[node name="Damage" type="Button" parent="UILayer/UI/Pause/Menu"]
 layout_mode = 0
 offset_right = 77.0
 offset_bottom = 31.0
 text = "DAMAGE"
 
-[node name="Resume" type="Button" parent="UI/Pause/Menu"]
+[node name="Resume" type="Button" parent="UILayer/UI/Pause/Menu"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -830,13 +936,5 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "RESUME"
 
-[node name="InteractableSprite" type="Sprite3D" parent="."]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-visible = false
-billboard = 1
-double_sided = false
-no_depth_test = true
-texture = ExtResource("10_80gfq")
-
-[connection signal="pressed" from="UI/Pause/Menu/Damage" to="Components/Health" method="damage" binds= [5.0]]
-[connection signal="pressed" from="UI/Pause/Menu/Resume" to="UI/Pause" method="unpause"]
+[connection signal="pressed" from="UILayer/UI/Pause/Menu/Damage" to="Components/Health" method="damage" binds= [5.0]]
+[connection signal="pressed" from="UILayer/UI/Pause/Menu/Resume" to="UILayer/UI/Pause" method="unpause"]

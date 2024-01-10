@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://clsq0anpy7xqb"]
+[gd_scene load_steps=11 format=3 uid="uid://clsq0anpy7xqb"]
 
 [ext_resource type="Script" path="res://door/door.gd" id="1_ikyln"]
 [ext_resource type="PackedScene" uid="uid://bwxf6hc1v4dyk" path="res://interactable/interactable.tscn" id="2_8irbu"]
 [ext_resource type="Script" path="res://hitbox/hitbox.gd" id="2_bx0oe"]
 [ext_resource type="PackedScene" uid="uid://ebwds7eaxfnk" path="res://hit_particle_effects/hit_particle_effect.tscn" id="3_gdfu4"]
-[ext_resource type="Texture2D" uid="uid://dhymfg2xx2csw" path="res://icon.svg" id="3_tlru0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4uit1"]
 
@@ -66,12 +65,6 @@ material = SubResource("StandardMaterial3D_61fhx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/CSGBox3D/CSGCylinder3D/Interactable"]
 shape = SubResource("SphereShape3D_803w0")
-
-[node name="Sprite3D" type="Sprite3D" parent="RigidBody3D/CSGBox3D/CSGCylinder3D/Interactable"]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-billboard = 1
-no_depth_test = true
-texture = ExtResource("3_tlru0")
 
 [node name="HingeJoint3D" type="HingeJoint3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.7, 0, -0.15)
