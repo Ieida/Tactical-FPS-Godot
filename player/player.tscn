@@ -658,7 +658,7 @@ shader_parameter/intensity = 50.0
 resource_name = "night_vision"
 script/source = "extends ColorRect
 
-@export var light: SpotLight3D
+@export var light: Light3D
 @export var intensity: float = 3.0
 var tween
 var _intst: float:
@@ -755,9 +755,9 @@ script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 sensitivity = ExtResource("4_7jfg2")
 
-[node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
+[node name="NightVisionLight" type="OmniLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 light_energy = 0.02
-spot_range = 10.0
+omni_range = 15.0
 
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 

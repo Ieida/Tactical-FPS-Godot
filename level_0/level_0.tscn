@@ -148,6 +148,17 @@ material = SubResource("StandardMaterial3D_dxbi6")
 script = ExtResource("2_hpmpi")
 hit_particle_effects = ExtResource("3_0r2ke")
 
+[node name="Target6" parent="Buildings/House" instance=ExtResource("4_ea6rt")]
+transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, 3.94044, -9.53674e-07, 2.83089)
+
+[node name="Obstacle" type="CSGBox3D" parent="Buildings/House/Target6"]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0.00439739, 0.4, 0.553537)
+use_collision = true
+size = Vector3(1, 0.8, 0.5)
+material = SubResource("StandardMaterial3D_dxbi6")
+script = ExtResource("2_hpmpi")
+hit_particle_effects = ExtResource("3_0r2ke")
+
 [node name="Target3" parent="Buildings/House" instance=ExtResource("4_ea6rt")]
 transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -1.85431, -2.38418e-07, -6.01583)
 
