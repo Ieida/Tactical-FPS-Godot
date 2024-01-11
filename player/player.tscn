@@ -758,7 +758,7 @@ sensitivity = ExtResource("4_7jfg2")
 
 [node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 light_energy = 0.04
-spot_range = 10.0
+spot_range = 30.0
 spot_angle = 60.0
 spot_angle_attenuation = 1.5
 
