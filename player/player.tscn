@@ -5,11 +5,11 @@
 [ext_resource type="Script" path="res://player_character/player_character.gd" id="2_bxk1o"]
 [ext_resource type="Script" path="res://player_camera/player_camera.gd" id="2_jgt6g"]
 [ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="4_7jfg2"]
-[ext_resource type="Script" path="res://player_weapon/player_weapon.gd" id="4_pbdc1"]
 [ext_resource type="PackedScene" uid="uid://dgueiygo0ljxc" path="res://health/health.tscn" id="5_v7jk3"]
 [ext_resource type="Script" path="res://magazine/magazine.gd" id="6_7fstl"]
 [ext_resource type="PackedScene" uid="uid://d4bhp4yeabe7e" path="res://bullet/bullet.tscn" id="7_i1ag6"]
 [ext_resource type="PackedScene" uid="uid://483bq5b351pk" path="res://smg/smg.tscn" id="8_6ao76"]
+[ext_resource type="Script" path="res://player_gun/player_gun.gd" id="8_7k0sh"]
 [ext_resource type="PackedScene" uid="uid://r60v8078b8a7" path="res://pistol/pistol.tscn" id="8_udj60"]
 [ext_resource type="PackedScene" uid="uid://ccswfa1xq6aj5" path="res://magazine/magazine.tscn" id="9_xpc40"]
 [ext_resource type="Texture2D" uid="uid://dhymfg2xx2csw" path="res://icon.svg" id="10_80gfq"]
@@ -764,14 +764,15 @@ spot_angle_attenuation = 1.5
 
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
-[node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("weapon", "camera", "animation_player", "magazine")]
+[node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "weapon", "camera", "animation_player")]
 visible = false
-script = ExtResource("4_pbdc1")
+script = ExtResource("8_7k0sh")
+gun = NodePath("SMG")
+magazine = NodePath("SMG/Magazine")
+bullet = ExtResource("7_i1ag6")
 weapon = NodePath("SMG")
 camera = NodePath("../..")
-bullet = ExtResource("7_i1ag6")
 animation_player = NodePath("AnimationPlayer")
-magazine = NodePath("SMG/Magazine")
 
 [node name="SMG" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_6ao76")]
 transform = Transform3D(0.986285, -0.165048, 0, 0.165048, 0.986286, 0, 0, 0, 0.999999, 0.05, -0.08, -0.22)
@@ -794,14 +795,15 @@ libraries = {
 }
 playback_default_blend_time = 0.5
 
-[node name="PistolViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("weapon", "camera", "animation_player", "magazine")]
+[node name="PistolViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "weapon", "camera", "animation_player")]
 visible = false
-script = ExtResource("4_pbdc1")
+script = ExtResource("8_7k0sh")
+gun = NodePath("Pistol")
+magazine = NodePath("Pistol/Magazine")
+bullet = ExtResource("7_i1ag6")
 weapon = NodePath("Pistol")
 camera = NodePath("../..")
-bullet = ExtResource("7_i1ag6")
 animation_player = NodePath("AnimationPlayer")
-magazine = NodePath("Pistol/Magazine")
 
 [node name="Pistol" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/PistolViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_udj60")]
 transform = Transform3D(0.97998, -0.199094, 0, 0.199094, 0.97998, 0, 0, 0, 1, 0.0335386, -0.0839955, -0.106022)

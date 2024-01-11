@@ -13,6 +13,7 @@ func _process(_delta):
 	if Input.is_action_just_pressed("trigger"):
 		throw()
 
+var is_reloading: bool = false
 func reload():
 	is_reloading = true
 	animation_player.play("reload")
@@ -23,9 +24,10 @@ func reload():
 	grenade.add_collision_exception_with(player_body)
 	is_reloading = false
 
+var is_throwing: bool = false
 func throw():
-	if is_trigger_pressed or is_reloading: return
-	is_trigger_pressed = true
+	if is_throwing or is_reloading: return
+	is_throwing = true
 	
 	animation_player.play("throw")
 	await animation_player.animation_finished
@@ -33,5 +35,5 @@ func throw():
 	grenade.throw(-global_basis.z * throw_force)
 	grenade.release_spoon()
 	grenade = null
+	is_throwing = false
 	reload()
-	is_trigger_pressed = false
