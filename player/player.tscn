@@ -755,9 +755,11 @@ script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 sensitivity = ExtResource("4_7jfg2")
 
-[node name="NightVisionLight" type="OmniLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
-light_energy = 0.02
-omni_range = 15.0
+[node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
+light_energy = 0.05
+spot_range = 10.0
+spot_angle = 60.0
+spot_angle_attenuation = 2.37841
 
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
