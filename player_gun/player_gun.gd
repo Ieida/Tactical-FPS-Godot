@@ -5,6 +5,7 @@ class_name PlayerGun
 @export var gun: Gun
 @export var magazine: Magazine
 @export var bullet: PackedScene
+@export var flashlight: SpotLight3D
 
 func _ready():
 	super._ready()
@@ -14,6 +15,8 @@ func _ready():
 
 func _process(_delta):
 	if not is_holstered:
+		if flashlight and Input.is_action_just_pressed("flashlight_toggle"):
+			toggle_flashlight()
 		if Input.is_action_just_pressed("trigger"):
 			press_trigger()
 		elif Input.is_action_just_released("trigger"):
@@ -25,7 +28,16 @@ func _process(_delta):
 func can_holster() -> bool:
 	return not is_trigger_pressed and not is_reloading
 
-var is_trigger_pressed = false
+var is_flashlight_on: bool = false
+func toggle_flashlight():
+	if is_flashlight_on:
+		flashlight.hide()
+		is_flashlight_on = false
+	else:
+		flashlight.show()
+		is_flashlight_on = true
+
+var is_trigger_pressed: bool = false
 func press_trigger():
 	if not is_reloading:
 		is_trigger_pressed = true
@@ -35,7 +47,7 @@ func release_trigger():
 	is_trigger_pressed = false
 	gun.release_trigger()
 
-var is_reloading = false
+var is_reloading: bool = false
 func reload():
 	if gun.magazine and not is_trigger_pressed:
 		is_reloading = true

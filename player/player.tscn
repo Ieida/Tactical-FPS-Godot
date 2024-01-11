@@ -764,12 +764,13 @@ spot_angle_attenuation = 1.5
 
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
-[node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "weapon", "camera", "animation_player")]
+[node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "flashlight", "weapon", "camera", "animation_player")]
 visible = false
 script = ExtResource("8_7k0sh")
 gun = NodePath("SMG")
 magazine = NodePath("SMG/Magazine")
 bullet = ExtResource("7_i1ag6")
+flashlight = NodePath("SMG/SpotLight3D")
 weapon = NodePath("SMG")
 camera = NodePath("../..")
 animation_player = NodePath("AnimationPlayer")
