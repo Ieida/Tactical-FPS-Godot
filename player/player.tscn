@@ -521,10 +521,10 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.2, 0, 0), Vector3(-0.2, 0.09, -0.07)]
+"values": [Vector3(0, 0.53, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_6a04e"]
@@ -765,6 +765,7 @@ spot_angle_attenuation = 1.5
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
 [node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("weapon", "camera", "animation_player", "magazine")]
+visible = false
 script = ExtResource("4_pbdc1")
 weapon = NodePath("SMG")
 camera = NodePath("../..")
@@ -816,7 +817,6 @@ libraries = {
 playback_default_blend_time = 0.5
 
 [node name="GrenadeViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("grenade", "player_body", "weapon", "camera", "animation_player")]
-visible = false
 script = ExtResource("10_vop7b")
 grenade = NodePath("Grenade")
 player_body = NodePath("../../../..")
