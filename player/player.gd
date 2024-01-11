@@ -4,6 +4,7 @@ extends Node3D
 @onready var body: CharacterBody3D = $CharacterBody3D
 @onready var health: Health = $Components/Health
 @onready var nausea: Nausea = $Components/Nausea
+@export var death_fade: Node
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -19,7 +20,7 @@ func _process(_delta):
 
 func _on_health_subtracted():
 	var p = (health.amount / health.max_amount)
-	$UI/DeathFade.fade(1 - p)
+	death_fade.fade(1 - p)
 	body.speed = body.max_speed * p
 
 func _on_health_reached_zero():

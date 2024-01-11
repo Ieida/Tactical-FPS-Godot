@@ -651,7 +651,7 @@ void fragment() {
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8ouod"]
 shader = SubResource("Shader_sm83g")
 shader_parameter/size = Vector2(32, 28)
-shader_parameter/color = Color(0.752941, 1, 0.752941, 1)
+shader_parameter/color = Color(0.862745, 1, 0.862745, 1)
 shader_parameter/intensity = 50.0
 
 [sub_resource type="GDScript" id="GDScript_jfra3"]
@@ -697,11 +697,11 @@ func turn_off():
 resource_name = "death_fade"
 script/source = "extends ColorRect
 
-@export var from: Color
-@export var to: Color
+func _ready():
+	color.a = 0.0
 
 func fade(t: float):
-	color = lerp(from, to, t)
+	color.a = lerp(0.0, 1.0, t)
 "
 
 [sub_resource type="GDScript" id="GDScript_t5u88"]
@@ -729,8 +729,9 @@ func unpause():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 "
 
-[node name="Player" type="Node3D"]
+[node name="Player" type="Node3D" node_paths=PackedStringArray("death_fade")]
 script = ExtResource("1_ugqs2")
+death_fade = NodePath("UILayer/UI/DeathFade")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("2_bxk1o")
@@ -756,10 +757,10 @@ body = NodePath("../..")
 sensitivity = ExtResource("4_7jfg2")
 
 [node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
-light_energy = 0.05
+light_energy = 0.04
 spot_range = 10.0
 spot_angle = 60.0
-spot_angle_attenuation = 2.37841
+spot_angle_attenuation = 1.5
 
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
@@ -892,7 +893,7 @@ grow_vertical = 2
 color = Color(1, 1, 1, 0)
 script = SubResource("GDScript_jfra3")
 light = NodePath("../../../../CharacterBody3D/Node3D/PlayerCamera/NightVisionLight")
-intensity = 10.0
+intensity = 5.0
 
 [node name="InteractableSprite" type="Sprite2D" parent="UILayer/UI"]
 texture = ExtResource("10_80gfq")
@@ -906,7 +907,6 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0)
 script = SubResource("GDScript_hh8np")
-from = Color(0, 0, 0, 0)
 
 [node name="Pause" type="Node" parent="UILayer/UI"]
 script = SubResource("GDScript_t5u88")
