@@ -13,12 +13,13 @@ func _ready():
 	rack_slide()
 
 func _process(_delta):
-	if Input.is_action_just_pressed("trigger"):
-		press_trigger()
-	elif Input.is_action_just_released("trigger"):
-		release_trigger()
-	if Input.is_action_just_pressed("reload"):
-		reload()
+	if not is_holstered:
+		if Input.is_action_just_pressed("trigger"):
+			press_trigger()
+		elif Input.is_action_just_released("trigger"):
+			release_trigger()
+		if Input.is_action_just_pressed("reload"):
+			reload()
 
 #region Gun Functions
 func can_holster() -> bool:

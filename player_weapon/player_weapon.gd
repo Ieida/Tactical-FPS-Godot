@@ -21,11 +21,9 @@ func holster():
 	animation_player.play("holster")
 	await animation_player.animation_finished
 	hide()
-	process_mode = Node.PROCESS_MODE_DISABLED
 
 func unholster():
 	show()
-	process_mode = Node.PROCESS_MODE_INHERIT
 	animation_player.play("unholster")
 	await animation_player.animation_finished
 	animation_player.play("idle")

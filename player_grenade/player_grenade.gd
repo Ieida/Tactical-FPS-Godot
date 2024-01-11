@@ -10,8 +10,9 @@ func _ready():
 	grenade.add_collision_exception_with(player_body)
 
 func _process(_delta):
-	if Input.is_action_just_pressed("trigger"):
-		throw()
+	if not is_holstered:
+		if Input.is_action_just_pressed("trigger"):
+			throw()
 
 func can_holster() -> bool:
 	return not is_reloading and not is_throwing
