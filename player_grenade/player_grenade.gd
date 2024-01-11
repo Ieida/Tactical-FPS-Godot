@@ -13,6 +13,9 @@ func _process(_delta):
 	if Input.is_action_just_pressed("trigger"):
 		throw()
 
+func can_holster() -> bool:
+	return not is_reloading and not is_throwing
+
 var is_reloading: bool = false
 func reload():
 	is_reloading = true

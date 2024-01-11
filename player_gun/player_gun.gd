@@ -8,7 +8,7 @@ class_name PlayerGun
 
 func _ready():
 	super._ready()
-	weapon.recoil.connect(_on_gun_recoil)
+	gun.recoil.connect(_on_gun_recoil)
 	load_mag(magazine)
 	rack_slide()
 
@@ -26,21 +26,20 @@ func can_holster() -> bool:
 
 var is_trigger_pressed = false
 func press_trigger():
-	if weapon is Gun and not is_reloading:
+	if not is_reloading:
 		is_trigger_pressed = true
-		weapon.press_trigger()
+		gun.press_trigger()
 
 func release_trigger():
-	if weapon is Gun:
-		is_trigger_pressed = false
-		weapon.release_trigger()
+	is_trigger_pressed = false
+	gun.release_trigger()
 
 var is_reloading = false
 func reload():
-	if weapon is Gun and weapon.magazine and not is_trigger_pressed:
+	if gun.magazine and not is_trigger_pressed:
 		is_reloading = true
-		var mag = weapon.unload_magazine()
-		if weapon._chambered_bullet:
+		var mag = gun.unload_magazine()
+		if gun._chambered_bullet:
 			animation_player.play("reload")
 		else:
 			animation_player.play("reload_empty")
@@ -49,13 +48,12 @@ func reload():
 		await animation_player.animation_finished
 		
 		load_mag(mag)
-		weapon.load_magazine(mag)
-		if not weapon._chambered_bullet: rack_slide()
+		gun.load_magazine(mag)
+		if not gun._chambered_bullet: rack_slide()
 		is_reloading = false
 
 func rack_slide():
-	if weapon is Gun:
-		weapon.rack_slide()
+	gun.rack_slide()
 
 func _on_gun_recoil(vector: Vector2):
 	camera.look_x(vector.y)
