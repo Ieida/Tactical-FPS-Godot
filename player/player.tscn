@@ -521,10 +521,10 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.2),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0.53, 0)]
+"values": [Vector3(-0.198578, -0.100561, 0), Vector3(0, 0.399127, 0.218898)]
 }
 
 [sub_resource type="Animation" id="Animation_6a04e"]
