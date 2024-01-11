@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=52 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://483bq5b351pk" path="res://smg/smg.tscn" id="8_6ao76"]
 [ext_resource type="Script" path="res://player_gun/player_gun.gd" id="8_7k0sh"]
 [ext_resource type="PackedScene" uid="uid://r60v8078b8a7" path="res://pistol/pistol.tscn" id="8_udj60"]
+[ext_resource type="PackedScene" uid="uid://jr2d1w1rdi1r" path="res://flashlight/flashlight.tscn" id="9_nug04"]
 [ext_resource type="PackedScene" uid="uid://ccswfa1xq6aj5" path="res://magazine/magazine.tscn" id="9_xpc40"]
 [ext_resource type="Texture2D" uid="uid://dhymfg2xx2csw" path="res://icon.svg" id="10_80gfq"]
 [ext_resource type="PackedScene" uid="uid://cshig8ls0eyly" path="res://grenade/grenade.tscn" id="10_i1x3m"]
@@ -758,6 +759,8 @@ sensitivity = ExtResource("4_7jfg2")
 
 [node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 light_energy = 0.04
+shadow_enabled = true
+shadow_bias = 1.0
 spot_range = 30.0
 spot_angle = 60.0
 spot_angle_attenuation = 1.5
@@ -770,7 +773,7 @@ script = ExtResource("8_7k0sh")
 gun = NodePath("SMG")
 magazine = NodePath("SMG/Magazine")
 bullet = ExtResource("7_i1ag6")
-flashlight = NodePath("SMG/SpotLight3D")
+flashlight = NodePath("SMG/Flashlight")
 weapon = NodePath("SMG")
 camera = NodePath("../..")
 animation_player = NodePath("AnimationPlayer")
@@ -783,12 +786,13 @@ magazine = NodePath("Magazine")
 script = ExtResource("6_7fstl")
 max_rounds = 30
 
-[node name="SpotLight3D" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel/SMG"]
+[node name="Flashlight" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel/SMG" instance=ExtResource("9_nug04")]
 transform = Transform3D(1, -2.08616e-07, 0, 4.47035e-08, 1, 0, 0, 0, 1, -2.98023e-08, -0.0289856, -0.192745)
 light_energy = 5.0
 spot_range = 10.0
 spot_angle = 30.0
 spot_angle_attenuation = 20.0
+on_energy = 5.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel"]
 libraries = {
