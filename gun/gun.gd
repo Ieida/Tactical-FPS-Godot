@@ -10,6 +10,8 @@ signal recoil(vector: Vector2)
 @export var _rpm: float
 @export var fire_mode: FireMode = FireMode.SINGLE
 @export_range(0.0, 1.0) var recoil_multiplier: float
+@export var sideways_recoil_min: float
+@export var sideways_recoil_max: float
 @export_range(0.0, 1.0) var spread_multiplier: float
 @export var muzzle_flash: GPUParticles3D
 var _chambered_bullet: Bullet
@@ -63,7 +65,7 @@ func _shoot_bullet():
 	
 	var rcl_amt = _chambered_bullet.shoot()
 	rcl_amt *= recoil_multiplier
-	var rcl_v = Vector2(randf_range(-2, 2), rcl_amt)
+	var rcl_v = Vector2(randf_range(sideways_recoil_min, sideways_recoil_max), rcl_amt)
 	recoil.emit(rcl_v)
 	if magazine:
 		_chambered_bullet = magazine.unload_bullet()

@@ -63,12 +63,11 @@ func rack_slide():
 	gun.rack_slide()
 
 func _on_gun_recoil(vector: Vector2):
-	camera.look_x(vector.y)
-	camera.look_y(vector.x)
-	animation_player.stop(true)
-	animation_player.clear_queue()
 	animation_player.play("recoil")
 	animation_player.queue("idle")
+	while animation_player.current_animation != "recoil":
+		await animation_player.animation_changed
+	camera.recoil(vector, 0.01)
 #endregion
 
 #region Testing Purposes

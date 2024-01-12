@@ -79,6 +79,7 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id="Animation_ea20d"]
 resource_name = "idle"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -86,10 +87,10 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.5),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -98,15 +99,15 @@ tracks/1/path = NodePath(".:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.5),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_rgfdn"]
 resource_name = "recoil"
-length = 0.08
+length = 0.04
 step = 0.02
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -115,7 +116,7 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0.02, 0.06),
+"times": PackedFloat32Array(0, 0.04),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(-0.001, 0, 0.035), Vector3(-0.001, 0, 0.027)]
@@ -127,7 +128,7 @@ tracks/1/path = NodePath(".:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.02, 0.06),
+"times": PackedFloat32Array(0, 0.04),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(0.0174533, 0, -0.0383972), Vector3(0.00872665, 0, -0.0383972)]
@@ -756,6 +757,7 @@ current = true
 script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 sensitivity = ExtResource("4_7jfg2")
+shake_intensity = 1000.0
 
 [node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 light_energy = 0.04
@@ -768,7 +770,6 @@ spot_angle_attenuation = 1.5
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
 [node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "flashlight", "weapon", "camera", "animation_player")]
-visible = false
 script = ExtResource("8_7k0sh")
 gun = NodePath("SMG")
 magazine = NodePath("SMG/Magazine")
@@ -781,6 +782,7 @@ animation_player = NodePath("AnimationPlayer")
 [node name="SMG" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_6ao76")]
 transform = Transform3D(0.986285, -0.165048, 0, 0.165048, 0.986286, 0, 0, 0, 0.999999, 0.05, -0.08, -0.22)
 magazine = NodePath("Magazine")
+sideways_recoil_min = -1.0
 
 [node name="Magazine" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel/SMG"]
 script = ExtResource("6_7fstl")
@@ -824,6 +826,7 @@ libraries = {
 playback_default_blend_time = 0.5
 
 [node name="GrenadeViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("grenade", "player_body", "weapon", "camera", "animation_player")]
+visible = false
 script = ExtResource("10_vop7b")
 grenade = NodePath("Grenade")
 player_body = NodePath("../../../..")
