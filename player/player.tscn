@@ -761,7 +761,6 @@ shake_intensity = 1000.0
 
 [node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 light_energy = 0.04
-shadow_enabled = true
 shadow_bias = 1.0
 spot_range = 30.0
 spot_angle = 60.0
@@ -791,6 +790,7 @@ max_rounds = 30
 [node name="Flashlight" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel/SMG" instance=ExtResource("9_nug04")]
 transform = Transform3D(1, -2.08616e-07, 0, 4.47035e-08, 1, 0, 0, 0, 1, -2.98023e-08, -0.0289856, -0.192745)
 light_energy = 5.0
+shadow_enabled = false
 spot_range = 10.0
 spot_angle = 30.0
 spot_angle_attenuation = 20.0

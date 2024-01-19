@@ -9,7 +9,8 @@ class_name Bullet
 func hit(hitbox: Hitbox, point: Vector3, normal: Vector3):
 	if hitbox.health:
 		damage.apply_to(hitbox.health)
-	hitbox.hit(point, normal)
+	var info = HitboxHitInfo.new(point, normal, 1)
+	hitbox.hit(info)
 
 func shoot() -> float:
 	set_physics_process(false)

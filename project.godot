@@ -24,6 +24,10 @@ window/size/window_height_override=768
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[editor]
+
+run/main_run_args="--rendering-driver opengl3"
+
 [filesystem]
 
 import/fbx/enabled=false

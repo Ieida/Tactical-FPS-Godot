@@ -1,0 +1,118 @@
+[gd_scene load_steps=14 format=3 uid="uid://cibiekbp042iv"]
+
+[ext_resource type="Texture2D" uid="uid://c21jiwsaawmby" path="res://addons/kenney_prototype_textures/dark/texture_01.png" id="1_qe37m"]
+[ext_resource type="PackedScene" uid="uid://do1po7eh3me4r" path="res://training_level/training_level.glb" id="2_fw1je"]
+[ext_resource type="PackedScene" uid="uid://cwtrpjm3y5u7k" path="res://player/player.tscn" id="2_kf2qm"]
+[ext_resource type="Texture2D" uid="uid://1bm83c3o22q0" path="res://addons/kenney_prototype_textures/orange/texture_01.png" id="3_nuplb"]
+[ext_resource type="PackedScene" uid="uid://clsq0anpy7xqb" path="res://door/door.tscn" id="4_07uba"]
+[ext_resource type="Script" path="res://hitbox/hitbox.gd" id="4_of42b"]
+[ext_resource type="PackedScene" uid="uid://ebwds7eaxfnk" path="res://hit_particle_effects/hit_particle_effect.tscn" id="5_xidcr"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_op8h2"]
+sky_top_color = Color(0, 0, 0, 1)
+sky_horizon_color = Color(0, 0, 0, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0, 0, 0, 1)
+sun_angle_max = 2.0
+sun_curve = 4.03629
+
+[sub_resource type="Sky" id="Sky_gp5q0"]
+sky_material = SubResource("ProceduralSkyMaterial_op8h2")
+
+[sub_resource type="Environment" id="Environment_8rk6a"]
+background_mode = 2
+sky = SubResource("Sky_gp5q0")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_6drfh"]
+size = Vector2(1000, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pk6r2"]
+albedo_texture = ExtResource("1_qe37m")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7amol"]
+albedo_texture = ExtResource("3_nuplb")
+uv1_triplanar = true
+
+[node name="TrainingLevel" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8rk6a")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.17101, 0.469847, 0, 0.939693, 0.34202, -0.5, -0.296198, 0.813798, 0, 0, 0)
+light_energy = 0.01
+shadow_enabled = true
+
+[node name="Floor" type="CSGMesh3D" parent="."]
+use_collision = true
+mesh = SubResource("PlaneMesh_6drfh")
+material = SubResource("StandardMaterial3D_pk6r2")
+
+[node name="Building" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="training_level" parent="Building" instance=ExtResource("2_fw1je")]
+visible = false
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Building"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+use_collision = true
+size = Vector3(12, 4, 12)
+material = SubResource("StandardMaterial3D_7amol")
+script = ExtResource("4_of42b")
+hit_particle_effects = ExtResource("5_xidcr")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Building/CSGBox3D"]
+operation = 2
+size = Vector3(11.6, 6, 11.6)
+material = SubResource("StandardMaterial3D_7amol")
+
+[node name="Door" type="CSGBox3D" parent="Building/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 5.90791)
+operation = 2
+size = Vector3(1.5, 2.2, 1)
+material = SubResource("StandardMaterial3D_7amol")
+
+[node name="Door" parent="Building/CSGBox3D/Door" instance=ExtResource("4_07uba")]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Building/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, -0.5, 3)
+size = Vector3(4.6, 3, 5.6)
+material = SubResource("StandardMaterial3D_7amol")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Building/CSGBox3D/CSGBox3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0999999, 0, 0.0999999)
+operation = 2
+size = Vector3(4.4, 3, 5.4)
+material = SubResource("StandardMaterial3D_7amol")
+
+[node name="Door2" type="CSGBox3D" parent="Building/CSGBox3D/CSGBox3D2"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.2, -0.4, -2.7)
+operation = 2
+size = Vector3(1.5, 2.2, 1)
+material = SubResource("StandardMaterial3D_7amol")
+
+[node name="Door" parent="Building/CSGBox3D/CSGBox3D2/Door2" instance=ExtResource("4_07uba")]
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Building/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, -0.5, 0)
+size = Vector3(4.6, 3, 11.6)
+material = SubResource("StandardMaterial3D_7amol")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Building/CSGBox3D/CSGBox3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0)
+operation = 2
+size = Vector3(4.4, 3, 11.6)
+material = SubResource("StandardMaterial3D_7amol")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Building/CSGBox3D/CSGBox3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0, -3)
+operation = 2
+size = Vector3(1, 3, 3)
+material = SubResource("StandardMaterial3D_7amol")
+
+[node name="Player" parent="." instance=ExtResource("2_kf2qm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

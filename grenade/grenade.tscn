@@ -16,7 +16,7 @@ radius = 0.1
 height = 0.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5vbrs"]
-radius = 5.0
+radius = 10.0
 
 [node name="Grenade" type="Node3D"]
 script = ExtResource("1_n4aub")
@@ -32,8 +32,8 @@ shape = SubResource("SphereShape3D_wxd7k")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
 mesh = SubResource("SphereMesh_l5nt8")
 
-[node name="Area3D" type="Area3D" parent="RigidBody3D"]
+[node name="EffectArea" type="Area3D" parent="RigidBody3D"]
 monitorable = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/EffectArea"]
 shape = SubResource("SphereShape3D_5vbrs")

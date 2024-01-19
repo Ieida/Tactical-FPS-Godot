@@ -3,14 +3,19 @@ extends Camera3D
 class_name PlayerCamera
 
 class Shake extends RefCounted:
-	var intensity: float
 	var duration: float
+	var length: float
+	var ease_value: float
 	var _elapsed_time: float
-	var _seed
-	var noise: FastNoiseLite = FastNoiseLite.new()
+	var _stroke_duration: float
+	var _stroke_vector: Vector2
 	
-	func _init():
-		noise.seed = randi()
+	func _init(intensity: float, ease_value_: float):
+		duration = intensity
+		length = exp(intensity) * 2.0
+		_stroke_duration = duration / exp(intensity)
+		ease_value = ease_value_
+		_stroke_vector = Vector2.UP.rotated(deg_to_rad(randf() * 360.0))
 	
 	func has_elapsed() -> bool:
 		return _elapsed_time >= duration
@@ -18,10 +23,14 @@ class Shake extends RefCounted:
 	func update(delta: float) -> Vector2:
 		_elapsed_time += delta
 		
-		var t = _elapsed_time * intensity
-		var x = noise.get_noise_2d(t, 0)
-		var y = noise.get_noise_2d(0, t)
-		return Vector2(x, y)
+		var c = floorf(_elapsed_time / _stroke_duration) ## amount of strokes elapsed
+		var b = (_elapsed_time - (_stroke_duration * c)) / _stroke_duration
+		var t = _elapsed_time / (_stroke_duration * c)
+		if t >= 1.0:
+			_stroke_vector = Vector2.UP.rotated(deg_to_rad(randf() * 360.0))
+		var l = length * remap(b, 0, 1, -1, 1)
+		var v = _stroke_vector
+		return v * l * ease(1 - (_elapsed_time / duration), ease_value)
 
 class Recoil extends RefCounted:
 	var amount: Vector2
@@ -93,10 +102,8 @@ func look_x(degrees: float):
 func look_y(degrees: float):
 	y += degrees
 
-func shake(intensity: float, duration: float):
-	var s = Shake.new()
-	s.intensity = intensity
-	s.duration = duration
+func shake(intensity: float, ease_value: float):
+	var s = Shake.new(intensity, ease_value)
 	shakes.append(s)
 
 func recoil(vector: Vector2, duration: float):

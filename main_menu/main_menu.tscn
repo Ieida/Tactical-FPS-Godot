@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bfc5uoymqgvht"]
+[gd_scene load_steps=12 format=3 uid="uid://bfc5uoymqgvht"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
 [ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="2_61ntr"]
@@ -52,13 +52,28 @@ func _on_pressed():
 	get_tree().change_scene_to_packed(scene)
 "
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uanqh"]
+resource_local_to_scene = true
+bg_color = Color(0, 0.12549, 0.501961, 1)
+
+[sub_resource type="GDScript" id="GDScript_1bouv"]
+resource_name = "play_training"
+script/source = "extends GameMenuButton
+
+var path_string = \"res://training_level/training_level.tscn\"
+
+func _ready():
+	pressed.connect(_on_pressed)
+	ResourceLoader.load_threaded_request(path_string)
+
+func _on_pressed():
+	var scene = ResourceLoader.load_threaded_get(path_string)
+	get_tree().change_scene_to_packed(scene)
+"
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbqke"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s8my8"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 0.25098)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dx85"]
 resource_local_to_scene = true
@@ -103,7 +118,6 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="MainMenu" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -128,6 +142,28 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_b122x")
 text = "PLAY TEST"
 script = SubResource("GDScript_ysa8p")
 stylebox = SubResource("StyleBoxFlat_b122x")
+
+[node name="PlayTraining" parent="MainMenu" instance=ExtResource("1_p7dyk")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -207.5
+offset_right = 150.0
+offset_bottom = -132.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_uanqh")
+theme_override_styles/hover = SubResource("StyleBoxFlat_uanqh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_uanqh")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_uanqh")
+theme_override_styles/focus = SubResource("StyleBoxFlat_uanqh")
+text = "PLAY TRAINING"
+script = SubResource("GDScript_1bouv")
+stylebox = SubResource("StyleBoxFlat_uanqh")
 
 [node name="Play" parent="MainMenu" instance=ExtResource("1_p7dyk")]
 layout_mode = 1
@@ -163,13 +199,7 @@ offset_right = 150.0
 offset_bottom = 37.5
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_s8my8")
-theme_override_styles/hover = SubResource("StyleBoxFlat_s8my8")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_s8my8")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_s8my8")
-theme_override_styles/focus = SubResource("StyleBoxFlat_s8my8")
 text = "SETTINGS"
-stylebox = SubResource("StyleBoxFlat_s8my8")
 
 [node name="Quit" parent="MainMenu" instance=ExtResource("1_p7dyk")]
 layout_mode = 1
@@ -193,6 +223,7 @@ text = "QUIT"
 stylebox = SubResource("StyleBoxFlat_1dx85")
 
 [node name="SettingsMenu" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
