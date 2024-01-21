@@ -1,7 +1,8 @@
 extends Weapon
+
 class_name Gun
 
-enum FireMode {SINGLE, BURST, AUTO}
+enum FireMode {SINGLE, SEMI, BURST, AUTO}
 
 signal recoil(vector: Vector2)
 
@@ -17,10 +18,10 @@ signal recoil(vector: Vector2)
 var _chambered_bullet: Bullet
 var _time_since_last_shot: float
 var _time_between_shots: float
-var is_locked: bool
+var is_slide_resting: bool
+var is_slide_lock_activated: bool
 
 func _ready():
-	_chambered_bullet = magazine.unload_bullet()
 	_time_between_shots = 60.0 / _rpm
 
 func _process(delta):
@@ -33,7 +34,14 @@ func _process(delta):
 				pass
 		FireMode.AUTO:
 			if is_trigger_pressed:
-				_shoot()
+				_drop_hammer()
+
+func activate_slide_lock():
+	is_slide_lock_activated = true
+
+func deactivate_slide_lock():
+	is_slide_lock_activated = false
+	if not is_slide_resting: _drop_slide()
 
 func set_rpm(value: float):
 	_rpm = value
@@ -42,19 +50,18 @@ func set_rpm(value: float):
 var is_trigger_pressed = false
 func press_trigger():
 	is_trigger_pressed = true
-	_shoot()
+	_drop_hammer()
 
 func release_trigger():
 	is_trigger_pressed = false
 
-func _shoot():
-	if _time_since_last_shot < _time_between_shots or is_locked: return
-	_time_since_last_shot = 0
-	
-	if _chambered_bullet:
+func _drop_hammer():
+	if is_slide_resting:
 		_shoot_bullet()
 
 func _shoot_bullet():
+	if not _chambered_bullet: return
+	
 	# Muzzle flash
 	muzzle_flash.restart()
 	
@@ -64,21 +71,43 @@ func _shoot_bullet():
 	_chambered_bullet.rotate_object_local(Vector3.UP, deg_to_rad(sprd))
 	
 	var rcl_amt = _chambered_bullet.shoot()
+	_chambered_bullet = null
+	
+	## Push the slide back
+	if fire_mode != FireMode.SINGLE:
+		await push_slide()
+	
+	## Apply recoil
 	rcl_amt *= recoil_multiplier
 	var rcl_v = Vector2(randf_range(sideways_recoil_min, sideways_recoil_max), rcl_amt)
 	recoil.emit(rcl_v)
-	if magazine:
-		_chambered_bullet = magazine.unload_bullet()
-	else:
-		_chambered_bullet = null
+	
+	## Drop the slide
+	if not is_slide_resting:
+		_drop_slide()
 
-func rack_slide():
-	if is_locked and not magazine:
-		is_locked = false
-	elif _chambered_bullet and magazine:
-		is_locked = true
-	elif not _chambered_bullet and magazine:
-		_chambered_bullet = magazine.unload_bullet()
+func push_slide():
+	if is_slide_resting:
+		is_slide_resting = false
+		await get_tree().create_timer(_time_between_shots / 3.0).timeout
+	
+	if not is_slide_lock_activated:
+		await _drop_slide()
+
+func _drop_slide():
+	if is_slide_lock_activated: return
+	
+	var next_bullet = null
+	if magazine:
+		next_bullet = magazine.unload_bullet()
+		if not next_bullet:
+			activate_slide_lock()
+			return
+	
+	await get_tree().create_timer(_time_between_shots / 1.5).timeout
+	if _chambered_bullet: return
+	_chambered_bullet = next_bullet
+	is_slide_resting = true
 
 func unload_magazine() -> Magazine:
 	var mag = magazine

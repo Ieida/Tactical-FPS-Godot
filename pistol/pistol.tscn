@@ -21,6 +21,7 @@ size = Vector2(0.1, 0.1)
 script = ExtResource("1_bq8bq")
 muzzle = NodePath("Muzzle")
 _rpm = 400.0
+fire_mode = 1
 recoil_multiplier = 0.5
 spread_multiplier = 0.5
 muzzle_flash = NodePath("Muzzle/GPUParticles3D")

@@ -11,7 +11,8 @@ func _ready():
 	super._ready()
 	gun.recoil.connect(_on_gun_recoil)
 	load_mag(magazine)
-	rack_slide()
+	insert_magazine(magazine)
+	gun.push_slide()
 
 func _process(_delta):
 	if not is_holstered:
@@ -26,48 +27,53 @@ func _process(_delta):
 
 #region Gun Functions
 func can_holster() -> bool:
-	return not is_trigger_pressed and not is_reloading
+	return not is_reloading
 
 func toggle_flashlight():
 	flashlight.toggle_flashlight()
 
-var is_trigger_pressed: bool = false
 func press_trigger():
-	if not is_reloading:
-		is_trigger_pressed = true
-		gun.press_trigger()
+	gun.press_trigger()
 
 func release_trigger():
-	is_trigger_pressed = false
 	gun.release_trigger()
+
+func remove_magazine():
+	gun.unload_magazine()
+
+func insert_magazine(new_magazine: Magazine):
+	gun.load_magazine(new_magazine)
 
 var is_reloading: bool = false
 func reload():
-	if gun.magazine and not is_trigger_pressed:
-		is_reloading = true
-		var mag = gun.unload_magazine()
-		if gun._chambered_bullet:
-			animation_player.play("reload")
-		else:
-			animation_player.play("reload_empty")
-		animation_player.queue("idle")
-		
-		await animation_player.animation_finished
-		
-		load_mag(mag)
-		gun.load_magazine(mag)
-		if not gun._chambered_bullet: rack_slide()
-		is_reloading = false
+	is_reloading = true
+	animation_player.play("reload")
+	if gun.magazine:
+		await remove_magazine()
+	
+	load_mag(magazine) ## PLACEHOLDER
+	
+	await animation_player.animation_finished
+	
+	await insert_magazine(magazine)
+	
+	if gun.is_slide_lock_activated: await gun.deactivate_slide_lock()
+	elif not gun._chambered_bullet: await gun.push_slide()
+	
+	is_reloading = false
+	animation_player.queue("idle")
 
 func rack_slide():
-	gun.rack_slide()
+	animation_player.play("rack_slide")
+	await gun.rack_slide()
+	await animation_player.animation_finished
 
 func _on_gun_recoil(vector: Vector2):
-	animation_player.play("recoil")
-	animation_player.queue("idle")
-	while animation_player.current_animation != "recoil":
-		await animation_player.animation_changed
+	if not is_reloading:
+		animation_player.play("recoil")
+	await get_tree().create_timer(0.01).timeout
 	camera.recoil(vector, 0.01)
+	animation_player.queue("idle")
 #endregion
 
 #region Testing Purposes

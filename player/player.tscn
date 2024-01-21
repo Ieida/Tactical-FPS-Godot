@@ -32,7 +32,7 @@ tracks/0/path = NodePath(".:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.01),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
@@ -44,7 +44,7 @@ tracks/1/path = NodePath(".:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.01),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
@@ -161,33 +161,6 @@ tracks/1/keys = {
 "values": [Vector3(-0.429735, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_53r8d"]
-resource_name = "reload_empty"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-0.429735, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.8, 0.9, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, -0.0111344, -0.0242951), Vector3(0, 0, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_of6ma"]
 resource_name = "unholster"
 tracks/0/type = "value"
@@ -215,14 +188,42 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_da8aj"]
+resource_name = "rack_slide"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.02), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7ix2q"]
 _data = {
 "RESET": SubResource("Animation_ldht1"),
 "holster": SubResource("Animation_gl22s"),
 "idle": SubResource("Animation_ea20d"),
+"rack_slide": SubResource("Animation_da8aj"),
 "recoil": SubResource("Animation_rgfdn"),
 "reload": SubResource("Animation_xrct2"),
-"reload_empty": SubResource("Animation_53r8d"),
 "unholster": SubResource("Animation_of6ma")
 }
 
@@ -364,33 +365,6 @@ tracks/1/keys = {
 "values": [Vector3(-0.323374, -0.00519415, -0.309015)]
 }
 
-[sub_resource type="Animation" id="Animation_ub0sa"]
-resource_name = "reload_empty"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0.1, 0.8, 0.9, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0.000222952, -0.0143854, -0.0429232), Vector3(0, 0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0.1, 0.8, 0.9, 1),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [Vector3(-0.323374, -0.00519415, -0.309015), Vector3(-0.323374, -0.00519415, -0.309015), Vector3(-0.323374, -0.00519415, -0.309015), Vector3(-0.323374, -0.00519415, -0.309015)]
-}
-
 [sub_resource type="Animation" id="Animation_3q6sr"]
 resource_name = "unholster"
 tracks/0/type = "value"
@@ -418,14 +392,42 @@ tracks/1/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_ub0sa"]
+resource_name = "rack_slide"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.02), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4rby2"]
 _data = {
 "RESET": SubResource("Animation_a8lst"),
 "holster": SubResource("Animation_u1lf5"),
 "idle": SubResource("Animation_l6fgh"),
+"rack_slide": SubResource("Animation_ub0sa"),
 "recoil": SubResource("Animation_taw3q"),
 "reload": SubResource("Animation_jp3ga"),
-"reload_empty": SubResource("Animation_ub0sa"),
 "unholster": SubResource("Animation_3q6sr")
 }
 
@@ -769,6 +771,7 @@ spot_angle_attenuation = 1.5
 [node name="Weapons" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera"]
 
 [node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "flashlight", "weapon", "camera", "animation_player")]
+visible = false
 script = ExtResource("8_7k0sh")
 gun = NodePath("SMG")
 magazine = NodePath("SMG/Magazine")
@@ -776,7 +779,7 @@ bullet = ExtResource("7_i1ag6")
 flashlight = NodePath("SMG/Flashlight")
 weapon = NodePath("SMG")
 camera = NodePath("../..")
-animation_player = NodePath("AnimationPlayer")
+animation_player = NodePath("ViewmodelPlayer")
 
 [node name="SMG" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_6ao76")]
 transform = Transform3D(0.986285, -0.165048, 0, 0.165048, 0.986286, 0, 0, 0, 0.999999, 0.05, -0.08, -0.22)
@@ -796,14 +799,12 @@ spot_angle = 30.0
 spot_angle_attenuation = 20.0
 on_energy = 5.0
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel"]
+[node name="ViewmodelPlayer" type="AnimationPlayer" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons/SMGViewmodel"]
 libraries = {
 "": SubResource("AnimationLibrary_7ix2q")
 }
-playback_default_blend_time = 0.5
 
 [node name="PistolViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "weapon", "camera", "animation_player")]
-visible = false
 script = ExtResource("8_7k0sh")
 gun = NodePath("Pistol")
 magazine = NodePath("Pistol/Magazine")
@@ -823,7 +824,6 @@ max_rounds = 10
 libraries = {
 "": SubResource("AnimationLibrary_4rby2")
 }
-playback_default_blend_time = 0.5
 
 [node name="GrenadeViewmodel" type="Node3D" parent="CharacterBody3D/Node3D/PlayerCamera/Weapons" node_paths=PackedStringArray("grenade", "player_body", "weapon", "camera", "animation_player")]
 visible = false
