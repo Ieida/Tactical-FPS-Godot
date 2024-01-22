@@ -6,6 +6,7 @@ class_name PlayerGun
 @export var magazine: Magazine
 @export var bullet: PackedScene
 @export var flashlight: Flashlight
+@export var laser: Laser
 
 func _ready():
 	super._ready()
@@ -13,6 +14,12 @@ func _ready():
 	load_mag(magazine)
 	insert_magazine(magazine)
 	gun.push_slide()
+	
+	## Turn off laser by default
+	if laser and laser.is_on: laser.toggle_laser()
+	
+	## Turn off flashlight by default
+	if flashlight and flashlight._is_on: flashlight.toggle_flashlight()
 
 func _process(_delta):
 	if not is_holstered:
@@ -24,6 +31,8 @@ func _process(_delta):
 			release_trigger()
 		if Input.is_action_just_pressed("reload"):
 			reload()
+		if laser and Input.is_action_just_pressed("laser_toggle"):
+			toggle_laser()
 
 #region Gun Functions
 func can_holster() -> bool:
@@ -31,6 +40,9 @@ func can_holster() -> bool:
 
 func toggle_flashlight():
 	flashlight.toggle_flashlight()
+
+func toggle_laser():
+	laser.toggle_laser()
 
 func press_trigger():
 	gun.press_trigger()
