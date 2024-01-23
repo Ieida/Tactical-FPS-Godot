@@ -34,6 +34,8 @@ material = SubResource("ShaderMaterial_yipc8")
 
 [node name="Laser" type="Node3D"]
 script = ExtResource("1_mso6b")
+noise = SubResource("FastNoiseLite_wsp87")
+scroll_speed = 1000.0
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 enabled = false
