@@ -664,7 +664,7 @@ resource_name = "night_vision"
 script/source = "extends ColorRect
 
 @export var light: Light3D
-@export var intensity: float = 3.0
+@export var intensity: float = 5.0
 var tween
 var _intst: float:
 	set(value):
@@ -916,7 +916,6 @@ grow_vertical = 2
 color = Color(1, 1, 1, 0)
 script = SubResource("GDScript_jfra3")
 light = NodePath("../../../../CharacterBody3D/Node3D/PlayerCamera/NightVisionLight")
-intensity = 5.0
 
 [node name="InteractableSprite" type="Sprite2D" parent="UILayer/UI"]
 texture = ExtResource("10_80gfq")

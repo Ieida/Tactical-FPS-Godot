@@ -4,7 +4,7 @@ class_name Laser
 
 @onready var raycast: RayCast3D = $RayCast3D
 @onready var line: MeshInstance3D = $Line
-@onready var spot: MeshInstance3D = $Spot
+@onready var spot: Node3D = $Spot
 @export_category("Noise")
 @export var noise: FastNoiseLite
 @export var scroll_speed: float
@@ -28,12 +28,6 @@ func _process(delta):
 		distance = absf(local_point.z)
 	
 	spot.global_position = point + (normal * 0.01)
-	if rad_to_deg(Vector3.UP.angle_to(normal)) < 15.0:
-		spot.global_rotation_degrees = Vector3(-90, 0, 0)
-	else:
-		spot.look_at(point + -normal)
-	spot.orthonormalize()
-	spot.scale = Vector3.ONE * remap(distance / 50.0, 0, 1, 0.01, 0.15)
 	
 	line.position.z = -distance / 2.0
 	line.scale.y = distance
