@@ -71,7 +71,8 @@ func _input(event):
 func _process(_delta):
 	basis = Basis()
 	rotate_object_local(Vector3.RIGHT, deg_to_rad(x))
-	global_rotate(body.global_basis.y, deg_to_rad(y))
+	get_parent().global_rotate(body.global_basis.y, deg_to_rad(y))
+	y = 0
 	
 	# Shake managment
 	if shakes.size() > 0:
@@ -100,7 +101,7 @@ func look_x(degrees: float):
 	elif x < -90: x = -90
 
 func look_y(degrees: float):
-	y += degrees
+	y = degrees
 
 func shake(intensity: float, ease_value: float):
 	var s = Shake.new(intensity, ease_value)
