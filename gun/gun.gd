@@ -14,7 +14,7 @@ signal recoil(vector: Vector2)
 @export var sideways_recoil_min: float
 @export var sideways_recoil_max: float
 @export_range(0.0, 1.0) var spread_multiplier: float
-@export var muzzle_flash: GPUParticles3D
+@export var muzzle_flash: PackedScene
 var _chambered_bullet: Bullet
 var _time_since_last_shot: float
 var _time_between_shots: float
@@ -63,7 +63,10 @@ func _shoot_bullet():
 	if not _chambered_bullet: return
 	
 	# Muzzle flash
-	muzzle_flash.restart()
+	var new_muzzle_flash = muzzle_flash.instantiate()
+	muzzle.add_child(new_muzzle_flash)
+	new_muzzle_flash.global_transform = muzzle.global_transform
+	new_muzzle_flash.start()
 	
 	# Spread
 	var sprd = _chambered_bullet.spread * spread_multiplier * 45.0

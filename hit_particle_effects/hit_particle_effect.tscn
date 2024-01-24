@@ -1,7 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://ebwds7eaxfnk"]
 
 [sub_resource type="Curve" id="Curve_t7bdl"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+max_value = 0.1
+_data = [Vector2(0, 0.1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_uoho7"]

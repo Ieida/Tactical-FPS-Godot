@@ -1,0 +1,91 @@
+[gd_scene load_steps=12 format=3 uid="uid://cop7yqghjvnpw"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_5d4up"]
+particle_flag_disable_z = true
+angle_max = 360.0
+gravity = Vector3(0, 0, 0)
+color = Color(1, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3t1jq"]
+shading_mode = 0
+vertex_color_use_as_albedo = true
+
+[sub_resource type="QuadMesh" id="QuadMesh_bnddl"]
+material = SubResource("StandardMaterial3D_3t1jq")
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="GDScript" id="GDScript_5rq47"]
+resource_name = "flash"
+script/source = "extends GPUParticles3D
+
+func _ready():
+	$Smoke.finished.connect(_on_finished)
+
+func _on_finished():
+	queue_free()
+
+func start():
+	emitting = true
+	$Smoke.emitting = true
+"
+
+[sub_resource type="Curve" id="Curve_e632k"]
+max_value = 0.1
+_data = [Vector2(0, 0.1), 0.0, -0.1, 0, 1, Vector2(1, 0), -0.1, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rg8jg"]
+curve = SubResource("Curve_e632k")
+
+[sub_resource type="Curve" id="Curve_8qb0f"]
+min_value = 3.0
+max_value = 10.0
+_data = [Vector2(0, 3), 0.0, 7.0, 0, 1, Vector2(1, 10), 7.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_l0byn"]
+curve = SubResource("Curve_8qb0f")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_my3l1"]
+inherit_velocity_ratio = 1.0
+direction = Vector3(0, 0, -1)
+spread = 5.0
+initial_velocity_max = 10.0
+gravity = Vector3(0, 0.1, 0)
+damping_min = 40.0
+damping_max = 40.0
+scale_curve = SubResource("CurveTexture_l0byn")
+color = Color(0.752941, 0.752941, 0.752941, 1)
+alpha_curve = SubResource("CurveTexture_rg8jg")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gvt6h"]
+transparency = 1
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_ejfkc"]
+material = SubResource("StandardMaterial3D_gvt6h")
+size = Vector2(0.1, 0.1)
+
+[node name="Flash" type="GPUParticles3D"]
+emitting = false
+amount = 1
+lifetime = 0.1
+one_shot = true
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_5d4up")
+draw_pass_1 = SubResource("QuadMesh_bnddl")
+script = SubResource("GDScript_5rq47")
+
+[node name="Smoke" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 3
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_my3l1")
+draw_pass_1 = SubResource("QuadMesh_ejfkc")

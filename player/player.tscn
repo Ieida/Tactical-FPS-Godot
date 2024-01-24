@@ -826,6 +826,7 @@ animation_player = NodePath("AnimationPlayer")
 [node name="Pistol" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_udj60")]
 transform = Transform3D(0.97998, -0.199094, 0, 0.199094, 0.97998, 0, 0, 0, 1, 0.0335386, -0.0839955, -0.106022)
 magazine = NodePath("Magazine")
+muzzle_flash = null
 
 [node name="Magazine" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel/Pistol" instance=ExtResource("9_xpc40")]
 max_rounds = 10
