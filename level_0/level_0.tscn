@@ -61,6 +61,7 @@ camera_attributes = SubResource("CameraAttributesPractical_171rf")
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 0, 0)
 light_energy = 0.01
 shadow_enabled = true
+sky_mode = 2
 
 [node name="Buildings" type="Node" parent="."]
 

@@ -82,6 +82,7 @@ draw_pass_1 = SubResource("QuadMesh_bnddl")
 script = SubResource("GDScript_5rq47")
 
 [node name="Smoke" type="GPUParticles3D" parent="."]
+visible = false
 emitting = false
 amount = 3
 lifetime = 3.0
