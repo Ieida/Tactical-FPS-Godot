@@ -122,6 +122,7 @@ bullet = ExtResource("1_2xt8x")
 [node name="Health" parent="." instance=ExtResource("2_33ye6")]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+collision_layer = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 shape = SubResource("CapsuleShape3D_cf3tt")
@@ -131,6 +132,7 @@ mesh = SubResource("CapsuleMesh_7qoxs")
 skeleton = NodePath("../..")
 
 [node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
+collision_layer = 8
 collision_mask = 0
 monitoring = false
 script = ExtResource("3_ppjxn")
