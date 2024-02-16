@@ -93,9 +93,9 @@ func _physics_process(delta):
 	
 	if target: return
 	
-	for body in get_overlapping_bodies():
-		if is_in_view_angle(body.global_position) and can_see(body.global_position):
-			target = body
+	for area in get_overlapping_areas():
+		if is_in_view_angle(area.global_position) and can_see(area.global_position):
+			target = area
 			break
 
 func can_see(pos: Vector3) -> bool:
@@ -152,6 +152,7 @@ magazine = NodePath("Magazine")
 max_rounds = 30
 
 [node name="Vision" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("eyes")]
+collision_layer = 0
 collision_mask = 2
 monitorable = false
 script = SubResource("GDScript_sgiuw")

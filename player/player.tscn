@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=56 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -24,6 +24,10 @@
 height = 1.5
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_d8cd5"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_jykj8"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_m7j0n"]
 
 [sub_resource type="Animation" id="Animation_ldht1"]
 length = 0.001
@@ -754,6 +758,14 @@ shape = SubResource("CapsuleShape3D_yy7gy")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 shape = SubResource("SeparationRayShape3D_d8cd5")
 
+[node name="Target" type="Area3D" parent="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Target"]
+shape = SubResource("SphereShape3D_jykj8")
+
 [node name="BodyMiddlePivot" type="Node3D" parent="CharacterBody3D"]
 script = ExtResource("3_md4wb")
 
@@ -764,6 +776,14 @@ script = ExtResource("2_jgt6g")
 body = NodePath("../..")
 sensitivity = ExtResource("4_7jfg2")
 shake_intensity = 1000.0
+
+[node name="Target" type="Area3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera"]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Target"]
+shape = SubResource("SphereShape3D_m7j0n")
 
 [node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera"]
 light_energy = 0.04
