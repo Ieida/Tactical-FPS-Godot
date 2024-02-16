@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bl6lfpxua4xfe"]
+[gd_scene load_steps=13 format=3 uid="uid://bl6lfpxua4xfe"]
 
 [ext_resource type="PackedScene" uid="uid://d4bhp4yeabe7e" path="res://bullet/bullet.tscn" id="1_2xt8x"]
 [ext_resource type="PackedScene" uid="uid://483bq5b351pk" path="res://smg/smg.tscn" id="1_v84pa"]
@@ -53,6 +53,8 @@ func load_mag(mag: Magazine):
 		mag.load_bullet(b)
 #endregion
 "
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cf3tt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nit5x"]
 albedo_color = Color(0, 0, 0, 1)
@@ -113,50 +115,56 @@ radius = 10.0
 
 [node name="Enemy" type="Node3D" node_paths=PackedStringArray("eyes", "gun")]
 script = SubResource("GDScript_aqb4p")
-eyes = NodePath("Eyes")
-gun = NodePath("Eyes/SMG")
+eyes = NodePath("CharacterBody3D/Eyes")
+gun = NodePath("CharacterBody3D/Eyes/SMG")
 bullet = ExtResource("1_2xt8x")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_7qoxs")
 
 [node name="Health" parent="." instance=ExtResource("2_33ye6")]
 
-[node name="Hitbox" type="Area3D" parent="." node_paths=PackedStringArray("health")]
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_cf3tt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_7qoxs")
+skeleton = NodePath("../..")
+
+[node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
 collision_mask = 0
 monitoring = false
 script = ExtResource("3_ppjxn")
-health = NodePath("../Health")
+health = NodePath("../../Health")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Hitbox"]
 shape = SubResource("CapsuleShape3D_lygwi")
 
-[node name="Eyes" type="Node3D" parent="."]
+[node name="Eyes" type="Node3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
-[node name="SMG" parent="Eyes" node_paths=PackedStringArray("magazine") instance=ExtResource("1_v84pa")]
+[node name="SMG" parent="CharacterBody3D/Eyes" node_paths=PackedStringArray("magazine") instance=ExtResource("1_v84pa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 magazine = NodePath("Magazine")
 
-[node name="Magazine" parent="Eyes/SMG" instance=ExtResource("2_gwq6n")]
+[node name="Magazine" parent="CharacterBody3D/Eyes/SMG" instance=ExtResource("2_gwq6n")]
 max_rounds = 30
 
-[node name="Vision" type="Area3D" parent="." node_paths=PackedStringArray("eyes")]
+[node name="Vision" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("eyes")]
 collision_mask = 2
 monitorable = false
 script = SubResource("GDScript_sgiuw")
 angle = 90.0
 eyes = NodePath("../Eyes")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Vision"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Vision"]
 shape = SubResource("SphereShape3D_3e4rv")
 
-[node name="RayCast3D" type="RayCast3D" parent="Vision"]
+[node name="RayCast3D" type="RayCast3D" parent="CharacterBody3D/Vision"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 enabled = false
 hit_back_faces = false
 debug_shape_custom_color = Color(1, 0, 0, 1)
 debug_shape_thickness = 5
 
-[connection signal="target_acquired" from="Vision" to="." method="_on_vision_target_acquired"]
-[connection signal="target_lost" from="Vision" to="." method="_on_vision_target_lost"]
+[connection signal="target_acquired" from="CharacterBody3D/Vision" to="." method="_on_vision_target_acquired"]
+[connection signal="target_lost" from="CharacterBody3D/Vision" to="." method="_on_vision_target_lost"]
