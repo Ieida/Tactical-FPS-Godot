@@ -24,6 +24,7 @@ explosion_effect = ExtResource("2_1ir7l")
 damage = SubResource("Resource_u6vck")
 
 [node name="RigidBody3D" type="RigidBody3D" parent="."]
+collision_layer = 4
 continuous_cd = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]

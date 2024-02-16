@@ -740,6 +740,7 @@ script = ExtResource("1_ugqs2")
 death_fade = NodePath("UILayer/UI/DeathFade")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera")]
+collision_layer = 2
 script = ExtResource("2_bxk1o")
 camera = NodePath("BodyMiddlePivot/PlayerCamera")
 max_speed = 2.0
@@ -863,6 +864,7 @@ playback_default_blend_time = 0.5
 
 [node name="Interactor" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("sprite", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+collision_layer = 16
 script = SubResource("GDScript_6y26x")
 sprite = NodePath("../../UILayer/UI/InteractableSprite")
 camera = NodePath("../BodyMiddlePivot/PlayerCamera")
@@ -871,6 +873,8 @@ camera = NodePath("../BodyMiddlePivot/PlayerCamera")
 shape = SubResource("SphereShape3D_lsy5n")
 
 [node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
+collision_layer = 8
+collision_mask = 0
 monitoring = false
 script = ExtResource("12_viptu")
 health = NodePath("../../Components/Health")

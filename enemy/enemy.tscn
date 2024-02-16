@@ -1,0 +1,162 @@
+[gd_scene load_steps=12 format=3 uid="uid://bl6lfpxua4xfe"]
+
+[ext_resource type="PackedScene" uid="uid://d4bhp4yeabe7e" path="res://bullet/bullet.tscn" id="1_2xt8x"]
+[ext_resource type="PackedScene" uid="uid://483bq5b351pk" path="res://smg/smg.tscn" id="1_v84pa"]
+[ext_resource type="PackedScene" uid="uid://dgueiygo0ljxc" path="res://health/health.tscn" id="2_33ye6"]
+[ext_resource type="PackedScene" uid="uid://ccswfa1xq6aj5" path="res://magazine/magazine.tscn" id="2_gwq6n"]
+[ext_resource type="Script" path="res://hitbox/hitbox.gd" id="3_ppjxn"]
+
+[sub_resource type="GDScript" id="GDScript_aqb4p"]
+resource_name = "enemy"
+script/source = "extends Node3D
+
+var target: Node3D
+@export var eyes: Node3D
+@export var gun: Gun
+@export var bullet: PackedScene
+
+func _ready():
+	var m = gun.magazine
+	load_mag(m)
+	gun.load_magazine(m)
+	gun.push_slide()
+	
+	$Health.depleted.connect(_on_health_depleted)
+
+func _on_vision_target_acquired(t):
+	target = t
+	gun.press_trigger()
+
+func _on_vision_target_lost():
+	target = null
+	gun.release_trigger()
+
+func _on_health_depleted():
+	process_mode = Node.PROCESS_MODE_DISABLED
+	queue_free()
+
+func _process(delta):
+	if not target: return
+	
+	eyes.look_at(target.global_position)
+	
+	if gun.magazine.get_bullet_count() == 0:
+		load_mag(gun.magazine)
+
+#region Testing Purposes
+func load_mag(mag: Magazine):
+	var rnds_to_full = mag.max_rounds - mag.get_bullet_count()
+	for r in rnds_to_full:
+		var b = bullet.instantiate()
+		mag.add_child.call_deferred(b)
+		b.transform = Transform3D()
+		mag.load_bullet(b)
+#endregion
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nit5x"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_7qoxs"]
+material = SubResource("StandardMaterial3D_nit5x")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lygwi"]
+
+[sub_resource type="GDScript" id="GDScript_sgiuw"]
+resource_name = "vision"
+script/source = "extends Area3D
+
+signal target_acquired(target: Node3D)
+signal target_lost
+
+var target: Node3D
+var is_target_acquired: bool = false
+@export var angle: float = 45
+@onready var raycast: RayCast3D = $RayCast3D
+@export var eyes: Node3D
+@export var reaction_time: float = 0.2
+var reaction_time_elapsed: float = 0
+
+func _physics_process(delta):
+	if not is_target_acquired and target:
+		reaction_time_elapsed += delta
+		if reaction_time_elapsed >= reaction_time:
+			is_target_acquired = true
+			target_acquired.emit(target)
+	
+	if target and (not is_instance_valid(target) or not is_in_view_angle(target.global_position) or not can_see(target.global_position)):
+		target = null
+		is_target_acquired = false
+		target_lost.emit()
+	
+	if target: return
+	
+	for body in get_overlapping_bodies():
+		if is_in_view_angle(body.global_position) and can_see(body.global_position):
+			target = body
+			break
+
+func can_see(pos: Vector3) -> bool:
+	raycast.target_position = to_local(pos) - position
+	raycast.force_raycast_update()
+	return not raycast.is_colliding()
+
+func is_in_view_angle(pos: Vector3) -> bool:
+	var fwd = -eyes.global_basis.z
+	var to = (pos - eyes.global_position).normalized()
+	var an = rad_to_deg(fwd.angle_to(to))
+	return an <= angle
+"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3e4rv"]
+radius = 10.0
+
+[node name="Enemy" type="Node3D" node_paths=PackedStringArray("eyes", "gun")]
+script = SubResource("GDScript_aqb4p")
+eyes = NodePath("Eyes")
+gun = NodePath("Eyes/SMG")
+bullet = ExtResource("1_2xt8x")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_7qoxs")
+
+[node name="Health" parent="." instance=ExtResource("2_33ye6")]
+
+[node name="Hitbox" type="Area3D" parent="." node_paths=PackedStringArray("health")]
+collision_mask = 0
+monitoring = false
+script = ExtResource("3_ppjxn")
+health = NodePath("../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hitbox"]
+shape = SubResource("CapsuleShape3D_lygwi")
+
+[node name="Eyes" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="SMG" parent="Eyes" node_paths=PackedStringArray("magazine") instance=ExtResource("1_v84pa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+magazine = NodePath("Magazine")
+
+[node name="Magazine" parent="Eyes/SMG" instance=ExtResource("2_gwq6n")]
+max_rounds = 30
+
+[node name="Vision" type="Area3D" parent="." node_paths=PackedStringArray("eyes")]
+collision_mask = 2
+monitorable = false
+script = SubResource("GDScript_sgiuw")
+angle = 90.0
+eyes = NodePath("../Eyes")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Vision"]
+shape = SubResource("SphereShape3D_3e4rv")
+
+[node name="RayCast3D" type="RayCast3D" parent="Vision"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+enabled = false
+hit_back_faces = false
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 5
+
+[connection signal="target_acquired" from="Vision" to="." method="_on_vision_target_acquired"]
+[connection signal="target_lost" from="Vision" to="." method="_on_vision_target_lost"]

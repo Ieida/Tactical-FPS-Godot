@@ -37,7 +37,6 @@ func _damage(amt: float):
 
 func damage(amt: float):
 	if is_equal_approx(amt, 0.0): return
-	print("damaged")
 	
 	_damage(amt)
 	_bleed(amt)
