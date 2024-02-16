@@ -41,9 +41,3 @@ light_color = Color(1, 0, 0, 1)
 light_energy = 0.01
 light_indirect_energy = 0.01
 omni_range = 10.0
-
-[node name="SpotLight3D" type="SpotLight3D" parent="."]
-light_color = Color(1, 0, 0, 1)
-light_energy = 100.0
-spot_range = 50.0
-spot_angle = 0.1
