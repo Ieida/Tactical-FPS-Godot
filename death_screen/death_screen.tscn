@@ -1,0 +1,80 @@
+[gd_scene load_steps=5 format=3 uid="uid://clgm602i7uwr0"]
+
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_ffyue"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tjjen"]
+font_size = 64
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8xn5"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="GDScript" id="GDScript_0rfst"]
+resource_name = "back_to_menu"
+script/source = "extends GameMenuButton
+
+var scene_path: String = \"res://main_menu/main_menu.tscn\"
+
+func _ready():
+	super._ready()
+	pressed.connect(_on_pressed)
+
+func _on_pressed():
+	get_tree().change_scene_to_file(scene_path)
+"
+
+[node name="DeathScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -152.0
+offset_top = -270.0
+offset_right = 152.0
+offset_bottom = -178.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "YOU DIED"
+label_settings = SubResource("LabelSettings_tjjen")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MenuButton" parent="." instance=ExtResource("1_ffyue")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -144.5
+offset_top = -25.0
+offset_right = 144.5
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_j8xn5")
+theme_override_styles/hover = SubResource("StyleBoxFlat_j8xn5")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_j8xn5")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_j8xn5")
+theme_override_styles/focus = SubResource("StyleBoxFlat_j8xn5")
+text = "BACK TO MENU"
+script = SubResource("GDScript_0rfst")

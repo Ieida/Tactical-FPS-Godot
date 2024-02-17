@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bfc5uoymqgvht"]
+[gd_scene load_steps=13 format=3 uid="uid://bfc5uoymqgvht"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
 [ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="2_61ntr"]
@@ -72,6 +72,10 @@ func _on_pressed():
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbqke"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xjp3"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 
@@ -199,7 +203,13 @@ offset_right = 150.0
 offset_bottom = 37.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_0xjp3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0xjp3")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_0xjp3")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_0xjp3")
+theme_override_styles/focus = SubResource("StyleBoxFlat_0xjp3")
 text = "SETTINGS"
+stylebox = SubResource("StyleBoxFlat_0xjp3")
 
 [node name="Quit" parent="MainMenu" instance=ExtResource("1_p7dyk")]
 layout_mode = 1

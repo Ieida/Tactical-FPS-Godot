@@ -6,6 +6,7 @@ extends Node3D
 @onready var nausea: Nausea = $Components/Nausea
 @onready var hitbox: Hitbox = $CharacterBody3D/Hitbox
 @export var death_fade: Node
+var death_scene_path: String = "res://death_screen/death_screen.tscn"
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -27,7 +28,9 @@ func _on_health_subtracted():
 	body.speed = body.max_speed * p
 
 func _on_health_reached_zero():
-	get_tree().quit()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	var x = func cs(): get_tree().change_scene_to_file(death_scene_path)
+	x.call_deferred()
 
 func _on_health_started_bleeding():
 	nausea.process_mode = Node.PROCESS_MODE_INHERIT
