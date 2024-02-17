@@ -1,13 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://bfc5uoymqgvht"]
+[gd_scene load_steps=17 format=3 uid="uid://bfc5uoymqgvht"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
 [ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="2_61ntr"]
+[ext_resource type="PackedScene" uid="uid://qrjfoa3sa5fb" path="res://missions/training/training_briefing.tscn" id="3_escje"]
 
 [sub_resource type="GDScript" id="GDScript_05nvt"]
 resource_name = "main_menu"
 script/source = "extends Control
 
 func _ready():
+	return
 	$MainMenu.show()
 	$SettingsMenu.hide()
 	
@@ -75,6 +77,18 @@ func _on_pressed():
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
 
+[sub_resource type="GDScript" id="GDScript_qmtle"]
+resource_name = "mission_select"
+script/source = "extends GameMenuButton
+
+func _ready():
+	pressed.connect(_on_pressed)
+
+func _on_pressed():
+	$\"..\".hide()
+	$\"../../MissionSelect\".show()
+"
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xjp3"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
@@ -101,6 +115,31 @@ func _ready():
 func _on_value_changed(new_value: float):
 	$Label2.text = str(new_value)
 	sens.value = new_value
+"
+
+[sub_resource type="GDScript" id="GDScript_ga1iu"]
+resource_name = "back"
+script/source = "extends Button
+
+func _ready():
+	pressed.connect(_on_pressed)
+
+func _on_pressed():
+	$\"../../..\".hide()
+	$\"../../../../MainMenu\".show()
+"
+
+[sub_resource type="GDScript" id="GDScript_ly5dl"]
+resource_name = "training"
+script/source = "extends Button
+
+@export var scene: PackedScene
+
+func _ready():
+	pressed.connect(_on_pressed)
+
+func _on_pressed():
+	get_tree().change_scene_to_packed(scene)
 "
 
 [node name="MainMenu" type="Control"]
@@ -148,6 +187,7 @@ script = SubResource("GDScript_ysa8p")
 stylebox = SubResource("StyleBoxFlat_b122x")
 
 [node name="PlayTraining" parent="MainMenu" instance=ExtResource("1_p7dyk")]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -169,7 +209,7 @@ text = "PLAY TRAINING"
 script = SubResource("GDScript_1bouv")
 stylebox = SubResource("StyleBoxFlat_uanqh")
 
-[node name="Play" parent="MainMenu" instance=ExtResource("1_p7dyk")]
+[node name="MissionSelect" parent="MainMenu" instance=ExtResource("1_p7dyk")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -187,8 +227,8 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_hbqke")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_hbqke")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_hbqke")
 theme_override_styles/focus = SubResource("StyleBoxFlat_hbqke")
-text = "PLAY"
-stylebox = SubResource("StyleBoxFlat_hbqke")
+text = "MISSION SELECT"
+script = SubResource("GDScript_qmtle")
 
 [node name="Settings" parent="MainMenu" instance=ExtResource("1_p7dyk")]
 layout_mode = 1
@@ -301,3 +341,40 @@ offset_right = 392.0
 offset_bottom = 11.5
 grow_vertical = 2
 text = "0"
+
+[node name="MissionSelect" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MissionSelect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="MissionSelect/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 4
+
+[node name="Back" type="Button" parent="MissionSelect/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(384, 270)
+layout_mode = 2
+text = "BACK"
+script = SubResource("GDScript_ga1iu")
+
+[node name="Training" type="Button" parent="MissionSelect/ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(384, 270)
+layout_mode = 2
+text = "TRAINING"
+script = SubResource("GDScript_ly5dl")
+scene = ExtResource("3_escje")
