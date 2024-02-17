@@ -29,8 +29,7 @@ func _on_health_subtracted():
 
 func _on_health_reached_zero():
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	var x = func cs(): get_tree().change_scene_to_file(death_scene_path)
-	x.call_deferred()
+	(func cs(): get_tree().change_scene_to_file(death_scene_path)).call_deferred()
 
 func _on_health_started_bleeding():
 	nausea.process_mode = Node.PROCESS_MODE_INHERIT

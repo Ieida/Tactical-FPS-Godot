@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_ffyue"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tjjen"]
-font_size = 64
+font_size = 48
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8xn5"]
 resource_local_to_scene = true
@@ -47,13 +47,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -152.0
+offset_left = -250.0
 offset_top = -270.0
-offset_right = 152.0
-offset_bottom = -178.0
+offset_right = 250.0
+offset_bottom = -182.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "YOU DIED"
+text = "MISSION FAILED"
 label_settings = SubResource("LabelSettings_tjjen")
 horizontal_alignment = 1
 vertical_alignment = 1
