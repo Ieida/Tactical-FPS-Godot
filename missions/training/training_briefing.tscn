@@ -1,0 +1,107 @@
+[gd_scene load_steps=7 format=3 uid="uid://qrjfoa3sa5fb"]
+
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_x4ylg"]
+
+[sub_resource type="GDScript" id="GDScript_v33hm"]
+resource_name = "mission_briefing"
+script/source = "extends Control
+
+@export var mission_info: MissionInfo
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_fydk3"]
+resource_local_to_scene = true
+font_size = 48
+
+[sub_resource type="LabelSettings" id="LabelSettings_hccd2"]
+resource_local_to_scene = true
+font_size = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kc7b6"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="GDScript" id="GDScript_yt1bb"]
+resource_name = "start"
+script/source = "extends GameMenuButton
+
+@export var mission_scene_path: String
+
+func _ready():
+	pressed.connect(_on_pressed)
+
+func _on_pressed():
+	get_tree().change_scene_to_file(mission_scene_path)
+"
+
+[node name="MissionBriefing" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_v33hm")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Objective" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -126.5
+offset_top = 154.0
+offset_right = 126.5
+offset_bottom = 221.0
+grow_horizontal = 2
+text = "OBJECTIVE:"
+label_settings = SubResource("LabelSettings_fydk3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ObjectiveDescription" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -270.0
+offset_right = 480.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Rescue the hostages and neutralize the hostiles."
+label_settings = SubResource("LabelSettings_hccd2")
+autowrap_mode = 3
+
+[node name="MenuButton" parent="." instance=ExtResource("1_x4ylg")]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -144.5
+offset_top = -216.0
+offset_right = 144.5
+offset_bottom = -166.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_kc7b6")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kc7b6")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kc7b6")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kc7b6")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kc7b6")
+text = "START"
+script = SubResource("GDScript_yt1bb")
+mission_scene_path = "res://training_level/training_level.tscn"

@@ -60,7 +60,7 @@ bg_color = Color(0, 0.12549, 0.501961, 1)
 resource_name = "play_training"
 script/source = "extends GameMenuButton
 
-var path_string = \"res://training_level/training_level.tscn\"
+var path_string = \"res://missions/training/training_briefing.tscn\"
 
 func _ready():
 	pressed.connect(_on_pressed)
