@@ -6,7 +6,7 @@
 
 [sub_resource type="Resource" id="Resource_u6vck"]
 script = ExtResource("3_aarl6")
-amount = 100.0
+amount = 50.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_wxd7k"]
 radius = 0.1
