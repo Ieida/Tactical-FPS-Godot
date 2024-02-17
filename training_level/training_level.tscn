@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cibiekbp042iv"]
+[gd_scene load_steps=17 format=3 uid="uid://cibiekbp042iv"]
 
 [ext_resource type="Texture2D" uid="uid://div4ic8dsq3cn" path="res://training_level/kloofendal_43d_clear_puresky_4k.hdr" id="1_du5fs"]
 [ext_resource type="Texture2D" uid="uid://c21jiwsaawmby" path="res://addons/kenney_prototype_textures/dark/texture_01.png" id="1_qe37m"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://hitbox/hitbox.gd" id="4_of42b"]
 [ext_resource type="PackedScene" uid="uid://ebwds7eaxfnk" path="res://hit_particle_effects/hit_particle_effect.tscn" id="5_xidcr"]
 [ext_resource type="PackedScene" uid="uid://bl6lfpxua4xfe" path="res://enemy/enemy.tscn" id="9_wj8hy"]
+[ext_resource type="PackedScene" uid="uid://bpwakqthfaxh2" path="res://civilian/civilian.tscn" id="10_wyhl5"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_nf0t5"]
 night_sky = ExtResource("1_du5fs")
@@ -121,7 +122,10 @@ transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107
 transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, 2.41048, 1, -13.0541)
 
 [node name="Enemy3" parent="." instance=ExtResource("9_wj8hy")]
-transform = Transform3D(0.955242, 0, 0.295825, 0, 1, 0, -0.295825, 0, 0.955242, 4.13435, 1, -6.61824)
+transform = Transform3D(0.955242, 0, 0.295825, 0, 1, 0, -0.295825, 0, 0.955242, 2.41643, 1, -5.21708)
 
 [node name="Enemy4" parent="." instance=ExtResource("9_wj8hy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.96958, 1, -5.94516)
+
+[node name="Civilian" parent="." instance=ExtResource("10_wyhl5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.66681, 1, -7.52747)

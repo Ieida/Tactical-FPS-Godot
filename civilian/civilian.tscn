@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpwakqthfaxh2"]
+
+[ext_resource type="Script" path="res://health/health.gd" id="1_ygi3d"]
+[ext_resource type="Script" path="res://hitbox/hitbox.gd" id="2_dw4uo"]
+
+[sub_resource type="GDScript" id="GDScript_xf1iq"]
+resource_name = "civilian"
+script/source = "extends Node3D
+
+func _ready():
+	$Health.depleted.connect(_on_health_depleted)
+
+func _on_health_depleted():
+	queue_free()
+"
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_au5a0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dqvgl"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ssgeu"]
+material = SubResource("StandardMaterial3D_dqvgl")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wevq1"]
+
+[node name="Civilian" type="Node3D"]
+script = SubResource("GDScript_xf1iq")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("1_ygi3d")
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_au5a0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_ssgeu")
+
+[node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
+collision_layer = 8
+collision_mask = 0
+monitoring = false
+script = ExtResource("2_dw4uo")
+health = NodePath("../../Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Hitbox"]
+shape = SubResource("CapsuleShape3D_wevq1")
