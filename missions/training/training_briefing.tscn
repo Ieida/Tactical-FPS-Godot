@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://qrjfoa3sa5fb"]
+[gd_scene load_steps=8 format=3 uid="uid://qrjfoa3sa5fb"]
 
+[ext_resource type="Resource" uid="uid://cl1gfsoiphr6x" path="res://missions/training/training_mission_info.tres" id="1_jaomr"]
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_x4ylg"]
 
 [sub_resource type="GDScript" id="GDScript_v33hm"]
@@ -7,6 +8,13 @@ resource_name = "mission_briefing"
 script/source = "extends Control
 
 @export var mission_info: MissionInfo
+
+func _ready():
+	$MenuButton.pressed.connect(_on_start_pressed)
+	$ObjectiveDescription.text = mission_info.objective_description
+
+func _on_start_pressed():
+	get_tree().change_scene_to_packed(mission_info.mission_scene)
 "
 
 [sub_resource type="LabelSettings" id="LabelSettings_fydk3"]
@@ -25,13 +33,13 @@ bg_color = Color(1, 1, 1, 1)
 resource_name = "start"
 script/source = "extends GameMenuButton
 
-@export var mission_scene_path: String
+var mission_scene: String
 
 func _ready():
 	pressed.connect(_on_pressed)
 
 func _on_pressed():
-	get_tree().change_scene_to_file(mission_scene_path)
+	pass
 "
 
 [node name="MissionBriefing" type="Control"]
@@ -42,6 +50,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_v33hm")
+mission_info = ExtResource("1_jaomr")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -104,4 +113,3 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_kc7b6")
 theme_override_styles/focus = SubResource("StyleBoxFlat_kc7b6")
 text = "START"
 script = SubResource("GDScript_yt1bb")
-mission_scene_path = "res://training_level/training_level.tscn"
