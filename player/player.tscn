@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=55 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -25,7 +25,7 @@ height = 1.5
 
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_d8cd5"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_jykj8"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p6x6h"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_m7j0n"]
 
@@ -603,8 +603,6 @@ func _on_area_exited(area: Area3D):
 [sub_resource type="SphereShape3D" id="SphereShape3D_lsy5n"]
 radius = 1.5
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2yv3a"]
-
 [sub_resource type="GDScript" id="GDScript_27n7l"]
 resource_name = "weapon_switcher"
 script/source = "extends Node
@@ -758,13 +756,16 @@ shape = SubResource("CapsuleShape3D_yy7gy")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 shape = SubResource("SeparationRayShape3D_d8cd5")
 
-[node name="Target" type="Area3D" parent="CharacterBody3D"]
-collision_layer = 2
+[node name="Target" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
+collision_layer = 10
 collision_mask = 0
 monitoring = false
+script = ExtResource("12_viptu")
+health = NodePath("../../Components/Health")
+damage_multiplier = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Target"]
-shape = SubResource("SphereShape3D_jykj8")
+shape = SubResource("CapsuleShape3D_p6x6h")
 
 [node name="BodyMiddlePivot" type="Node3D" parent="CharacterBody3D"]
 script = ExtResource("3_md4wb")
@@ -777,10 +778,12 @@ body = NodePath("../..")
 sensitivity = ExtResource("4_7jfg2")
 shake_intensity = 1000.0
 
-[node name="Target" type="Area3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera"]
-collision_layer = 2
+[node name="Target" type="Area3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera" node_paths=PackedStringArray("health")]
+collision_layer = 10
 collision_mask = 0
 monitoring = false
+script = ExtResource("12_viptu")
+health = NodePath("../../../../Components/Health")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Target"]
 shape = SubResource("SphereShape3D_m7j0n")
@@ -890,16 +893,6 @@ camera = NodePath("../BodyMiddlePivot/PlayerCamera")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Interactor"]
 shape = SubResource("SphereShape3D_lsy5n")
-
-[node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
-collision_layer = 8
-collision_mask = 0
-monitoring = false
-script = ExtResource("12_viptu")
-health = NodePath("../../Components/Health")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Hitbox"]
-shape = SubResource("CapsuleShape3D_2yv3a")
 
 [node name="Components" type="Node" parent="."]
 

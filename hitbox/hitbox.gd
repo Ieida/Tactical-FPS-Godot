@@ -5,6 +5,7 @@ class_name Hitbox
 signal hit_recieved(info: HitboxHitInfo)
 
 @export var health: Health
+@export var damage_multiplier: float = 1
 @export var hit_particle_effects: PackedScene
 
 func hit(info: HitboxHitInfo):
@@ -20,6 +21,7 @@ func hit(info: HitboxHitInfo):
 			new_effect.look_at(info.point + info.normal)
 		new_effect.orthonormalize()
 	
+	info.damage.amount *= damage_multiplier
 	if health:
 		info.damage.apply_to(health)
 	

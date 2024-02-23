@@ -4,7 +4,6 @@ extends Node3D
 @onready var body: CharacterBody3D = $CharacterBody3D
 @onready var health: Health = $Components/Health
 @onready var nausea: Nausea = $Components/Nausea
-@onready var hitbox: Hitbox = $CharacterBody3D/Hitbox
 @export var death_fade: Node
 var death_scene_path: String = "res://death_screen/death_screen.tscn"
 
@@ -14,10 +13,6 @@ func _ready():
 	health.damaged.connect(_on_health_subtracted)
 	health.depleted.connect(_on_health_reached_zero)
 	health.started_bleeding.connect(_on_health_started_bleeding)
-	
-	body.add_collision_exception_with(hitbox)
-	
-	hitbox.hit_recieved.connect(_on_hitbox_hit_recieved)
 
 func _process(_delta):
 	pass
@@ -33,6 +28,3 @@ func _on_health_reached_zero():
 
 func _on_health_started_bleeding():
 	nausea.process_mode = Node.PROCESS_MODE_INHERIT
-
-func _on_hitbox_hit_recieved(info: HitboxHitInfo):
-	camera.shake(info.intensity, 2.0)
