@@ -20,5 +20,8 @@ func hit(info: HitboxHitInfo):
 			new_effect.look_at(info.point + info.normal)
 		new_effect.orthonormalize()
 	
+	if health:
+		info.damage.apply_to(health)
+	
 	## Signal that a hit has be recieved
 	hit_recieved.emit(info)
