@@ -1,6 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://cibiekbp042iv"]
+[gd_scene load_steps=20 format=3 uid="uid://cibiekbp042iv"]
 
 [ext_resource type="Texture2D" uid="uid://div4ic8dsq3cn" path="res://training_level/kloofendal_43d_clear_puresky_4k.hdr" id="1_du5fs"]
+[ext_resource type="PackedScene" uid="uid://bulw6u2tdwbme" path="res://missions/training/success/success.tscn" id="1_mnb60"]
 [ext_resource type="Texture2D" uid="uid://c21jiwsaawmby" path="res://addons/kenney_prototype_textures/dark/texture_01.png" id="1_qe37m"]
 [ext_resource type="PackedScene" uid="uid://do1po7eh3me4r" path="res://training_level/training_level.glb" id="2_fw1je"]
 [ext_resource type="PackedScene" uid="uid://cwtrpjm3y5u7k" path="res://player/player.tscn" id="2_kf2qm"]
@@ -11,6 +12,21 @@
 [ext_resource type="PackedScene" uid="uid://bl6lfpxua4xfe" path="res://enemy/enemy.tscn" id="9_wj8hy"]
 [ext_resource type="PackedScene" uid="uid://mjdx1t25w6r8" path="res://enemy/random_spawner/random_spawner.tscn" id="10_al7av"]
 [ext_resource type="PackedScene" uid="uid://bpwakqthfaxh2" path="res://civilian/civilian.tscn" id="10_wyhl5"]
+
+[sub_resource type="GDScript" id="GDScript_3xam8"]
+resource_name = "objective"
+script/source = "extends Node
+
+@export var civilian: NodePath
+@export var success_scene: PackedScene
+
+func _ready():
+	get_node(civilian).freed.connect(_on_civilian_freed)
+
+func _on_civilian_freed():
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	get_tree().change_scene_to_packed(success_scene)
+"
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_nf0t5"]
 night_sky = ExtResource("1_du5fs")
@@ -36,6 +52,11 @@ albedo_texture = ExtResource("3_nuplb")
 uv1_triplanar = true
 
 [node name="TrainingLevel" type="Node3D"]
+
+[node name="Objective" type="Node" parent="."]
+script = SubResource("GDScript_3xam8")
+civilian = NodePath("../Civilian")
+success_scene = ExtResource("1_mnb60")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_8rk6a")

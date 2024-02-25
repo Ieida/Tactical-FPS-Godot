@@ -587,6 +587,9 @@ func _process(_delta):
 			sprite.scale = Vector2.ONE / interactable.global_position.distance_to(camera.global_position)
 		else: sprite.hide()
 
+func can_interact_with(area: Area3D):
+	return area is Interactable and camera.is_position_in_frustum(area.global_position)
+
 func _on_area_entered(area: Area3D):
 	if area is Interactable:
 		area.show()

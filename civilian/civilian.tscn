@@ -1,17 +1,25 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpwakqthfaxh2"]
+[gd_scene load_steps=10 format=3 uid="uid://bpwakqthfaxh2"]
 
 [ext_resource type="Script" path="res://health/health.gd" id="1_ygi3d"]
 [ext_resource type="Script" path="res://hitbox/hitbox.gd" id="2_dw4uo"]
+[ext_resource type="PackedScene" uid="uid://bwxf6hc1v4dyk" path="res://interactable/interactable.tscn" id="3_54ubj"]
 
 [sub_resource type="GDScript" id="GDScript_xf1iq"]
 resource_name = "civilian"
 script/source = "extends Node3D
 
+signal freed
+
 func _ready():
 	$Health.depleted.connect(_on_health_depleted)
+	$CharacterBody3D/Interactable.interacted.connect(_on_interactable_interacted)
 
 func _on_health_depleted():
 	queue_free()
+
+func _on_interactable_interacted():
+	$CharacterBody3D/Interactable.set_collision_layer_value(1, false)
+	freed.emit()
 "
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_au5a0"]
@@ -22,6 +30,8 @@ func _on_health_depleted():
 material = SubResource("StandardMaterial3D_dqvgl")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wevq1"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p3ha2"]
 
 [node name="Civilian" type="Node3D"]
 script = SubResource("GDScript_xf1iq")
@@ -47,3 +57,8 @@ health = NodePath("../../Health")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Hitbox"]
 shape = SubResource("CapsuleShape3D_wevq1")
+
+[node name="Interactable" parent="CharacterBody3D" instance=ExtResource("3_54ubj")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Interactable"]
+shape = SubResource("CapsuleShape3D_p3ha2")
