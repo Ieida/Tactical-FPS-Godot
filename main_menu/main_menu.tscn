@@ -1,39 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://bfc5uoymqgvht"]
+[gd_scene load_steps=19 format=3 uid="uid://bfc5uoymqgvht"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
 [ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="2_61ntr"]
 [ext_resource type="PackedScene" uid="uid://qrjfoa3sa5fb" path="res://missions/training/training_briefing.tscn" id="3_escje"]
-
-[sub_resource type="GDScript" id="GDScript_05nvt"]
-resource_name = "main_menu"
-script/source = "extends Control
-
-func _ready():
-	return
-	$MainMenu.show()
-	$SettingsMenu.hide()
-	
-	# Button signals
-	$MainMenu/Play.pressed.connect(_on_main_menu_play_pressed)
-	$MainMenu/Settings.pressed.connect(_on_main_menu_settings_pressed)
-	$MainMenu/Quit.pressed.connect(_on_main_menu_quit_pressed)
-	
-	$SettingsMenu/Back.pressed.connect(_on_settings_menu_back_pressed)
-
-func _on_main_menu_play_pressed():
-	print(\"MAIN MENU PLAY NOT IMPLEMENTED\")
-
-func _on_main_menu_settings_pressed():
-	$MainMenu.hide()
-	$SettingsMenu.show()
-
-func _on_main_menu_quit_pressed():
-	get_tree().quit(0)
-
-func _on_settings_menu_back_pressed():
-	$SettingsMenu.hide()
-	$MainMenu.show()
-"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eg1pm"]
 resource_local_to_scene = true
@@ -178,7 +147,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = SubResource("GDScript_05nvt")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -223,6 +191,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_eg1pm")
 theme_override_styles/focus = SubResource("StyleBoxFlat_eg1pm")
 text = "CONTROLS"
 script = SubResource("GDScript_ru4i1")
+stylebox = SubResource("StyleBoxFlat_eg1pm")
 
 [node name="MissionSelect" parent="MainMenu/VBoxContainer" instance=ExtResource("1_p7dyk")]
 custom_minimum_size = Vector2(300, 75)
@@ -307,6 +276,7 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_plait")
 theme_override_styles/focus = SubResource("StyleBoxFlat_plait")
 text = "BACK"
 script = SubResource("GDScript_2wkmd")
+stylebox = SubResource("StyleBoxFlat_plait")
 
 [node name="SettingsMenu" type="Control" parent="."]
 visible = false
