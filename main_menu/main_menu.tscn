@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bfc5uoymqgvht"]
+[gd_scene load_steps=21 format=3 uid="uid://bfc5uoymqgvht"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
 [ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="2_61ntr"]
@@ -83,6 +83,40 @@ func _on_pressed():
 	$\"../../../MainMenu\".show()
 "
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cviua"]
+resource_local_to_scene = true
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="GDScript" id="GDScript_sgqi8"]
+resource_name = "fullscreen"
+script/source = "extends GameMenuButton
+
+func _ready():
+	toggled.connect(_on_toggled)
+
+func _on_toggled(mode: bool):
+	if mode:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+"
+
+[sub_resource type="GDScript" id="GDScript_hcjw5"]
+resource_name = "sensitivity_slider"
+script/source = "extends HSlider
+
+@export var sens: Sensitivity
+
+func _ready():
+	set_value_no_signal(sens.value)
+	$\"../Label2\".text = str(sens.value)
+	value_changed.connect(_on_value_changed)
+
+func _on_value_changed(new_value: float):
+	$\"../Label2\".text = str(new_value)
+	sens.value = new_value
+"
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5o15y"]
 resource_local_to_scene = true
 bg_color = Color(1, 1, 1, 1)
@@ -95,24 +129,8 @@ func _ready():
 	pressed.connect(_on_pressed)
 
 func _on_pressed():
-	$\"..\".hide()
-	$\"../../MainMenu\".show()
-"
-
-[sub_resource type="GDScript" id="GDScript_hcjw5"]
-resource_name = "sensitivity_slider"
-script/source = "extends HSlider
-
-@export var sens: Sensitivity
-
-func _ready():
-	set_value_no_signal(sens.value)
-	$Label2.text = str(sens.value)
-	value_changed.connect(_on_value_changed)
-
-func _on_value_changed(new_value: float):
-	$Label2.text = str(new_value)
-	sens.value = new_value
+	$\"../../..\".hide()
+	$\"../../../../MainMenu\".show()
 "
 
 [sub_resource type="GDScript" id="GDScript_ga1iu"]
@@ -287,19 +305,58 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Back" parent="SettingsMenu" instance=ExtResource("1_p7dyk")]
+[node name="ScrollContainer" type="ScrollContainer" parent="SettingsMenu"]
+clip_contents = false
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 13
 anchor_left = 0.5
-anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -150.0
-offset_top = -75.0
-offset_right = 150.0
-offset_bottom = 0.0
+offset_left = -182.5
+offset_right = 182.5
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="VFlowContainer" type="VFlowContainer" parent="SettingsMenu/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Fullscreen" parent="SettingsMenu/ScrollContainer/VFlowContainer" instance=ExtResource("1_p7dyk")]
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_cviua")
+theme_override_styles/hover = SubResource("StyleBoxFlat_cviua")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_cviua")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_cviua")
+theme_override_styles/focus = SubResource("StyleBoxFlat_cviua")
+toggle_mode = true
+text = "FULLSCREEN"
+script = SubResource("GDScript_sgqi8")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="SettingsMenu/ScrollContainer/VFlowContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VFlowContainer/HFlowContainer"]
+layout_mode = 2
+text = "SENSITIVITY"
+
+[node name="HSlider" type="HSlider" parent="SettingsMenu/ScrollContainer/VFlowContainer/HFlowContainer"]
+custom_minimum_size = Vector2(372, 0)
+layout_mode = 2
+size_flags_vertical = 1
+script = SubResource("GDScript_hcjw5")
+sens = ExtResource("2_61ntr")
+
+[node name="Label2" type="Label" parent="SettingsMenu/ScrollContainer/VFlowContainer/HFlowContainer"]
+layout_mode = 2
+text = "000"
+
+[node name="Back" parent="SettingsMenu/ScrollContainer/VFlowContainer" instance=ExtResource("1_p7dyk")]
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_5o15y")
 theme_override_styles/hover = SubResource("StyleBoxFlat_5o15y")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_5o15y")
@@ -308,46 +365,6 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_5o15y")
 text = "BACK"
 script = SubResource("GDScript_f7o4f")
 stylebox = SubResource("StyleBoxFlat_5o15y")
-
-[node name="HSlider" type="HSlider" parent="SettingsMenu"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -8.0
-offset_right = 150.0
-offset_bottom = 8.0
-grow_horizontal = 2
-grow_vertical = 2
-script = SubResource("GDScript_hcjw5")
-sens = ExtResource("2_61ntr")
-
-[node name="Label" type="Label" parent="SettingsMenu/HSlider"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = -147.0
-offset_top = -11.5
-offset_right = -55.0
-offset_bottom = 11.5
-grow_vertical = 2
-text = "SENSITIVITY"
-
-[node name="Label2" type="Label" parent="SettingsMenu/HSlider"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 300.0
-offset_top = -11.5
-offset_right = 392.0
-offset_bottom = 11.5
-grow_vertical = 2
-text = "0"
 
 [node name="MissionSelect" type="Control" parent="."]
 visible = false
