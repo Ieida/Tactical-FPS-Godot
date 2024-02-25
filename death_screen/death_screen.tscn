@@ -1,9 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://clgm602i7uwr0"]
+[gd_scene load_steps=4 format=3 uid="uid://clgm602i7uwr0"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_ffyue"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_tjjen"]
-font_size = 48
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j8xn5"]
 resource_local_to_scene = true
@@ -40,41 +37,32 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="Label" type="Label" parent="."]
+[node name="VFlowContainer" type="VFlowContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 13
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -270.0
-offset_right = 250.0
-offset_bottom = -182.0
+anchor_bottom = 1.0
+offset_left = -118.0
+offset_right = 118.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "MISSION FAILED"
-label_settings = SubResource("LabelSettings_tjjen")
-horizontal_alignment = 1
-vertical_alignment = 1
+theme_override_constants/v_separation = 50
+alignment = 1
 
-[node name="MenuButton" parent="." instance=ExtResource("1_ffyue")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -144.5
-offset_top = -25.0
-offset_right = 144.5
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Label" type="Label" parent="VFlowContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "MISSION FAILED"
+horizontal_alignment = 1
+
+[node name="MenuButton" parent="VFlowContainer" instance=ExtResource("1_ffyue")]
+layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_j8xn5")
 theme_override_styles/hover = SubResource("StyleBoxFlat_j8xn5")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_j8xn5")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_j8xn5")
 theme_override_styles/focus = SubResource("StyleBoxFlat_j8xn5")
-text = "BACK TO MENU"
+text = "MAIN MENU"
 script = SubResource("GDScript_0rfst")
+stylebox = SubResource("StyleBoxFlat_j8xn5")

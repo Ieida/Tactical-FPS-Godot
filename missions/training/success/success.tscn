@@ -62,3 +62,4 @@ theme_override_styles/disabled = SubResource("StyleBoxFlat_j7ht7")
 theme_override_styles/focus = SubResource("StyleBoxFlat_j7ht7")
 text = "MAIN MENU"
 script = SubResource("GDScript_bkwog")
+stylebox = SubResource("StyleBoxFlat_j7ht7")
