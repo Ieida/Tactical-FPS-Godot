@@ -137,19 +137,19 @@ amount = 0.5
 transform = Transform3D(-0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, -0.5, -3.96325, 1, -13.8893)
 
 [node name="Node3D2" type="Node3D" parent="RandomSpawner"]
-transform = Transform3D(-0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, -0.258819, 2.91318, 1, -13.5585)
+transform = Transform3D(-0.487479, 0, 0.873135, 0, 1, 0, -0.873135, 0, -0.487479, 3.94957, 1, -14.5289)
 
 [node name="Node3D3" type="Node3D" parent="RandomSpawner"]
-transform = Transform3D(1, 0, -5.96046e-08, 0, 1, 0, 5.96046e-08, 0, 1, 2.54265, 1, -5.24456)
+transform = Transform3D(1, 0, -5.96046e-08, 0, 1, 0, 5.96046e-08, 0, 1, 2.14896, 1, -5.0762)
 
 [node name="Node3D4" type="Node3D" parent="RandomSpawner"]
-transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 4.87148, 1, -8.47915)
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 5.13565, 1, -7.90662)
 
 [node name="Node3D5" type="Node3D" parent="RandomSpawner"]
 transform = Transform3D(-1.19209e-07, 0, -1, 0, 1, 0, 1, 0, -1.19209e-07, -4.91482, 1, -11.0521)
 
 [node name="Node3D6" type="Node3D" parent="RandomSpawner"]
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -4.8723, 1, -8.6195)
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -4.72636, 1, -5.10594)
 
 [node name="Node3D7" type="Node3D" parent="RandomSpawner"]
-transform = Transform3D(0.965926, 0, 0.258819, 0, 1, 0, -0.258819, 0, 0.965926, -2.76882, 1, -6.48959)
+transform = Transform3D(0.866026, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866026, -2.40491, 1, -5.78446)
