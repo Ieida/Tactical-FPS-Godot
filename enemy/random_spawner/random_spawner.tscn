@@ -1,0 +1,30 @@
+[gd_scene load_steps=2 format=3 uid="uid://mjdx1t25w6r8"]
+
+[sub_resource type="GDScript" id="GDScript_avkdc"]
+resource_name = "random_spawner"
+script/source = "extends Node3D
+
+@export var enemy: PackedScene
+@export_range(0, 1) var amount: float = 1
+var points: Array[Node3D]
+
+func _ready():
+	for child in get_children():
+		if child is Node3D:
+			points.append(child)
+	
+	for i in roundi(points.size() * amount):
+		var p = points.pick_random()
+		spawn_enemy(p)
+		points.erase(p)
+
+func spawn_enemy(node: Node3D):
+	var e = enemy.instantiate()
+	node.add_child(e)
+	if e is Node3D:
+		e.global_position = node.global_position
+		e.global_rotation = node.global_rotation
+"
+
+[node name="RandomSpawner" type="Node3D"]
+script = SubResource("GDScript_avkdc")
