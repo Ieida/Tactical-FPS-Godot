@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bfc5uoymqgvht"]
+[gd_scene load_steps=23 format=3 uid="uid://bfc5uoymqgvht"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
 [ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="2_61ntr"]
@@ -65,6 +65,26 @@ func _ready():
 
 func _on_pressed():
 	get_tree().quit(0)
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_jacfy"]
+font_size = 50
+
+[sub_resource type="GDScript" id="GDScript_mf7w4"]
+resource_name = "controls_label"
+script/source = "extends Label
+
+func _ready():
+	text = \"\"
+	var actions = InputMap.get_actions()
+	for action in actions:
+		if action.begins_with(\"ui\"): continue
+		text += action.capitalize()
+		text += \"\\n\"
+		for event in InputMap.action_get_events(action):
+			text += event.as_text()
+			text += \"\\n\"
+		text += \"\\n\"
 "
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_plait"]
@@ -256,37 +276,52 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Controls"]
+[node name="FlowContainer" type="BoxContainer" parent="Controls"]
 layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -316.5
-offset_right = 316.5
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+alignment = 1
+vertical = true
 
-[node name="Label" type="Label" parent="Controls/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Controls/FlowContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 50
-text = "WASD - Move
-Mouse - Look
-Q - Lean Left
-E - Lean Right
-Left Mouse Button - Shoot
-R - Reload
-I - Interact
-N - Night Vision
-F - Flashlight Toggle
-Z - Laser Toggle
-1 - Primary
-2 - Secondary
-3 - Grenade"
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
 
-[node name="Back" parent="Controls/VBoxContainer" instance=ExtResource("1_p7dyk")]
-custom_minimum_size = Vector2(0, 50)
+[node name="Label" type="Label" parent="Controls/FlowContainer/ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 2
+text = "PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER"
+label_settings = SubResource("LabelSettings_jacfy")
+horizontal_alignment = 1
+script = SubResource("GDScript_mf7w4")
+
+[node name="Back" parent="Controls/FlowContainer" instance=ExtResource("1_p7dyk")]
+custom_minimum_size = Vector2(400, 50)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
 theme_override_styles/normal = SubResource("StyleBoxFlat_plait")
 theme_override_styles/hover = SubResource("StyleBoxFlat_plait")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_plait")
@@ -334,6 +369,7 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_cviua")
 toggle_mode = true
 text = "FULLSCREEN"
 script = SubResource("GDScript_sgqi8")
+stylebox = SubResource("StyleBoxFlat_cviua")
 
 [node name="HFlowContainer" type="HFlowContainer" parent="SettingsMenu/ScrollContainer/VFlowContainer"]
 custom_minimum_size = Vector2(500, 0)
