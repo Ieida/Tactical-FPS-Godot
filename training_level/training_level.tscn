@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cibiekbp042iv"]
+[gd_scene load_steps=28 format=3 uid="uid://cibiekbp042iv"]
 
 [ext_resource type="Texture2D" uid="uid://div4ic8dsq3cn" path="res://training_level/kloofendal_43d_clear_puresky_4k.hdr" id="1_du5fs"]
 [ext_resource type="PackedScene" uid="uid://bulw6u2tdwbme" path="res://missions/training/success/success.tscn" id="1_mnb60"]
@@ -12,6 +12,9 @@
 [ext_resource type="PackedScene" uid="uid://bl6lfpxua4xfe" path="res://enemy/enemy.tscn" id="9_wj8hy"]
 [ext_resource type="PackedScene" uid="uid://mjdx1t25w6r8" path="res://enemy/random_spawner/random_spawner.tscn" id="10_al7av"]
 [ext_resource type="PackedScene" uid="uid://bpwakqthfaxh2" path="res://civilian/civilian.tscn" id="10_wyhl5"]
+[ext_resource type="PackedScene" uid="uid://bwxf6hc1v4dyk" path="res://interactable/interactable.tscn" id="13_h4x3e"]
+[ext_resource type="PackedScene" uid="uid://3vj3sufavg4w" path="res://utilities/c_4.tscn" id="14_eawf4"]
+[ext_resource type="PackedScene" uid="uid://t5gaeuju6qsa" path="res://grenade/explosion_effect.tscn" id="15_l5qun"]
 
 [sub_resource type="GDScript" id="GDScript_3xam8"]
 resource_name = "objective"
@@ -51,6 +54,44 @@ uv1_triplanar = true
 albedo_texture = ExtResource("3_nuplb")
 uv1_triplanar = true
 
+[sub_resource type="GDScript" id="GDScript_m1nvd"]
+resource_name = "c4_placement"
+script/source = "extends Node3D
+
+@export var c4: Node
+
+func _ready():
+	$Interactable.interacted.connect(_on_interacted)
+	c4.hide()
+	$Area3D.hit_recieved.connect(_on_hit_recieved)
+
+func _on_hit_recieved(_info: HitboxHitInfo):
+	$\"../../Building/CSGBox3D/CSGBox3D/C4Explosion\".show()
+
+func _on_interacted():
+	$Interactable.disable()
+	place()
+
+func place():
+	$MeshInstance3D.hide()
+	c4.show()
+	await get_tree().create_timer(5).timeout
+	c4.explode()
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_idtxl"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 1, 1, 0.25098)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fyreu"]
+material = SubResource("StandardMaterial3D_idtxl")
+size = Vector3(0.2, 0.4, 0.1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_0o6lo"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fcuup"]
+
 [node name="TrainingLevel" type="Node3D"]
 
 [node name="Objective" type="Node" parent="."]
@@ -89,6 +130,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 0)
 operation = 2
 size = Vector3(11.6, 4.8, 11.6)
 material = SubResource("StandardMaterial3D_7amol")
+
+[node name="C4Explosion" type="CSGPolygon3D" parent="Building/CSGBox3D/CSGBox3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.052, 0.1, -3.5)
+polygon = PackedVector2Array(-1.20384, 1.5478, 0.659246, 1.76277, 1.83442, 0.329623, 1.34716, -1.56213, -0.745235, -1.67678, -1.73411, -0.214972)
 
 [node name="Door" type="CSGBox3D" parent="Building/CSGBox3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 5.90791)
@@ -174,3 +219,28 @@ transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 
 
 [node name="Node3D7" type="Node3D" parent="RandomSpawner"]
 transform = Transform3D(0.866026, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866026, -2.40491, 1, -5.78446)
+
+[node name="Utilities" type="Node3D" parent="."]
+
+[node name="C4" type="Node3D" parent="Utilities" node_paths=PackedStringArray("c4")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 6.052, 1.5, -13.5)
+script = SubResource("GDScript_m1nvd")
+c4 = NodePath("C4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Utilities/C4"]
+mesh = SubResource("BoxMesh_fyreu")
+
+[node name="Interactable" parent="Utilities/C4" instance=ExtResource("13_h4x3e")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Utilities/C4/Interactable"]
+shape = SubResource("SphereShape3D_0o6lo")
+
+[node name="C4" parent="Utilities/C4" instance=ExtResource("14_eawf4")]
+
+[node name="Area3D" type="Area3D" parent="Utilities/C4"]
+collision_layer = 2
+script = ExtResource("4_of42b")
+hit_particle_effects = ExtResource("15_l5qun")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Utilities/C4/Area3D"]
+shape = SubResource("SphereShape3D_fcuup")

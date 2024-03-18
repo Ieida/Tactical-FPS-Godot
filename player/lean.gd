@@ -8,7 +8,7 @@ var side = NONE
 @onready var camera: Node3D = $PlayerCamera
 var tween: Tween
 
-func _process(delta):
+func _process(_delta):
 	if Input.is_action_just_pressed("lean_right"):
 		if side == RIGHT:
 			if tween: tween.stop()

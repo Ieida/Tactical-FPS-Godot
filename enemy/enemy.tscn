@@ -35,7 +35,7 @@ func _on_health_depleted():
 	process_mode = Node.PROCESS_MODE_DISABLED
 	queue_free()
 
-func _process(delta):
+func _process(_delta):
 	if not target: return
 	
 	eyes.look_at(target.global_position)

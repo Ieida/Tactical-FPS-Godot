@@ -6,12 +6,12 @@ class_name Grenade
 @onready var rb: RigidBody3D = $RigidBody3D as RigidBody3D
 @export var explosion_effect: PackedScene
 @export var damage: Damage
-@export var range: float = 10
+@export var radius: float = 10
 @onready var effect_area: Area3D = $RigidBody3D/EffectArea
 
 func _ready():
 	rb.freeze = true
-	$RigidBody3D/EffectArea/CollisionShape3D.shape.radius = range
+	$RigidBody3D/EffectArea/CollisionShape3D.shape.radius = radius
 
 func _explode():
 	for area in effect_area.get_overlapping_areas():
@@ -35,7 +35,7 @@ func add_collision_exception_with(body: Node):
 	rb.add_collision_exception_with(body)
 
 func calculate_damage(initial: float, distance: float) -> float:
-	return initial * clampf(1 - (distance / range), 0, 1)
+	return initial * clampf(1 - (distance / radius), 0, 1)
 
 func release_spoon():
 	await get_tree().create_timer(time_to_explode).timeout

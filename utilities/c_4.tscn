@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://3vj3sufavg4w"]
+
+[sub_resource type="GDScript" id="GDScript_re6r1"]
+resource_name = "c4"
+script/source = "extends Area3D
+
+@export var damage: float
+@export var radius: float
+
+func _ready():
+	shape_owner_get_shape(0, 0).radius = radius
+
+func explode():
+	for body in get_overlapping_areas():
+		if body as Node3D is Hitbox:
+			var d = Damage.new()
+			var ds = global_position.distance_to(body.global_position)
+			d.amount = calculate_damage(damage, ds)
+			var hi = HitboxHitInfo.new(d, Vector3.ZERO, Vector3.ZERO, 1)
+			body.hit(hi)
+	queue_free()
+
+func calculate_damage(initial: float, distance: float) -> float:
+	return initial * clampf(1 - (distance / radius), 0, 1)
+"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_isy4r"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o1h0p"]
+albedo_color = Color(0.5, 0.5, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_jdkk0"]
+material = SubResource("StandardMaterial3D_o1h0p")
+size = Vector3(0.2, 0.4, 0.1)
+
+[node name="C4" type="Area3D"]
+collision_mask = 10
+script = SubResource("GDScript_re6r1")
+damage = 50.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_isy4r")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_jdkk0")

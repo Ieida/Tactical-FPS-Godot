@@ -7,5 +7,13 @@ signal interacted
 func _ready():
 	hide()
 
+func disable():
+	hide()
+	set_collision_layer_value(1, false)
+
+func enable():
+	show()
+	set_collision_layer_value(1, true)
+
 func interact():
 	interacted.emit()
