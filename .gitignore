@@ -2,4 +2,4 @@
 .godot/
 
 # Custom ignores
-builds/
+.builds/

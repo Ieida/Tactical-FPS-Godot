@@ -3,5 +3,7 @@
 [ext_resource type="Script" path="res://interactable/interactable.gd" id="1_lo20n"]
 
 [node name="Interactable" type="Area3D"]
+collision_layer = 8
+collision_mask = 0
 monitoring = false
 script = ExtResource("1_lo20n")

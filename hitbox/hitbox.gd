@@ -12,7 +12,10 @@ func hit(info: HitboxHitInfo):
 	if hit_particle_effects:
 		var new_effect = hit_particle_effects.instantiate() as Node3D
 		get_tree().root.add_child(new_effect)
-		new_effect.global_position = info.point
+		if info.point.is_zero_approx():
+			new_effect.global_position = global_position
+		else:
+			new_effect.global_position = info.point
 		if info.normal.is_equal_approx(Vector3.UP):
 			new_effect.rotate_x(deg_to_rad(90))
 		elif info.normal.is_equal_approx(Vector3.DOWN):

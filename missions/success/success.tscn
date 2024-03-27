@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=3 uid="uid://bulw6u2tdwbme"]
+
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_o5una"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5b2c6"]
+font_size = 30
+
+[sub_resource type="GDScript" id="GDScript_bkwog"]
+resource_name = "main_menu"
+script/source = "extends GameMenuButton
+
+func _on_pressed():
+	get_tree().change_scene_to_file(\"res://main_menu/main_menu.tscn\")
+"
+
+[node name="Success" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -157.0
+offset_top = -44.0
+offset_right = 157.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "MISSION COMPLETED"
+label_settings = SubResource("LabelSettings_5b2c6")
+horizontal_alignment = 1
+
+[node name="MenuButton" parent="VBoxContainer" instance=ExtResource("1_o5una")]
+layout_mode = 2
+text = "MAIN MENU"
+script = SubResource("GDScript_bkwog")
+is_focused = true

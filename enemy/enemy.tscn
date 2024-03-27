@@ -48,8 +48,6 @@ func load_mag(mag: Magazine):
 	var rnds_to_full = mag.max_rounds - mag.get_bullet_count()
 	for r in rnds_to_full:
 		var b = bullet.instantiate()
-		mag.add_child.call_deferred(b)
-		b.transform = Transform3D()
 		mag.load_bullet(b)
 #endregion
 "
@@ -94,12 +92,19 @@ func _physics_process(delta):
 	if target: return
 	
 	for area in get_overlapping_areas():
-		if is_in_view_angle(area.global_position) and can_see(area.global_position):
+		if is_valid_target(area):
 			target = area
 			break
 
+func is_valid_target(node):
+	return node is Node3D \\
+		and node.is_in_group(\"player\") \\
+		and is_in_view_angle(node.global_position) \\
+		and can_see(node.global_position)
+
 func can_see(pos: Vector3) -> bool:
-	raycast.target_position = to_local(pos) - position
+	raycast.position = to_local(eyes.global_position)
+	raycast.target_position = raycast.to_local(pos)
 	raycast.force_raycast_update()
 	return not raycast.is_colliding()
 
@@ -111,7 +116,7 @@ func is_in_view_angle(pos: Vector3) -> bool:
 "
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3e4rv"]
-radius = 10.0
+radius = 50.0
 
 [node name="Enemy" type="Node3D" node_paths=PackedStringArray("eyes", "gun")]
 script = SubResource("GDScript_aqb4p")
@@ -122,7 +127,7 @@ bullet = ExtResource("1_2xt8x")
 [node name="Health" parent="." instance=ExtResource("2_33ye6")]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-collision_layer = 2
+collision_layer = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 shape = SubResource("CapsuleShape3D_cf3tt")
@@ -132,7 +137,7 @@ mesh = SubResource("CapsuleMesh_7qoxs")
 skeleton = NodePath("../..")
 
 [node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
-collision_layer = 8
+collision_layer = 2
 collision_mask = 0
 monitoring = false
 script = ExtResource("3_ppjxn")
@@ -163,7 +168,6 @@ eyes = NodePath("../Eyes")
 shape = SubResource("SphereShape3D_3e4rv")
 
 [node name="RayCast3D" type="RayCast3D" parent="CharacterBody3D/Vision"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 enabled = false
 hit_back_faces = false
 debug_shape_custom_color = Color(1, 0, 0, 1)

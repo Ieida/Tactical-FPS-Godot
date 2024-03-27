@@ -106,6 +106,9 @@ func _drop_slide():
 		if not next_bullet:
 			activate_slide_lock()
 			return
+		next_bullet.reparent(muzzle)
+		next_bullet.position = Vector3.ZERO
+		next_bullet.rotation = Vector3.ZERO
 	
 	await get_tree().create_timer(_time_between_shots / 1.5).timeout
 	if _chambered_bullet: return

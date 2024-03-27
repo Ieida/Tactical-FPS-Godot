@@ -10,6 +10,10 @@ func get_bullet_count() -> int:
 func load_bullet(bullet: Bullet):
 	if _rounds.size() < max_rounds:
 		_rounds.append(bullet)
+		if bullet.get_parent(): bullet.reparent(self)
+		else: add_child(bullet)
+		bullet.position = Vector3.ZERO
+		bullet.rotation = Vector3.ZERO
 
 func unload_bullet() -> Bullet:
 	return _rounds.pop_back()

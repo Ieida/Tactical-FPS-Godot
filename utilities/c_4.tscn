@@ -34,9 +34,11 @@ material = SubResource("StandardMaterial3D_o1h0p")
 size = Vector3(0.2, 0.4, 0.1)
 
 [node name="C4" type="Area3D"]
-collision_mask = 10
+collision_layer = 0
+collision_mask = 2
 script = SubResource("GDScript_re6r1")
-damage = 50.0
+damage = 10000.0
+radius = 5.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_isy4r")

@@ -1,21 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://jr2d1w1rdi1r"]
+[gd_scene load_steps=2 format=3 uid="uid://jr2d1w1rdi1r"]
 
 [ext_resource type="Script" path="res://flashlight/flashlight.gd" id="1_om3kn"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tpiia"]
-transparency = 1
-albedo_color = Color(1, 1, 1, 0.184314)
-emission_enabled = true
-emission = Color(1, 1, 1, 1)
-emission_energy_multiplier = 10.0
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_n5hed"]
-material = SubResource("StandardMaterial3D_tpiia")
-top_radius = 0.0
-bottom_radius = 0.3
-height = 1.0
-cap_top = false
-cap_bottom = false
 
 [node name="Flashlight" type="SpotLight3D"]
 shadow_enabled = true
@@ -24,8 +9,3 @@ spot_range = 20.0
 spot_angle = 15.0
 script = ExtResource("1_om3kn")
 on_energy = 10.0
-
-[node name="LightCone" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.5)
-visible = false
-mesh = SubResource("CylinderMesh_n5hed")

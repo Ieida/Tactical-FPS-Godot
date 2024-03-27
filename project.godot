@@ -15,6 +15,12 @@ run/main_scene="res://main_menu/main_menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Settings="*res://settings/settings.tscn"
+GameEvents="*res://game_events.gd"
+Mission="*res://missions/mission.gd"
+
 [display]
 
 window/size/viewport_width=1920
@@ -120,9 +126,17 @@ lean_left={
 ]
 }
 
+[internationalization]
+
+locale/translation_remaps={}
+
 [layer_names]
 
 3d_render/layer_6="first_person"
+3d_physics/layer_1="Obstacles"
+3d_physics/layer_2="Hitboxes"
+3d_physics/layer_3="Controllers"
+3d_physics/layer_4="Interactables"
 
 [rendering]
 

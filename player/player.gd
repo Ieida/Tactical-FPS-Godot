@@ -5,7 +5,7 @@ extends Node3D
 @onready var health: Health = $Components/Health
 @onready var nausea: Nausea = $Components/Nausea
 @export var death_fade: Node
-var death_scene_path: String = "res://death_screen/death_screen.tscn"
+var death_scene_path: String = "res://missions/failed/failed.tscn"
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

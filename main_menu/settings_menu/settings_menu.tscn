@@ -1,0 +1,127 @@
+[gd_scene load_steps=7 format=3 uid="uid://couhcksmophv1"]
+
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_kkbur"]
+
+[sub_resource type="GDScript" id="GDScript_sgqi8"]
+resource_name = "fullscreen"
+script/source = "extends GameMenuButton
+
+func _ready():
+	super._ready()
+	DisplayServer.window_set_mode(Settings.get_setting(\"window_mode\"))
+
+func _on_pressed():
+	if Settings.get_setting(\"window_mode\") == DisplayServer.WINDOW_MODE_WINDOWED:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	Settings.set_setting(\"window_mode\", DisplayServer.window_get_mode())
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_gde6f"]
+font_size = 30
+
+[sub_resource type="GDScript" id="GDScript_hcjw5"]
+resource_name = "sensitivity_slider"
+script/source = "extends HSlider
+
+func _ready():
+	set_value_no_signal(Settings.get_setting(\"sensitivity\"))
+	$\"../Label2\".text = \"%1.2f\" % value
+	value_changed.connect(_on_value_changed)
+
+func _on_value_changed(new_value: float):
+	$\"../Label2\".text = \"%1.2f\" % new_value
+	Settings.set_setting(\"sensitivity\", value)
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_d6474"]
+font_size = 30
+
+[sub_resource type="GDScript" id="GDScript_f7o4f"]
+resource_name = "back"
+script/source = "extends GameMenuButton
+
+const scene = \"res://main_menu/main_menu.tscn\"
+
+func _on_pressed():
+	Settings.save()
+	get_tree().change_scene_to_file(scene)
+"
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+clip_contents = false
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -182.5
+offset_right = 182.5
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="BoxContainer" type="BoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+alignment = 1
+vertical = true
+
+[node name="WindowMode" parent="ScrollContainer/BoxContainer" instance=ExtResource("1_kkbur")]
+layout_mode = 2
+size_flags_vertical = 6
+toggle_mode = true
+text = "WINDOW MODE"
+script = SubResource("GDScript_sgqi8")
+is_focused = true
+
+[node name="BoxContainer" type="BoxContainer" parent="ScrollContainer/BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+alignment = 1
+
+[node name="Label" type="Label" parent="ScrollContainer/BoxContainer/BoxContainer"]
+layout_mode = 2
+text = "SENSITIVITY"
+label_settings = SubResource("LabelSettings_gde6f")
+
+[node name="HSlider" type="HSlider" parent="ScrollContainer/BoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+script = SubResource("GDScript_hcjw5")
+
+[node name="Label2" type="Label" parent="ScrollContainer/BoxContainer/BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "000"
+label_settings = SubResource("LabelSettings_d6474")
+
+[node name="Back" parent="ScrollContainer/BoxContainer" instance=ExtResource("1_kkbur")]
+layout_mode = 2
+size_flags_vertical = 6
+text = "BACK"
+script = SubResource("GDScript_f7o4f")

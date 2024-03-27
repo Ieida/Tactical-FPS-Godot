@@ -9,11 +9,11 @@ func _ready():
 
 func disable():
 	hide()
-	set_collision_layer_value(1, false)
+	set_collision_layer_value(4, false)
 
 func enable():
 	show()
-	set_collision_layer_value(1, true)
+	set_collision_layer_value(4, true)
 
 func interact():
 	interacted.emit()

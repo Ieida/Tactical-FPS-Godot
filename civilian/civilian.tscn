@@ -40,7 +40,7 @@ script = SubResource("GDScript_xf1iq")
 script = ExtResource("1_ygi3d")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-collision_layer = 2
+collision_layer = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 shape = SubResource("CapsuleShape3D_au5a0")
@@ -49,7 +49,7 @@ shape = SubResource("CapsuleShape3D_au5a0")
 mesh = SubResource("CapsuleMesh_ssgeu")
 
 [node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
-collision_layer = 8
+collision_layer = 2
 collision_mask = 0
 monitoring = false
 script = ExtResource("2_dw4uo")

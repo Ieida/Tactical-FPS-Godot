@@ -21,14 +21,18 @@ func _ready():
 	## Turn off flashlight by default
 	if flashlight and flashlight._is_on: flashlight.toggle_flashlight()
 
+func _input(event):
+	if is_holstered: return
+	if event.is_action("trigger"):
+		if event.is_pressed():
+			press_trigger()
+		elif event.is_released():
+			release_trigger()
+
 func _process(_delta):
 	if not is_holstered:
 		if flashlight and Input.is_action_just_pressed("flashlight_toggle"):
 			toggle_flashlight()
-		if Input.is_action_just_pressed("trigger"):
-			press_trigger()
-		elif Input.is_action_just_released("trigger"):
-			release_trigger()
 		if Input.is_action_just_pressed("reload"):
 			reload()
 		if laser and Input.is_action_just_pressed("laser_toggle"):
@@ -93,7 +97,5 @@ func load_mag(mag: Magazine):
 	var rnds_to_full = mag.max_rounds - mag.get_bullet_count()
 	for r in rnds_to_full:
 		var b = bullet.instantiate()
-		mag.add_child.call_deferred(b)
-		b.transform = Transform3D()
 		mag.load_bullet(b)
 #endregion

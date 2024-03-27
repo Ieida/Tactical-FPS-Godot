@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=3 uid="uid://epkhfvgvd7nt"]
+
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_56xxn"]
+
+[sub_resource type="GDScript" id="GDScript_mk0sf"]
+resource_name = "resume"
+script/source = "extends GameMenuButton
+
+func _on_pressed():
+	GameEvents.resumed.emit()
+"
+
+[sub_resource type="GDScript" id="GDScript_sf5sh"]
+resource_name = "abandon"
+script/source = "extends GameMenuButton
+
+func _on_pressed():
+	GameEvents.resumed.emit()
+	call_deferred(\"abandon\")
+
+func abandon():
+	Mission.abandon()
+"
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25, 0.25, 0.25, 0.498039)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" parent="VBoxContainer" instance=ExtResource("1_56xxn")]
+layout_mode = 2
+text = "RESUME"
+script = SubResource("GDScript_mk0sf")
+is_focused = true
+
+[node name="Abandon" parent="VBoxContainer" instance=ExtResource("1_56xxn")]
+layout_mode = 2
+text = "ABANDON"
+script = SubResource("GDScript_sf5sh")

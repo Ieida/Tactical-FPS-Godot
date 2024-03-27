@@ -1,11 +1,10 @@
-[gd_scene load_steps=57 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=54 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
 [ext_resource type="Script" path="res://player_character/player_character.gd" id="2_bxk1o"]
 [ext_resource type="Script" path="res://player_camera/player_camera.gd" id="2_jgt6g"]
 [ext_resource type="Script" path="res://player/lean.gd" id="3_md4wb"]
-[ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="4_7jfg2"]
 [ext_resource type="PackedScene" uid="uid://dgueiygo0ljxc" path="res://health/health.tscn" id="5_v7jk3"]
 [ext_resource type="Script" path="res://magazine/magazine.gd" id="6_7fstl"]
 [ext_resource type="PackedScene" uid="uid://d4bhp4yeabe7e" path="res://bullet/bullet.tscn" id="7_i1ag6"]
@@ -19,7 +18,6 @@
 [ext_resource type="Script" path="res://player_grenade/player_grenade.gd" id="10_vop7b"]
 [ext_resource type="PackedScene" uid="uid://ctqcaf2hpd1d2" path="res://laser/laser.tscn" id="12_p8yyq"]
 [ext_resource type="Script" path="res://hitbox/hitbox.gd" id="12_viptu"]
-[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="20_birym"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yy7gy"]
 height = 1.5
@@ -27,6 +25,7 @@ height = 1.5
 [sub_resource type="SeparationRayShape3D" id="SeparationRayShape3D_d8cd5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p6x6h"]
+height = 1.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_m7j0n"]
 
@@ -720,38 +719,38 @@ func fade(t: float):
 resource_name = "pause_menu"
 script/source = "extends Node
 
+@onready var scene: PackedScene = load(\"res://main_menu/pause_menu/pause_menu.tscn\")
+var scene_instance: Node
+
 func _ready():
-	$Menu.hide()
-	$Menu/VFlowContainer/Resume.pressed.connect(unpause)
+	GameEvents.resumed.connect(resume)
 
 func _process(_delta):
 	if Input.is_action_just_pressed(\"ui_cancel\"):
 		if get_tree().paused:
-			unpause()
+			resume()
 		else:
-			pause()
+			get_tree().paused = true
+			GameEvents.paused.emit()
+			call_deferred(\"pause\")
 
 func pause():
-	get_tree().paused = true
-	$Menu.show()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	scene_instance = scene.instantiate() as Node
+	add_child(scene_instance)
 
-func unpause():
+func resume():
 	get_tree().paused = false
-	$Menu.hide()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	scene_instance.queue_free()
 "
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3h6bj"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
 
 [node name="Player" type="Node3D" node_paths=PackedStringArray("death_fade")]
 script = ExtResource("1_ugqs2")
 death_fade = NodePath("UILayer/UI/DeathFade")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera")]
-collision_layer = 2
+collision_layer = 4
 script = ExtResource("2_bxk1o")
 camera = NodePath("BodyMiddlePivot/PlayerCamera")
 max_speed = 2.0
@@ -765,8 +764,8 @@ shape = SubResource("CapsuleShape3D_yy7gy")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 shape = SubResource("SeparationRayShape3D_d8cd5")
 
-[node name="Target" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health")]
-collision_layer = 10
+[node name="Target" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health") groups=["player"]]
+collision_layer = 2
 collision_mask = 0
 monitoring = false
 script = ExtResource("12_viptu")
@@ -774,6 +773,7 @@ health = NodePath("../../Components/Health")
 damage_multiplier = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Target"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 shape = SubResource("CapsuleShape3D_p6x6h")
 
 [node name="BodyMiddlePivot" type="Node3D" parent="CharacterBody3D"]
@@ -784,11 +784,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 current = true
 script = ExtResource("2_jgt6g")
 body = NodePath("../..")
-sensitivity = ExtResource("4_7jfg2")
 shake_intensity = 1000.0
 
-[node name="Target" type="Area3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera" node_paths=PackedStringArray("health")]
-collision_layer = 10
+[node name="Target" type="Area3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera" node_paths=PackedStringArray("health") groups=["player"]]
+collision_layer = 2
 collision_mask = 0
 monitoring = false
 script = ExtResource("12_viptu")
@@ -891,7 +890,9 @@ playback_default_blend_time = 0.5
 
 [node name="Interactor" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("sprite", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-collision_layer = 16
+collision_layer = 0
+collision_mask = 8
+monitorable = false
 script = SubResource("GDScript_6y26x")
 sprite = NodePath("../../UILayer/UI/InteractableSprite")
 camera = NodePath("../BodyMiddlePivot/PlayerCamera")
@@ -955,43 +956,5 @@ color = Color(0, 0, 0, 0)
 script = SubResource("GDScript_hh8np")
 
 [node name="Pause" type="Node" parent="UILayer/UI"]
+process_mode = 3
 script = SubResource("GDScript_t5u88")
-
-[node name="Menu" type="Control" parent="UILayer/UI/Pause"]
-process_mode = 2
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ColorRect" type="ColorRect" parent="UILayer/UI/Pause/Menu"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.498039)
-
-[node name="VFlowContainer" type="VFlowContainer" parent="UILayer/UI/Pause/Menu"]
-layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="Resume" parent="UILayer/UI/Pause/Menu/VFlowContainer" instance=ExtResource("20_birym")]
-custom_minimum_size = Vector2(250, 50)
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_3h6bj")
-theme_override_styles/hover = SubResource("StyleBoxFlat_3h6bj")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_3h6bj")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_3h6bj")
-theme_override_styles/focus = SubResource("StyleBoxFlat_3h6bj")
-text = "RESUME"
-stylebox = SubResource("StyleBoxFlat_3h6bj")

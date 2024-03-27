@@ -1,0 +1,98 @@
+[gd_scene load_steps=5 format=3 uid="uid://drejltycp02o7"]
+
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_6m0pc"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jacfy"]
+font_size = 50
+
+[sub_resource type="GDScript" id="GDScript_mf7w4"]
+resource_name = "controls_label"
+script/source = "extends Label
+
+func _ready():
+	text = \"\"
+	var actions = InputMap.get_actions()
+	for action in actions:
+		if action.begins_with(\"ui\"): continue
+		text += action.capitalize()
+		text += \"\\n\"
+		for event in InputMap.action_get_events(action):
+			text += event.as_text()
+			text += \"\\n\"
+		text += \"\\n\"
+"
+
+[sub_resource type="GDScript" id="GDScript_2wkmd"]
+resource_name = "back"
+script/source = "extends GameMenuButton
+
+var scene = \"res://main_menu/main_menu.tscn\"
+
+func _on_pressed():
+	get_tree().change_scene_to_file(scene)
+"
+
+[node name="Controls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="FlowContainer" type="BoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+alignment = 1
+vertical = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="FlowContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="FlowContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 2
+text = "PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER
+PLACEHOLDER"
+label_settings = SubResource("LabelSettings_jacfy")
+horizontal_alignment = 1
+script = SubResource("GDScript_mf7w4")
+
+[node name="Back" parent="FlowContainer" instance=ExtResource("1_6m0pc")]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "BACK"
+script = SubResource("GDScript_2wkmd")
+is_focused = true

@@ -1,0 +1,77 @@
+[gd_scene load_steps=4 format=3 uid="uid://cw24iadb7cj58"]
+
+[ext_resource type="Resource" uid="uid://cl1gfsoiphr6x" path="res://missions/training/training_mission_info.tres" id="1_g4tar"]
+
+[sub_resource type="GDScript" id="GDScript_ga1iu"]
+resource_name = "back"
+script/source = "extends Button
+
+var scene = \"res://main_menu/main_menu.tscn\"
+
+func _ready():
+	pressed.connect(_on_pressed)
+	grab_focus.call_deferred()
+
+func _on_pressed():
+	get_tree().change_scene_to_file(scene)
+"
+
+[sub_resource type="GDScript" id="GDScript_ly5dl"]
+resource_name = "training"
+script/source = "extends Button
+
+@export var info: MissionInfo
+
+func _ready():
+	pressed.connect(_on_pressed)
+
+func _on_pressed():
+	Mission.load_mission(info)
+"
+
+[node name="MissionSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 4
+
+[node name="Back" type="Button" parent="ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(384, 270)
+layout_mode = 2
+text = "BACK"
+script = SubResource("GDScript_ga1iu")
+
+[node name="Training" type="Button" parent="ScrollContainer/GridContainer"]
+custom_minimum_size = Vector2(384, 270)
+layout_mode = 2
+text = "TRAINING"
+script = SubResource("GDScript_ly5dl")
+info = ExtResource("1_g4tar")

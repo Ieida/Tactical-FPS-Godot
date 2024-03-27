@@ -1,181 +1,43 @@
-[gd_scene load_steps=23 format=3 uid="uid://bfc5uoymqgvht"]
+[gd_scene load_steps=6 format=3 uid="uid://bua7tispoh4rk"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_p7dyk"]
-[ext_resource type="Resource" uid="uid://dvnrjkojje818" path="res://player/sensitivity.tres" id="2_61ntr"]
-[ext_resource type="PackedScene" uid="uid://qrjfoa3sa5fb" path="res://missions/training/training_briefing.tscn" id="3_escje"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eg1pm"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="GDScript" id="GDScript_ru4i1"]
+[sub_resource type="GDScript" id="GDScript_xs0i3"]
 resource_name = "controls"
 script/source = "extends GameMenuButton
 
-func _ready():
-	pressed.connect(_on_pressed)
+const scene = \"res://main_menu/controls_menu/controls.tscn\"
 
 func _on_pressed():
-	$\"../..\".hide()
-	$\"../../../Controls\".show()
+	get_tree().change_scene_to_file(scene)
 "
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hbqke"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="GDScript" id="GDScript_qmtle"]
+[sub_resource type="GDScript" id="GDScript_d3nv7"]
 resource_name = "mission_select"
 script/source = "extends GameMenuButton
 
-func _ready():
-	pressed.connect(_on_pressed)
+const scene = \"res://main_menu/mission_select/mission_select.tscn\"
 
 func _on_pressed():
-	$\"../..\".hide()
-	$\"../../../MissionSelect\".show()
+	get_tree().change_scene_to_file(scene)
 "
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xjp3"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="GDScript" id="GDScript_aoi74"]
+[sub_resource type="GDScript" id="GDScript_u5uj4"]
 resource_name = "settings"
 script/source = "extends GameMenuButton
 
-func _ready():
-	pressed.connect(_on_pressed)
+const scene = \"res://main_menu/settings_menu/settings_menu.tscn\"
 
 func _on_pressed():
-	$\"../..\".hide()
-	$\"../../../SettingsMenu\".show()
+	get_tree().change_scene_to_file(scene)
 "
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1dx85"]
-resource_local_to_scene = true
-bg_color = Color(0.498039, 0, 0.121569, 1)
-
-[sub_resource type="GDScript" id="GDScript_u0k2c"]
+[sub_resource type="GDScript" id="GDScript_u70fi"]
 resource_name = "quit"
 script/source = "extends GameMenuButton
 
-func _ready():
-	pressed.connect(_on_pressed)
-
 func _on_pressed():
-	get_tree().quit(0)
-"
-
-[sub_resource type="LabelSettings" id="LabelSettings_jacfy"]
-font_size = 50
-
-[sub_resource type="GDScript" id="GDScript_mf7w4"]
-resource_name = "controls_label"
-script/source = "extends Label
-
-func _ready():
-	text = \"\"
-	var actions = InputMap.get_actions()
-	for action in actions:
-		if action.begins_with(\"ui\"): continue
-		text += action.capitalize()
-		text += \"\\n\"
-		for event in InputMap.action_get_events(action):
-			text += event.as_text()
-			text += \"\\n\"
-		text += \"\\n\"
-"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_plait"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="GDScript" id="GDScript_2wkmd"]
-resource_name = "back"
-script/source = "extends GameMenuButton
-
-func _ready():
-	pressed.connect(_on_pressed)
-
-func _on_pressed():
-	$\"../..\".hide()
-	$\"../../../MainMenu\".show()
-"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cviua"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="GDScript" id="GDScript_sgqi8"]
-resource_name = "fullscreen"
-script/source = "extends GameMenuButton
-
-func _ready():
-	toggled.connect(_on_toggled)
-
-func _on_toggled(mode: bool):
-	if mode:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
-	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-"
-
-[sub_resource type="GDScript" id="GDScript_hcjw5"]
-resource_name = "sensitivity_slider"
-script/source = "extends HSlider
-
-@export var sens: Sensitivity
-
-func _ready():
-	set_value_no_signal(sens.value)
-	$\"../Label2\".text = str(sens.value)
-	value_changed.connect(_on_value_changed)
-
-func _on_value_changed(new_value: float):
-	$\"../Label2\".text = str(new_value)
-	sens.value = new_value
-"
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5o15y"]
-resource_local_to_scene = true
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="GDScript" id="GDScript_f7o4f"]
-resource_name = "back"
-script/source = "extends GameMenuButton
-
-func _ready():
-	pressed.connect(_on_pressed)
-
-func _on_pressed():
-	$\"../../..\".hide()
-	$\"../../../../MainMenu\".show()
-"
-
-[sub_resource type="GDScript" id="GDScript_ga1iu"]
-resource_name = "back"
-script/source = "extends Button
-
-func _ready():
-	pressed.connect(_on_pressed)
-
-func _on_pressed():
-	$\"../../..\".hide()
-	$\"../../../../MainMenu\".show()
-"
-
-[sub_resource type="GDScript" id="GDScript_ly5dl"]
-resource_name = "training"
-script/source = "extends Button
-
-@export var scene: PackedScene
-
-func _ready():
-	pressed.connect(_on_pressed)
-
-func _on_pressed():
-	get_tree().change_scene_to_packed(scene)
+	get_tree().quit()
 "
 
 [node name="MainMenu" type="Control"]
@@ -195,248 +57,38 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="MainMenu" type="Control" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -154.0
-offset_right = 150.0
-offset_bottom = 154.0
+offset_left = -132.5
+offset_top = -64.0
+offset_right = 132.5
+offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
 alignment = 1
 
-[node name="Controls" parent="MainMenu/VBoxContainer" instance=ExtResource("1_p7dyk")]
-custom_minimum_size = Vector2(300, 75)
+[node name="Controls" parent="VBoxContainer" instance=ExtResource("1_p7dyk")]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_eg1pm")
-theme_override_styles/hover = SubResource("StyleBoxFlat_eg1pm")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_eg1pm")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_eg1pm")
-theme_override_styles/focus = SubResource("StyleBoxFlat_eg1pm")
 text = "CONTROLS"
-script = SubResource("GDScript_ru4i1")
-stylebox = SubResource("StyleBoxFlat_eg1pm")
+script = SubResource("GDScript_xs0i3")
+is_focused = true
 
-[node name="MissionSelect" parent="MainMenu/VBoxContainer" instance=ExtResource("1_p7dyk")]
-custom_minimum_size = Vector2(300, 75)
+[node name="MissionSelect" parent="VBoxContainer" instance=ExtResource("1_p7dyk")]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_hbqke")
-theme_override_styles/hover = SubResource("StyleBoxFlat_hbqke")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_hbqke")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_hbqke")
-theme_override_styles/focus = SubResource("StyleBoxFlat_hbqke")
 text = "MISSION SELECT"
-script = SubResource("GDScript_qmtle")
-stylebox = SubResource("StyleBoxFlat_hbqke")
+script = SubResource("GDScript_d3nv7")
 
-[node name="Settings" parent="MainMenu/VBoxContainer" instance=ExtResource("1_p7dyk")]
-custom_minimum_size = Vector2(300, 75)
+[node name="Settings" parent="VBoxContainer" instance=ExtResource("1_p7dyk")]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_0xjp3")
-theme_override_styles/hover = SubResource("StyleBoxFlat_0xjp3")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_0xjp3")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_0xjp3")
-theme_override_styles/focus = SubResource("StyleBoxFlat_0xjp3")
 text = "SETTINGS"
-script = SubResource("GDScript_aoi74")
-stylebox = SubResource("StyleBoxFlat_0xjp3")
+script = SubResource("GDScript_u5uj4")
 
-[node name="Quit" parent="MainMenu/VBoxContainer" instance=ExtResource("1_p7dyk")]
-custom_minimum_size = Vector2(300, 75)
+[node name="Quit" parent="VBoxContainer" instance=ExtResource("1_p7dyk")]
 layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_1dx85")
-theme_override_styles/hover = SubResource("StyleBoxFlat_1dx85")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_1dx85")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_1dx85")
-theme_override_styles/focus = SubResource("StyleBoxFlat_1dx85")
-text = "QUIT"
-script = SubResource("GDScript_u0k2c")
-stylebox = SubResource("StyleBoxFlat_1dx85")
-
-[node name="Controls" type="Control" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="FlowContainer" type="BoxContainer" parent="Controls"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 3
-alignment = 1
-vertical = true
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Controls/FlowContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-metadata/_edit_use_anchors_ = true
-
-[node name="Label" type="Label" parent="Controls/FlowContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 2
-text = "PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER"
-label_settings = SubResource("LabelSettings_jacfy")
-horizontal_alignment = 1
-script = SubResource("GDScript_mf7w4")
-
-[node name="Back" parent="Controls/FlowContainer" instance=ExtResource("1_p7dyk")]
-custom_minimum_size = Vector2(400, 50)
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_plait")
-theme_override_styles/hover = SubResource("StyleBoxFlat_plait")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_plait")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_plait")
-theme_override_styles/focus = SubResource("StyleBoxFlat_plait")
-text = "BACK"
-script = SubResource("GDScript_2wkmd")
-stylebox = SubResource("StyleBoxFlat_plait")
-
-[node name="SettingsMenu" type="Control" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="SettingsMenu"]
-clip_contents = false
-layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -182.5
-offset_right = 182.5
-grow_horizontal = 2
-grow_vertical = 2
-horizontal_scroll_mode = 0
-
-[node name="VFlowContainer" type="VFlowContainer" parent="SettingsMenu/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 3
-alignment = 1
-
-[node name="Fullscreen" parent="SettingsMenu/ScrollContainer/VFlowContainer" instance=ExtResource("1_p7dyk")]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_cviua")
-theme_override_styles/hover = SubResource("StyleBoxFlat_cviua")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_cviua")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_cviua")
-theme_override_styles/focus = SubResource("StyleBoxFlat_cviua")
-toggle_mode = true
-text = "FULLSCREEN"
-script = SubResource("GDScript_sgqi8")
-stylebox = SubResource("StyleBoxFlat_cviua")
-
-[node name="HFlowContainer" type="HFlowContainer" parent="SettingsMenu/ScrollContainer/VFlowContainer"]
-custom_minimum_size = Vector2(500, 0)
-layout_mode = 2
-alignment = 1
-
-[node name="Label" type="Label" parent="SettingsMenu/ScrollContainer/VFlowContainer/HFlowContainer"]
-layout_mode = 2
-text = "SENSITIVITY"
-
-[node name="HSlider" type="HSlider" parent="SettingsMenu/ScrollContainer/VFlowContainer/HFlowContainer"]
-custom_minimum_size = Vector2(372, 0)
-layout_mode = 2
-size_flags_vertical = 1
-script = SubResource("GDScript_hcjw5")
-sens = ExtResource("2_61ntr")
-
-[node name="Label2" type="Label" parent="SettingsMenu/ScrollContainer/VFlowContainer/HFlowContainer"]
-layout_mode = 2
-text = "000"
-
-[node name="Back" parent="SettingsMenu/ScrollContainer/VFlowContainer" instance=ExtResource("1_p7dyk")]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_5o15y")
-theme_override_styles/hover = SubResource("StyleBoxFlat_5o15y")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_5o15y")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_5o15y")
-theme_override_styles/focus = SubResource("StyleBoxFlat_5o15y")
-text = "BACK"
-script = SubResource("GDScript_f7o4f")
-stylebox = SubResource("StyleBoxFlat_5o15y")
-
-[node name="MissionSelect" type="Control" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MissionSelect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-horizontal_scroll_mode = 0
-
-[node name="GridContainer" type="GridContainer" parent="MissionSelect/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/h_separation = 0
-theme_override_constants/v_separation = 0
-columns = 4
-
-[node name="Back" type="Button" parent="MissionSelect/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(384, 270)
-layout_mode = 2
-text = "BACK"
-script = SubResource("GDScript_ga1iu")
-
-[node name="Training" type="Button" parent="MissionSelect/ScrollContainer/GridContainer"]
-custom_minimum_size = Vector2(384, 270)
-layout_mode = 2
-text = "TRAINING"
-script = SubResource("GDScript_ly5dl")
-scene = ExtResource("3_escje")
+text = "EXIT GAME"
+script = SubResource("GDScript_u70fi")

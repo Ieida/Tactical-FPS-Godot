@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://blt2bq61l75dl"]
+
+[ext_resource type="Script" path="res://settings/settings.gd" id="1_v0wp5"]
+
+[sub_resource type="GDScript" id="GDScript_5xgbp"]
+resource_name = "window_mode"
+script/source = "extends Node
+
+@export var value = DisplayServer.WINDOW_MODE_WINDOWED
+
+func _ready():
+	DisplayServer.window_set_mode(value)
+"
+
+[node name="Settings" type="Node"]
+script = ExtResource("1_v0wp5")
+
+[node name="WidnowMode" type="Node" parent="."]
+script = SubResource("GDScript_5xgbp")

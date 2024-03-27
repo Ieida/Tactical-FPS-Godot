@@ -53,7 +53,6 @@ class Recoil extends RefCounted:
 		return 0.0 if x == 0.0 else 1.0 if x == 1.0 else pow(2, -10.0 * x) * sin((x * 10.0 - 0.75) * c4) + 1.0
 
 @export var body: Node3D
-@export var sensitivity: Sensitivity
 var x: float
 var y: float
 @export var shake_intensity: float
@@ -65,8 +64,10 @@ func _ready():
 
 func _input(event):
 	if event is InputEventMouseMotion:
-		look_x(-event.relative.y / 1080.0 * sensitivity.value)
-		look_y(-event.relative.x / 1920.0 * sensitivity.value)
+		var s = Settings.get_setting("sensitivity")
+		if not s: s = 0
+		look_x(-event.relative.y * s)
+		look_y(-event.relative.x * s)
 
 func _process(_delta):
 	basis = Basis()

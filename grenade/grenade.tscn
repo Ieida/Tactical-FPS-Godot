@@ -34,7 +34,8 @@ shape = SubResource("SphereShape3D_wxd7k")
 mesh = SubResource("SphereMesh_l5nt8")
 
 [node name="EffectArea" type="Area3D" parent="RigidBody3D"]
-collision_mask = 9
+collision_layer = 0
+collision_mask = 3
 monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D/EffectArea"]
