@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhuk1q3csypw2"]
+
+[sub_resource type="GDScript" id="GDScript_plho6"]
+resource_name = "sound_emitter"
+script/source = "extends Area3D
+
+@export var sound: Sound
+
+func emit_sound():
+	for area in get_overlapping_areas():
+		if area is SoundReciever:
+			var s = sound.duplicate()
+			s.position = global_position
+			area.recieve(s)
+"
+
+[node name="SoundEmitter" type="Area3D"]
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+script = SubResource("GDScript_plho6")

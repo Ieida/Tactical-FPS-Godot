@@ -1,20 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://epkhfvgvd7nt"]
+[gd_scene load_steps=4 format=3 uid="uid://epkhfvgvd7nt"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_56xxn"]
-
-[sub_resource type="GDScript" id="GDScript_byu3m"]
-resource_name = "pause_menu"
-script/source = "extends Control
-
-signal resume
-"
 
 [sub_resource type="GDScript" id="GDScript_mk0sf"]
 resource_name = "resume"
 script/source = "extends GameMenuButton
 
 func _on_pressed():
-	$\"../..\".resume.emit()
+	pass
 "
 
 [sub_resource type="GDScript" id="GDScript_sf5sh"]
@@ -22,11 +15,11 @@ resource_name = "abandon"
 script/source = "extends GameMenuButton
 
 func _on_pressed():
-	abandon.call_deferred()
+	GameEvents.resumed.emit()
+	call_deferred(\"abandon\")
 
 func abandon():
-	get_tree().paused = false
-	get_tree().change_scene_to_file(\"res://main_menu/main_menu.tscn\")
+	Mission.abandon()
 "
 
 [node name="PauseMenu" type="Control"]
@@ -36,7 +29,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = SubResource("GDScript_byu3m")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1

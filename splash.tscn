@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=3 uid="uid://cmt18jk05pqvr"]
+
+[ext_resource type="Texture2D" uid="uid://d0nt6p4ops684" path="res://logo_vertical_color_dark.svg" id="1_7xa7l"]
+
+[sub_resource type="GDScript" id="GDScript_wr1xk"]
+resource_name = "logo"
+script/source = "extends TextureRect
+
+func _ready():
+	modulate = Color.TRANSPARENT
+	var t = create_tween()
+	t.tween_property(self, \"modulate\", Color.WHITE, 0.5)
+"
+
+[sub_resource type="GDScript" id="GDScript_yr3ih"]
+resource_name = "loader"
+script/source = "extends Node
+
+func _ready():
+	#DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, true)
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
+	#get_window().transparent_bg = true
+	await get_tree().create_timer(1).timeout
+	#DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, false)
+	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
+	#get_window().transparent_bg = false
+	get_tree().change_scene_to_file(\"res://main_menu/main_menu.tscn\")
+"
+
+[node name="Splash" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -312.0
+offset_top = -356.5
+offset_right = 312.0
+offset_bottom = 356.5
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_7xa7l")
+script = SubResource("GDScript_wr1xk")
+
+[node name="Node" type="Node" parent="."]
+script = SubResource("GDScript_yr3ih")

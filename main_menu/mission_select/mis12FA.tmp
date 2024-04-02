@@ -1,17 +1,17 @@
 [gd_scene load_steps=4 format=3 uid="uid://cw24iadb7cj58"]
 
-[ext_resource type="Resource" uid="uid://c3ggqnvkkh7ri" path="res://missions/missions_db.tres" id="1_ydmbx"]
+[ext_resource type="Resource" uid="uid://c3ggqnvkkh7ri" path="res://missions/missions.tres" id="1_ydmbx"]
 
 [sub_resource type="GDScript" id="GDScript_f6yby"]
 resource_name = "mission_select"
 script/source = "extends Control
 
 const mission_button: PackedScene = preload(\"res://main_menu/mission_select/mission_button.tscn\")
-@export var missions_db: MissionsDB
+@export var missions: Missions
 @export var button_container: Container
 
 func _ready():
-	for mission in missions_db.missions:
+	for mission in missions.missions:
 		var m = mission_button.instantiate()
 		button_container.add_child(m)
 		m.info = mission
@@ -31,7 +31,7 @@ func _on_pressed():
 	get_tree().change_scene_to_file(scene)
 "
 
-[node name="MissionSelect" type="Control" node_paths=PackedStringArray("button_container")]
+[node name="MissionSelect" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,8 +39,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = SubResource("GDScript_f6yby")
-missions_db = ExtResource("1_ydmbx")
-button_container = NodePath("ScrollContainer/GridContainer")
+missions = ExtResource("1_ydmbx")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1

@@ -1,0 +1,69 @@
+[gd_scene load_steps=4 format=3 uid="uid://bivk40ur3ax2y"]
+
+[sub_resource type="GDScript" id="GDScript_oucyt"]
+resource_name = "objective"
+script/source = "extends PanelContainer
+
+var objective: Objective
+@export var title: Label
+@export var description: Label
+
+func _ready():
+	title.text = objective.title
+	description.text = objective.description
+"
+
+[sub_resource type="LabelSettings" id="LabelSettings_8myom"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_nqkpj"]
+
+[node name="Objective" type="PanelContainer" node_paths=PackedStringArray("title", "description")]
+size_flags_vertical = 4
+script = SubResource("GDScript_oucyt")
+title = NodePath("HBoxContainer/VBoxContainer/Title")
+description = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Description")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(1280, 0)
+layout_mode = 2
+color = Color(0.16, 0.16, 0.16, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Margin" type="Control" parent="HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Title"
+label_settings = SubResource("LabelSettings_8myom")
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Margin" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+
+[node name="Description" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Description."
+label_settings = SubResource("LabelSettings_nqkpj")
+autowrap_mode = 3
+
+[node name="Margin2" type="Control" parent="HBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2

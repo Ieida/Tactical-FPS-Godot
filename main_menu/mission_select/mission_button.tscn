@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://ba4vfd0s2mjsl"]
+
+[ext_resource type="Resource" uid="uid://cl1gfsoiphr6x" path="res://missions/training/training_mission_info.tres" id="1_hpq4x"]
+
+[sub_resource type="GDScript" id="GDScript_ly5dl"]
+resource_name = "training"
+script/source = "extends Button
+
+@export var info: MissionInfo
+
+func _ready():
+	pressed.connect(_on_pressed)
+
+func _on_pressed():
+	Mission._info = info
+	get_tree().change_scene_to_file(\"res://missions/briefing/mission_briefing.tscn\")
+"
+
+[node name="MissionButton" type="Button"]
+custom_minimum_size = Vector2(384, 270)
+text = "TRAINING"
+script = SubResource("GDScript_ly5dl")
+info = ExtResource("1_hpq4x")

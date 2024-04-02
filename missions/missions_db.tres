@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="MissionsDB" load_steps=8 format=3 uid="uid://c3ggqnvkkh7ri"]
+
+[ext_resource type="Script" path="res://missions/objective.gd" id="1_fxbuf"]
+[ext_resource type="PackedScene" uid="uid://cibiekbp042iv" path="res://training_level/training_level.tscn" id="1_lrmww"]
+[ext_resource type="Script" path="res://missions/briefing/mission_info.gd" id="2_bgqnq"]
+[ext_resource type="Script" path="res://missions/missions_db.gd" id="3_p7hya"]
+
+[sub_resource type="Resource" id="Resource_cxkxt"]
+script = ExtResource("1_fxbuf")
+title = "Neutralize Hostiles"
+description = "Eliminate threats."
+
+[sub_resource type="Resource" id="Resource_auq2m"]
+script = ExtResource("1_fxbuf")
+title = "Rescue Hostages"
+description = "Secure all hostages."
+
+[sub_resource type="Resource" id="Resource_r1w76"]
+script = ExtResource("2_bgqnq")
+scene = ExtResource("1_lrmww")
+title = "Training"
+objectives = [SubResource("Resource_cxkxt"), SubResource("Resource_auq2m")]
+
+[resource]
+script = ExtResource("3_p7hya")
+missions = [SubResource("Resource_r1w76")]

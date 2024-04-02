@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bl6lfpxua4xfe"]
+[gd_scene load_steps=16 format=3 uid="uid://bl6lfpxua4xfe"]
 
 [ext_resource type="PackedScene" uid="uid://d4bhp4yeabe7e" path="res://bullet/bullet.tscn" id="1_2xt8x"]
 [ext_resource type="PackedScene" uid="uid://483bq5b351pk" path="res://smg/smg.tscn" id="1_v84pa"]
 [ext_resource type="PackedScene" uid="uid://dgueiygo0ljxc" path="res://health/health.tscn" id="2_33ye6"]
 [ext_resource type="PackedScene" uid="uid://ccswfa1xq6aj5" path="res://magazine/magazine.tscn" id="2_gwq6n"]
 [ext_resource type="Script" path="res://hitbox/hitbox.gd" id="3_ppjxn"]
+[ext_resource type="PackedScene" uid="uid://8j4lspicqs2k" path="res://sound_reciever/sound_reciever.tscn" id="6_0s1we"]
 
 [sub_resource type="GDScript" id="GDScript_aqb4p"]
 resource_name = "enemy"
@@ -22,6 +23,10 @@ func _ready():
 	gun.push_slide()
 	
 	$Health.depleted.connect(_on_health_depleted)
+	#$CharacterBody3D/SoundReciever.recieved.connect(_on_sound_recieved)
+
+func _on_sound_recieved(sound: Sound):
+	print(sound)
 
 func _on_vision_target_acquired(t):
 	target = t
@@ -118,6 +123,16 @@ func is_in_view_angle(pos: Vector3) -> bool:
 [sub_resource type="SphereShape3D" id="SphereShape3D_3e4rv"]
 radius = 50.0
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_d23qb"]
+
+[sub_resource type="GDScript" id="GDScript_cq4uh"]
+resource_name = "er"
+script/source = "extends Node
+
+func _on_sound_reciever_recieved(sound):
+	print(sound)
+"
+
 [node name="Enemy" type="Node3D" node_paths=PackedStringArray("eyes", "gun")]
 script = SubResource("GDScript_aqb4p")
 eyes = NodePath("CharacterBody3D/Eyes")
@@ -173,5 +188,14 @@ hit_back_faces = false
 debug_shape_custom_color = Color(1, 0, 0, 1)
 debug_shape_thickness = 5
 
+[node name="SoundReciever" parent="CharacterBody3D" instance=ExtResource("6_0s1we")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/SoundReciever"]
+shape = SubResource("SphereShape3D_d23qb")
+
+[node name="Node" type="Node" parent="CharacterBody3D/SoundReciever"]
+script = SubResource("GDScript_cq4uh")
+
 [connection signal="target_acquired" from="CharacterBody3D/Vision" to="." method="_on_vision_target_acquired"]
 [connection signal="target_lost" from="CharacterBody3D/Vision" to="." method="_on_vision_target_lost"]
+[connection signal="recieved" from="CharacterBody3D/SoundReciever" to="CharacterBody3D/SoundReciever/Node" method="_on_sound_reciever_recieved"]

@@ -11,15 +11,16 @@ config_version=5
 [application]
 
 config/name="Tactical FPS"
-run/main_scene="res://main_menu/main_menu.tscn"
+run/main_scene="res://splash.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
+boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 0)
+boot_splash/show_image=false
 config/icon="res://icon.svg"
 
 [autoload]
 
 Settings="*res://settings/settings.tscn"
-GameEvents="*res://game_events.gd"
-Mission="*res://missions/mission.gd"
+Mission="*res://missions/mission.tscn"
 
 [display]
 
@@ -137,6 +138,7 @@ locale/translation_remaps={}
 3d_physics/layer_2="Hitboxes"
 3d_physics/layer_3="Controllers"
 3d_physics/layer_4="Interactables"
+3d_physics/layer_5="Sound"
 
 [rendering]
 

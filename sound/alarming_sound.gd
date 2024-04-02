@@ -1,0 +1,2 @@
+extends Sound
+class_name AlarmingSound

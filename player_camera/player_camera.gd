@@ -63,11 +63,12 @@ func _ready():
 	pass
 
 func _input(event):
-	if event is InputEventMouseMotion:
-		var s = Settings.get_setting("sensitivity")
-		if not s: s = 0
-		look_x(-event.relative.y * s)
-		look_y(-event.relative.x * s)
+	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		if event is InputEventMouseMotion:
+			var s = Settings.get_setting("sensitivity")
+			if not s: s = 0
+			look_x(-event.relative.y * s)
+			look_y(-event.relative.x * s)
 
 func _process(_delta):
 	basis = Basis()
