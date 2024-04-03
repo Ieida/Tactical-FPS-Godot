@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://8j4lspicqs2k"]
+
+[ext_resource type="Script" path="res://sound/reciever/sound_reciever.gd" id="1_o33eh"]
+
+[node name="SoundReciever" type="Area3D"]
+collision_layer = 16
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_o33eh")

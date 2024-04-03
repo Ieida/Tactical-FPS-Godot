@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MissionInfo" load_steps=3 format=3 uid="uid://cl1gfsoiphr6x"]
 
-[ext_resource type="PackedScene" uid="uid://cibiekbp042iv" path="res://training_level/training_level.tscn" id="1_hncyi"]
+[ext_resource type="PackedScene" uid="uid://cibiekbp042iv" path="res://missions/training/scene/training_level.tscn" id="1_hncyi"]
 [ext_resource type="Script" path="res://missions/briefing/mission_info.gd" id="1_otys0"]
 
 [resource]
