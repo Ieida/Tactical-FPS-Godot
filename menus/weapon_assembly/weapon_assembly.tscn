@@ -1,0 +1,131 @@
+[gd_scene load_steps=8 format=3 uid="uid://dxvjgw1h1ln2f"]
+
+[ext_resource type="Texture2D" uid="uid://div4ic8dsq3cn" path="res://missions/training/scene/kloofendal_43d_clear_puresky_4k.hdr" id="1_hieav"]
+[ext_resource type="PackedScene" uid="uid://r60v8078b8a7" path="res://weapons/guns/pistol/pistol.tscn" id="1_n10n4"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lvpdo"]
+panorama = ExtResource("1_hieav")
+
+[sub_resource type="Sky" id="Sky_46r4n"]
+sky_material = SubResource("PanoramaSkyMaterial_lvpdo")
+
+[sub_resource type="Environment" id="Environment_3p1yx"]
+background_mode = 1
+background_color = Color(0.0509804, 0.0509804, 0.0509804, 1)
+sky = SubResource("Sky_46r4n")
+
+[sub_resource type="GDScript" id="GDScript_mfqbp"]
+resource_name = "menubutton"
+script/source = "extends MenuButton
+
+@export var camera: Camera3D
+@export var pistol: Weapon
+@onready var muzzle: Node3D = pistol.get_node(\"Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D/Muzzle\")
+@onready var suppressor: Node3D = pistol.get_node(\"Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D/Muzzle/Suppressor\")
+var val
+
+func _ready():
+	get_popup().id_pressed.connect(_on_id_pressed)
+
+func _process(_delta):
+	var p = camera.unproject_position(muzzle.global_position)
+	set_position(p)
+
+func _on_id_pressed(id: int):
+	if id == 0:
+		attach_suppressor()
+	else:
+		detach_suppressor()
+
+func attach_suppressor():
+	suppressor.position.z = -0.1
+	suppressor.rotate_z(deg_to_rad(360))
+	suppressor.show()
+	var t = create_tween().set_parallel(true)
+	t.tween_property(suppressor, \"position:z\", 0, 0.5)
+	t.tween_property(suppressor, \"rotation:z\", 0, 0.5)
+
+func detach_suppressor():
+	var t = create_tween().set_parallel(true)
+	t.tween_property(suppressor, \"position:z\", -0.1, 0.5)
+	t.tween_property(suppressor, \"rotation:z\", deg_to_rad(360), 0.5)
+	await t.finished
+	suppressor.hide()
+"
+
+[sub_resource type="GDScript" id="GDScript_taqta"]
+resource_name = "camera"
+script/source = "extends Camera3D
+
+@export var zoom_speed: float = 2
+@export var rotate_sensitivity: float = 0.2
+@export var pistol: Weapon
+var pivot: Node3D
+
+func _ready():
+	pivot = Node3D.new()
+	get_parent().add_child.call_deferred(pivot)
+	pistol.reparent.call_deferred(pivot)
+
+func _input(event):
+	if event is InputEventMouseMotion:
+		if Input.is_action_pressed(&\"trigger\"):
+			pivot.global_rotate(Vector3.UP, deg_to_rad(event.relative.x) * rotate_sensitivity)
+			pivot.rotate_object_local(Vector3.RIGHT, deg_to_rad(event.relative.y) * rotate_sensitivity)
+
+func _process(delta):
+	## Zoom
+	var i = Input.get_axis(&\"move_backward\", &\"move_forward\")
+	position.z = clampf(position.z + -i * zoom_speed * delta, 0.3, 2)
+"
+
+[node name="WeaponAssembly" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_3p1yx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MenuButton" type="MenuButton" parent="Control" node_paths=PackedStringArray("camera", "pistol")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Muzzle"
+flat = false
+item_count = 2
+popup/item_0/text = "Suppressor"
+popup/item_0/id = 0
+popup/item_1/text = "None"
+popup/item_1/id = 1
+script = SubResource("GDScript_mfqbp")
+camera = NodePath("../../Camera3D")
+pistol = NodePath("../../Pistol")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("pistol")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
+script = SubResource("GDScript_taqta")
+pistol = NodePath("../Pistol")
+
+[node name="Pistol" parent="." instance=ExtResource("1_n10n4")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)

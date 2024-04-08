@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://s3ma5hsk7jky"]
 
 [ext_resource type="Script" path="res://missions/briefing/mission_briefing.gd" id="1_nkvfh"]
-[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_xetdr"]
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_xetdr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4usdo"]
 font_size = 64

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://couhcksmophv1"]
 
-[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_kkbur"]
-[ext_resource type="LabelSettings" uid="uid://3xq6nc18qxqt" path="res://main_menu/label_settings.tres" id="1_rj4wh"]
+[ext_resource type="LabelSettings" uid="uid://3xq6nc18qxqt" path="res://menus/label_settings.tres" id="1_clyps"]
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="2_lp03r"]
 
 [sub_resource type="GDScript" id="GDScript_7k5dc"]
 resource_name = "vsync"
@@ -56,6 +56,9 @@ func _ready():
 	$\"../Label2\".text = \"%1.2f\" % value
 	value_changed.connect(_on_value_changed)
 
+func _process(_delta):
+	value = Settings.get_setting(&\"sensitivity\")
+
 func _on_value_changed(new_value: float):
 	$\"../Label2\".text = \"%1.2f\" % new_value
 	Settings.set_setting(\"sensitivity\", value)
@@ -64,15 +67,13 @@ func _on_value_changed(new_value: float):
 [sub_resource type="LabelSettings" id="LabelSettings_d6474"]
 font_size = 30
 
-[sub_resource type="GDScript" id="GDScript_f7o4f"]
+[sub_resource type="GDScript" id="GDScript_2hldw"]
 resource_name = "back"
 script/source = "extends GameMenuButton
 
-const scene = \"res://main_menu/main_menu.tscn\"
-
 func _on_pressed():
 	Settings.save()
-	get_tree().change_scene_to_file(scene)
+	get_tree().change_scene_to_packed(Menus.main)
 "
 
 [node name="SettingsMenu" type="Control"]
@@ -118,7 +119,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="ScrollContainer/BoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "VSYNC"
-label_settings = ExtResource("1_rj4wh")
+label_settings = ExtResource("1_clyps")
 
 [node name="VSync" type="OptionButton" parent="ScrollContainer/BoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -135,7 +136,7 @@ size_flags_vertical = 4
 layout_mode = 2
 size_flags_horizontal = 0
 text = "WINDOW MODE"
-label_settings = ExtResource("1_rj4wh")
+label_settings = ExtResource("1_clyps")
 
 [node name="WindowMode" type="OptionButton" parent="ScrollContainer/BoxContainer/Control"]
 layout_mode = 2
@@ -144,7 +145,7 @@ theme_override_font_sizes/font_size = 30
 alignment = 1
 script = SubResource("GDScript_a7fy1")
 
-[node name="WindowMode" parent="ScrollContainer/BoxContainer" instance=ExtResource("1_kkbur")]
+[node name="WindowMode" parent="ScrollContainer/BoxContainer" instance=ExtResource("2_lp03r")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 6
@@ -160,7 +161,7 @@ size_flags_vertical = 6
 [node name="Label" type="Label" parent="ScrollContainer/BoxContainer/BoxContainer"]
 layout_mode = 2
 text = "SENSITIVITY"
-label_settings = ExtResource("1_rj4wh")
+label_settings = ExtResource("1_clyps")
 justification_flags = 171
 
 [node name="HSlider" type="HSlider" parent="ScrollContainer/BoxContainer/BoxContainer"]
@@ -170,6 +171,8 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 max_value = 1.0
 step = 0.01
+allow_greater = true
+allow_lesser = true
 script = SubResource("GDScript_hcjw5")
 
 [node name="Label2" type="Label" parent="ScrollContainer/BoxContainer/BoxContainer"]
@@ -178,9 +181,9 @@ size_flags_horizontal = 4
 text = "0.01"
 label_settings = SubResource("LabelSettings_d6474")
 
-[node name="Back" parent="ScrollContainer/BoxContainer" instance=ExtResource("1_kkbur")]
+[node name="Back" parent="ScrollContainer/BoxContainer" instance=ExtResource("2_lp03r")]
 layout_mode = 2
 size_flags_vertical = 6
 text = "BACK"
-script = SubResource("GDScript_f7o4f")
+script = SubResource("GDScript_2hldw")
 is_focused = true

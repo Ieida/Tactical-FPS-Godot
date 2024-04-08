@@ -1,0 +1,194 @@
+[gd_scene load_steps=11 format=3 uid="uid://c54w8gqa05yis"]
+
+[ext_resource type="Script" path="res://command_console/commands/start_training.gd" id="1_8mg0o"]
+[ext_resource type="Script" path="res://command_console/commands/quit_command.gd" id="2_1hxau"]
+[ext_resource type="Script" path="res://command_console/commands/close_command.gd" id="3_lnhw6"]
+[ext_resource type="Script" path="res://command_console/commands/sensitivity_command.gd" id="4_p1vmy"]
+
+[sub_resource type="GDScript" id="GDScript_hrn2y"]
+resource_name = "command_console"
+script/source = "extends Window
+
+@export var commands: Dictionary
+@export var line_edit: LineEdit
+@export var output: RichTextLabel
+@export var popup_menu: PopupMenu
+
+func _ready():
+	close_requested.connect(_on_close_requested)
+	line_edit.focus_entered.connect(_on_line_edit_focus_entered)
+	line_edit.text_submitted.connect(_on_line_edit_text_submitted)
+	line_edit.text_changed.connect(_on_line_edit_text_changed)
+	popup_menu.unfocusable = true
+	InputMap.add_action(&\"toggle_command_console\")
+	var e = InputEventKey.new()
+	e.keycode = KEY_QUOTELEFT
+	InputMap.action_add_event(&\"toggle_command_console\", e)
+	line_edit.grab_focus()
+
+func _process(_delta):
+	if Input.is_action_just_pressed(&\"toggle_command_console\"):
+		open()
+	
+	if Input.is_action_just_pressed(&\"ui_cancel\"):
+		close()
+	
+	if visible:
+		var s = size
+		popup_menu.position = position + Vector2i(0, s.y)
+
+func _on_close_requested():
+	hide()
+	popup_menu.hide()
+	gui_release_focus()
+	get_tree().paused = false
+
+func _on_line_edit_text_changed(new_text: String):
+	if new_text == \"\":
+		order_popup(sort_alphabetical)
+	else: order_popup(sort_similarity)
+
+func _on_line_edit_focus_entered():
+	popup_menu.show()
+	if line_edit.text == \"\":
+		order_popup(sort_alphabetical)
+	else: order_popup(sort_similarity)
+
+func _on_line_edit_text_submitted(new_text: String):
+	var tokens = new_text.split(\" \", false)
+	var cmd = popup_menu.get_item_text(0)
+	line_edit.clear()
+	var args = tokens.slice(1)
+	if cmd.similarity(tokens[0]) < 0.5:
+		print_error(\"Nonexistent command: %s\" % tokens[0])
+	elif not commands.has(cmd as StringName):
+		print_error(\"Unkown command: %s\" % cmd)
+	else:
+		var c = commands[cmd]
+		if not c:
+			print_error(\"Null command: %s\" % cmd)
+		else:
+			commands[cmd].run(args)
+
+func close():
+	hide()
+	popup_menu.hide()
+	gui_release_focus()
+	get_tree().paused = false
+
+func open():
+	show()
+	line_edit.grab_focus()
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	get_tree().paused = true
+
+func order_popup(sort_f: Callable):
+	popup_menu.clear()
+	var sorted_commands = commands.keys()
+	sorted_commands.sort_custom(sort_f)
+	sorted_commands.reverse()
+	for c in sorted_commands:
+		popup_menu.add_item(c)
+	var inpt = parse_input(line_edit.text)
+	if inpt[0].similarity(sorted_commands[0]) >= 0.5:
+		popup_menu.set_focused_item(0)
+
+func parse_input(input: String) -> PackedStringArray:
+	return input.split(\" \")
+
+func print_error(error: String):
+	output.push_paragraph(HORIZONTAL_ALIGNMENT_LEFT)
+	output.push_bgcolor(Color.DARK_RED)
+	output.push_color(Color.WHITE)
+	output.add_text(error)
+	output.pop()
+	output.pop()
+	output.pop()
+
+func print_warning(warning: String):
+	output.push_paragraph(HORIZONTAL_ALIGNMENT_LEFT)
+	output.push_bgcolor(Color.DARK_GOLDENROD)
+	output.push_color(Color.BLACK)
+	output.add_text(warning)
+	output.pop()
+	output.pop()
+	output.pop()
+
+func sort_alphabetical(a: String, b: String):
+	return a.naturalcasecmp_to(b)
+
+func sort_similarity(a: String, b: String):
+	return a.similarity(line_edit.text) < b.similarity(line_edit.text)
+"
+
+[sub_resource type="Resource" id="Resource_rh81t"]
+script = ExtResource("3_lnhw6")
+
+[sub_resource type="Resource" id="Resource_ff1qa"]
+script = ExtResource("2_1hxau")
+
+[sub_resource type="Resource" id="Resource_ka7jh"]
+script = ExtResource("1_8mg0o")
+
+[sub_resource type="Resource" id="Resource_ek5pb"]
+script = ExtResource("4_p1vmy")
+
+[sub_resource type="GDScript" id="GDScript_6gpsy"]
+resource_name = "command_line"
+script/source = "extends LineEdit
+"
+
+[node name="CommandConsole" type="Window" node_paths=PackedStringArray("line_edit", "output", "popup_menu")]
+process_mode = 3
+transparent_bg = true
+use_hdr_2d = true
+title = "Command Console"
+position = Vector2i(100, 100)
+size = Vector2i(500, 500)
+script = SubResource("GDScript_hrn2y")
+commands = {
+"close": SubResource("Resource_rh81t"),
+"enemy": null,
+"player": null,
+"quit": SubResource("Resource_ff1qa"),
+"sensitivity": SubResource("Resource_ek5pb"),
+"training": SubResource("Resource_ka7jh")
+}
+line_edit = NodePath("PanelContainer/VBoxContainer/LineEdit")
+output = NodePath("PanelContainer/VBoxContainer/ScrollContainer/Output")
+popup_menu = NodePath("PopupMenu")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Output" type="RichTextLabel" parent="PanelContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+scroll_following = true
+threaded = true
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "enter command"
+script = SubResource("GDScript_6gpsy")
+
+[node name="PopupMenu" type="PopupMenu" parent="."]
+position = Vector2i(0, 531)
+size = Vector2i(500, 8)
+min_size = Vector2i(0, 8)
+allow_search = false

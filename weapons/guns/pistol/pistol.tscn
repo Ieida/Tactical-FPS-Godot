@@ -25,12 +25,8 @@ muzzle_flash = ExtResource("2_jly2l")
 [node name="Pistol_Full_West2" parent="." instance=ExtResource("1_ttrhm")]
 transform = Transform3D(0.999999, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 0, 0)
 
-[node name="Skeleton3D" parent="Pistol_Full_West2/Pistol_Full_West_Rig" index="0"]
-bones/1/scale = Vector3(1, 1, 1)
-bones/8/scale = Vector3(1, 1, 1)
-bones/9/scale = Vector3(1, 1, 1)
-
 [node name="Pistol_Full_West" parent="Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D" index="0"]
+layers = 2
 cast_shadow = 0
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D" index="1"]
@@ -38,12 +34,14 @@ transform = Transform3D(1, 6.56173e-14, -2.84217e-14, 1.42109e-14, 1.78814e-07, 
 bone_name = "Attach_Muzzle"
 bone_idx = 9
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D"]
-transform = Transform3D(1, -1.35525e-20, 4.95703e-21, 1.35525e-20, 1, -2.84217e-14, -9.7221e-22, 0, 1, 0, 0.075, 0)
-mesh = SubResource("CylinderMesh_bifkb")
-skeleton = NodePath("../../../..")
-
 [node name="Muzzle" type="Node3D" parent="Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D"]
-transform = Transform3D(1, 2.84217e-14, 6.56173e-14, 7.98283e-14, 1.78814e-07, -1, -1.42109e-14, 1, 1.78814e-07, 0, 0.15, 0)
+transform = Transform3D(1, 2.84217e-14, 6.56173e-14, 7.98283e-14, 1.78814e-07, -1, -1.42109e-14, 1, 1.78814e-07, 0, 0, 0)
+
+[node name="Suppressor" type="Node3D" parent="Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D/Muzzle"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D/Muzzle/Suppressor"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.075)
+mesh = SubResource("CylinderMesh_bifkb")
+skeleton = NodePath("../../../../../..")
 
 [editable path="Pistol_Full_West2"]

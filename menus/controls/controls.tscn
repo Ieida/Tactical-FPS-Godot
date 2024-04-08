@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://drejltycp02o7"]
 
-[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_6m0pc"]
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_6m0pc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_jacfy"]
 font_size = 50
@@ -26,10 +26,8 @@ func _ready():
 resource_name = "back"
 script/source = "extends GameMenuButton
 
-var scene = \"res://main_menu/main_menu.tscn\"
-
 func _on_pressed():
-	get_tree().change_scene_to_file(scene)
+	get_tree().change_scene_to_packed(Menus.main)
 "
 
 [node name="Controls" type="Control"]

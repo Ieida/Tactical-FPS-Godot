@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bulw6u2tdwbme"]
 
-[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_o5una"]
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_ens78"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_5b2c6"]
 font_size = 64
@@ -10,7 +10,7 @@ resource_name = "main_menu"
 script/source = "extends GameMenuButton
 
 func _on_pressed():
-	get_tree().change_scene_to_file(\"res://main_menu/main_menu.tscn\")
+	get_tree().change_scene_to_packed(Menus.main)
 "
 
 [node name="Success" type="Control"]
@@ -59,7 +59,7 @@ text = "MISSION COMPLETED"
 label_settings = SubResource("LabelSettings_5b2c6")
 horizontal_alignment = 1
 
-[node name="MenuButton" parent="HBoxContainer/VBoxContainer" instance=ExtResource("1_o5una")]
+[node name="MenuButton" parent="HBoxContainer/VBoxContainer" instance=ExtResource("1_ens78")]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 10

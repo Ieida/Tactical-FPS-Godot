@@ -1,6 +1,6 @@
 extends Node3D
 
-@onready var camera: PlayerCamera = $CharacterBody3D/BodyMiddlePivot/PlayerCamera
+@export var camera: PlayerCamera
 @onready var body: CharacterBody3D = $CharacterBody3D
 @onready var health: Health = $Components/Health
 @onready var nausea: Nausea = $Components/Nausea

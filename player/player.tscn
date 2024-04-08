@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://cwtrpjm3y5u7k"]
+[gd_scene load_steps=59 format=3 uid="uid://cwtrpjm3y5u7k"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_ugqs2"]
 [ext_resource type="PackedScene" uid="uid://d2fpiuj2xxby6" path="res://nausea/nausea.tscn" id="2_135jv"]
@@ -28,6 +28,75 @@ height = 1.5
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p6x6h"]
 height = 1.5
+
+[sub_resource type="GDScript" id="GDScript_6y26x"]
+resource_name = "interactor"
+script/source = "extends Area3D
+
+var interactable: Interactable
+@export var sprite: Sprite2D
+@export var camera: Camera3D
+
+func _ready():
+	sprite.hide()
+	area_entered.connect(_on_area_entered)
+	area_exited.connect(_on_area_exited)
+
+func _process(_delta):
+	if Input.is_action_just_pressed(\"interact\") and interactable:
+		interactable.interact()
+	
+	if interactable:
+		if camera.is_position_in_frustum(interactable.global_position):
+			sprite.show()
+			var pos = camera.unproject_position(interactable.global_position)
+			sprite.position = pos
+			sprite.scale = Vector2.ONE / interactable.global_position.distance_to(camera.global_position)
+		else: sprite.hide()
+
+func can_interact_with(area: Area3D):
+	return area is Interactable and camera.is_position_in_frustum(area.global_position)
+
+func _on_area_entered(area: Area3D):
+	if area is Interactable:
+		area.show()
+		interactable = area
+		sprite.show()
+
+func _on_area_exited(area: Area3D):
+	if area == interactable:
+		area.hide()
+		interactable = null
+		sprite.hide()
+"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_lsy5n"]
+radius = 1.5
+
+[sub_resource type="Resource" id="Resource_ak7fq"]
+resource_name = "Alarming Sound"
+script = ExtResource("17_xiceh")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6yk5u"]
+radius = 10.0
+
+[sub_resource type="GDScript" id="GDScript_gxfs4"]
+resource_name = "bobbing"
+script/source = "extends Node3D
+
+@export var step_length: float = 6
+var step_heigth: float = 0.02
+var previous_position: Vector3
+var velocity: float
+
+func _physics_process(_delta):
+	var v = global_position - previous_position
+	previous_position = global_position
+	velocity += v.length()
+	#velocity = wrapf(velocity, 0, 2)
+	var y = -step_heigth + step_heigth * sin(velocity * step_length)
+	position.y = y
+"
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_m7j0n"]
 
@@ -564,57 +633,6 @@ _data = {
 "unholster": SubResource("Animation_6a04e")
 }
 
-[sub_resource type="GDScript" id="GDScript_6y26x"]
-resource_name = "interactor"
-script/source = "extends Area3D
-
-var interactable: Interactable
-@export var sprite: Sprite2D
-@export var camera: Camera3D
-
-func _ready():
-	sprite.hide()
-	area_entered.connect(_on_area_entered)
-	area_exited.connect(_on_area_exited)
-
-func _process(_delta):
-	if Input.is_action_just_pressed(\"interact\") and interactable:
-		interactable.interact()
-	
-	if interactable:
-		if camera.is_position_in_frustum(interactable.global_position):
-			sprite.show()
-			var pos = camera.unproject_position(interactable.global_position)
-			sprite.position = pos
-			sprite.scale = Vector2.ONE / interactable.global_position.distance_to(camera.global_position)
-		else: sprite.hide()
-
-func can_interact_with(area: Area3D):
-	return area is Interactable and camera.is_position_in_frustum(area.global_position)
-
-func _on_area_entered(area: Area3D):
-	if area is Interactable:
-		area.show()
-		interactable = area
-		sprite.show()
-
-func _on_area_exited(area: Area3D):
-	if area == interactable:
-		area.hide()
-		interactable = null
-		sprite.hide()
-"
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_lsy5n"]
-radius = 1.5
-
-[sub_resource type="Resource" id="Resource_ak7fq"]
-resource_name = "Alarming Sound"
-script = ExtResource("17_xiceh")
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_6yk5u"]
-radius = 10.0
-
 [sub_resource type="GDScript" id="GDScript_27n7l"]
 resource_name = "weapon_switcher"
 script/source = "extends Node
@@ -728,7 +746,6 @@ func fade(t: float):
 resource_name = "pause_menu"
 script/source = "extends Node
 
-@onready var scene: PackedScene = preload(\"res://main_menu/pause_menu/pause_menu.tscn\")
 var scene_instance: Node
 
 func _ready():
@@ -740,13 +757,18 @@ func _process(_delta):
 			resume.call_deferred()
 		else:
 			pause.call_deferred()
+	
+	if is_paused and not get_tree().paused:
+		resume.call_deferred()
+	elif not is_paused and get_tree().paused:
+		pause.call_deferred()
 
 var is_paused: bool = false
 func pause():
 	is_paused = true
 	get_tree().paused = true
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	scene_instance = scene.instantiate()
+	scene_instance = Menus.pause.instantiate()
 	add_child(scene_instance)
 	scene_instance.resume.connect(resume)
 
@@ -757,14 +779,15 @@ func resume():
 	scene_instance.queue_free()
 "
 
-[node name="Player" type="Node3D" node_paths=PackedStringArray("death_fade")]
+[node name="Player" type="Node3D" node_paths=PackedStringArray("camera", "death_fade")]
 script = ExtResource("1_ugqs2")
+camera = NodePath("CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera")
 death_fade = NodePath("UILayer/UI/DeathFade")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera")]
 collision_layer = 4
 script = ExtResource("2_bxk1o")
-camera = NodePath("BodyMiddlePivot/PlayerCamera")
+camera = NodePath("Bobbing/BodyMiddlePivot/PlayerCamera")
 max_speed = 2.0
 speed = 2.0
 
@@ -788,118 +811,6 @@ damage_multiplier = 0.1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 shape = SubResource("CapsuleShape3D_p6x6h")
 
-[node name="BodyMiddlePivot" type="Node3D" parent="CharacterBody3D"]
-script = ExtResource("3_md4wb")
-
-[node name="PlayerCamera" type="Camera3D" parent="CharacterBody3D/BodyMiddlePivot" node_paths=PackedStringArray("body")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-current = true
-script = ExtResource("2_jgt6g")
-body = NodePath("../..")
-shake_intensity = 1000.0
-
-[node name="Target" type="Area3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera" node_paths=PackedStringArray("health") groups=["player"]]
-collision_layer = 2
-collision_mask = 0
-monitoring = false
-script = ExtResource("12_viptu")
-health = NodePath("../../../../Components/Health")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Target"]
-shape = SubResource("SphereShape3D_m7j0n")
-
-[node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera"]
-light_energy = 0.04
-shadow_bias = 1.0
-spot_range = 30.0
-spot_angle = 60.0
-spot_angle_attenuation = 1.5
-
-[node name="Weapons" type="Node3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera"]
-
-[node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "flashlight", "laser", "weapon", "camera", "animation_player")]
-script = ExtResource("8_7k0sh")
-gun = NodePath("SMG")
-magazine = NodePath("SMG/Magazine")
-bullet = ExtResource("7_i1ag6")
-flashlight = NodePath("SMG/Flashlight")
-laser = NodePath("SMG/Attachment/Laser")
-weapon = NodePath("SMG")
-camera = NodePath("../..")
-animation_player = NodePath("ViewmodelPlayer")
-
-[node name="SMG" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_6ao76")]
-transform = Transform3D(0.986285, -0.165048, 0, 0.165048, 0.986286, 0, 0, 0, 0.999999, 0.05, -0.08, -0.22)
-magazine = NodePath("Magazine")
-sideways_recoil_min = -1.0
-
-[node name="Magazine" type="Node3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel/SMG"]
-script = ExtResource("6_7fstl")
-max_rounds = 30
-
-[node name="Flashlight" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel/SMG" instance=ExtResource("9_nug04")]
-transform = Transform3D(1, -2.08616e-07, 0, 4.47035e-08, 1, 0, 0, 0, 1, -2.98023e-08, -0.0289856, -0.192745)
-light_energy = 5.0
-shadow_enabled = false
-
-[node name="Attachment" type="Node3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel/SMG"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0241095, 0.018637, -0.154806)
-
-[node name="Laser" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel/SMG/Attachment" instance=ExtResource("12_p8yyq")]
-
-[node name="ViewmodelPlayer" type="AnimationPlayer" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel"]
-libraries = {
-"": SubResource("AnimationLibrary_7ix2q")
-}
-
-[node name="PistolViewmodel" type="Node3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "laser", "weapon", "camera", "animation_player")]
-visible = false
-script = ExtResource("8_7k0sh")
-gun = NodePath("Pistol")
-magazine = NodePath("Pistol/Magazine")
-bullet = ExtResource("7_i1ag6")
-laser = NodePath("Pistol/Attachment/Laser")
-weapon = NodePath("Pistol")
-camera = NodePath("../..")
-animation_player = NodePath("AnimationPlayer")
-
-[node name="Pistol" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_udj60")]
-transform = Transform3D(0.97998, -0.199094, 0, 0.199094, 0.97998, 0, 0, 0, 1, 0.0335386, -0.0839955, -0.106022)
-magazine = NodePath("Magazine")
-
-[node name="Magazine" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel/Pistol" instance=ExtResource("9_xpc40")]
-max_rounds = 10
-
-[node name="Attachment" type="Node3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel/Pistol"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.47035e-08, -0.0187612, -0.0839897)
-
-[node name="Laser" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel/Pistol/Attachment" instance=ExtResource("12_p8yyq")]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel"]
-libraries = {
-"": SubResource("AnimationLibrary_4rby2")
-}
-
-[node name="GrenadeViewmodel" type="Node3D" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons" node_paths=PackedStringArray("grenade", "player_body", "weapon", "camera", "animation_player")]
-visible = false
-script = ExtResource("10_vop7b")
-grenade = NodePath("Grenade")
-player_body = NodePath("../../../..")
-throw_force = 15.0
-grenade_scene = ExtResource("10_i1x3m")
-weapon = NodePath("Grenade")
-camera = NodePath("../..")
-animation_player = NodePath("AnimationPlayer")
-
-[node name="Grenade" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/GrenadeViewmodel" instance=ExtResource("10_i1x3m")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.205, -0.23, -0.335)
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/GrenadeViewmodel"]
-libraries = {
-"": SubResource("AnimationLibrary_rg55g")
-}
-playback_default_blend_time = 0.5
-
 [node name="Interactor" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("sprite", "camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 0
@@ -907,7 +818,7 @@ collision_mask = 8
 monitorable = false
 script = SubResource("GDScript_6y26x")
 sprite = NodePath("../../UILayer/UI/InteractableSprite")
-camera = NodePath("../BodyMiddlePivot/PlayerCamera")
+camera = NodePath("../Bobbing/BodyMiddlePivot/PlayerCamera")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Interactor"]
 shape = SubResource("SphereShape3D_lsy5n")
@@ -918,11 +829,126 @@ sound = SubResource("Resource_ak7fq")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/SoundEmitter"]
 shape = SubResource("SphereShape3D_6yk5u")
 
+[node name="Bobbing" type="Node3D" parent="CharacterBody3D"]
+script = SubResource("GDScript_gxfs4")
+
+[node name="BodyMiddlePivot" type="Node3D" parent="CharacterBody3D/Bobbing"]
+script = ExtResource("3_md4wb")
+
+[node name="PlayerCamera" type="Camera3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot" node_paths=PackedStringArray("body")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+current = true
+script = ExtResource("2_jgt6g")
+body = NodePath("../../..")
+shake_intensity = 1000.0
+
+[node name="Target" type="Area3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera" node_paths=PackedStringArray("health") groups=["player"]]
+collision_layer = 2
+collision_mask = 0
+monitoring = false
+script = ExtResource("12_viptu")
+health = NodePath("../../../../../Components/Health")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Target"]
+shape = SubResource("SphereShape3D_m7j0n")
+
+[node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera"]
+light_energy = 0.04
+shadow_bias = 1.0
+spot_range = 30.0
+spot_angle = 60.0
+spot_angle_attenuation = 1.5
+
+[node name="Weapons" type="Node3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera"]
+
+[node name="SMGViewmodel" type="Node3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "flashlight", "laser", "weapon", "camera", "animation_player")]
+script = ExtResource("8_7k0sh")
+gun = NodePath("SMG")
+magazine = NodePath("SMG/Magazine")
+bullet = ExtResource("7_i1ag6")
+flashlight = NodePath("SMG/Flashlight")
+laser = NodePath("SMG/Attachment/Laser")
+weapon = NodePath("SMG")
+camera = NodePath("../..")
+animation_player = NodePath("ViewmodelPlayer")
+
+[node name="SMG" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_6ao76")]
+transform = Transform3D(0.986285, -0.165048, 0, 0.165048, 0.986286, 0, 0, 0, 0.999999, 0.05, -0.08, -0.22)
+magazine = NodePath("Magazine")
+sideways_recoil_min = -1.0
+
+[node name="Magazine" type="Node3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel/SMG"]
+script = ExtResource("6_7fstl")
+max_rounds = 30
+
+[node name="Flashlight" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel/SMG" instance=ExtResource("9_nug04")]
+transform = Transform3D(1, -2.08616e-07, 0, 4.47035e-08, 1, 0, 0, 0, 1, -2.98023e-08, -0.0289856, -0.192745)
+light_energy = 5.0
+shadow_enabled = false
+
+[node name="Attachment" type="Node3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel/SMG"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0241095, 0.018637, -0.154806)
+
+[node name="Laser" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel/SMG/Attachment" instance=ExtResource("12_p8yyq")]
+
+[node name="ViewmodelPlayer" type="AnimationPlayer" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel"]
+libraries = {
+"": SubResource("AnimationLibrary_7ix2q")
+}
+
+[node name="PistolViewmodel" type="Node3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons" node_paths=PackedStringArray("gun", "magazine", "laser", "weapon", "camera", "animation_player")]
+visible = false
+script = ExtResource("8_7k0sh")
+gun = NodePath("Pistol")
+magazine = NodePath("Pistol/Magazine")
+bullet = ExtResource("7_i1ag6")
+laser = NodePath("Pistol/Attachment/Laser")
+weapon = NodePath("Pistol")
+camera = NodePath("../..")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="Pistol" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel" node_paths=PackedStringArray("magazine") instance=ExtResource("8_udj60")]
+transform = Transform3D(0.97998, -0.199094, 0, 0.199094, 0.97998, 0, 0, 0, 1, 0.0335386, -0.0839955, -0.106022)
+magazine = NodePath("Magazine")
+
+[node name="Magazine" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel/Pistol" instance=ExtResource("9_xpc40")]
+max_rounds = 10
+
+[node name="Attachment" type="Node3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel/Pistol"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.47035e-08, -0.0187612, -0.0839897)
+
+[node name="Laser" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel/Pistol/Attachment" instance=ExtResource("12_p8yyq")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel"]
+libraries = {
+"": SubResource("AnimationLibrary_4rby2")
+}
+
+[node name="GrenadeViewmodel" type="Node3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons" node_paths=PackedStringArray("grenade", "player_body", "weapon", "camera", "animation_player")]
+visible = false
+script = ExtResource("10_vop7b")
+grenade = NodePath("Grenade")
+player_body = NodePath("../../../../..")
+throw_force = 15.0
+grenade_scene = ExtResource("10_i1x3m")
+weapon = NodePath("Grenade")
+camera = NodePath("../..")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="Grenade" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/GrenadeViewmodel" instance=ExtResource("10_i1x3m")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.205, -0.23, -0.335)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/GrenadeViewmodel"]
+libraries = {
+"": SubResource("AnimationLibrary_rg55g")
+}
+playback_default_blend_time = 0.5
+
 [node name="Components" type="Node" parent="."]
 
 [node name="Nausea" parent="Components" node_paths=PackedStringArray("camera") instance=ExtResource("2_135jv")]
 process_mode = 4
-camera = NodePath("../../CharacterBody3D/BodyMiddlePivot/PlayerCamera")
+camera = NodePath("../../CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera")
 length = 10.0
 duration = 0.5
 speed = 45.0
@@ -932,9 +958,9 @@ angle = 180.0
 
 [node name="WeaponSwitcher" type="Node" parent="Components" node_paths=PackedStringArray("primary", "secondary", "grenade")]
 script = SubResource("GDScript_27n7l")
-primary = NodePath("../../CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel")
-secondary = NodePath("../../CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel")
-grenade = NodePath("../../CharacterBody3D/BodyMiddlePivot/PlayerCamera/Weapons/GrenadeViewmodel")
+primary = NodePath("../../CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/SMGViewmodel")
+secondary = NodePath("../../CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/PistolViewmodel")
+grenade = NodePath("../../CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Weapons/GrenadeViewmodel")
 
 [node name="UILayer" type="CanvasLayer" parent="."]
 
@@ -958,7 +984,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 1, 0)
 script = SubResource("GDScript_jfra3")
-light = NodePath("../../../../CharacterBody3D/BodyMiddlePivot/PlayerCamera/NightVisionLight")
+light = NodePath("../../../../CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/NightVisionLight")
 
 [node name="InteractableSprite" type="Sprite2D" parent="UILayer/UI"]
 texture = ExtResource("10_80gfq")

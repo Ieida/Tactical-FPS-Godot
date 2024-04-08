@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://epkhfvgvd7nt"]
 
-[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menu_button/menu_button.tscn" id="1_56xxn"]
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_56xxn"]
 
 [sub_resource type="GDScript" id="GDScript_byu3m"]
 resource_name = "pause_menu"
@@ -17,7 +17,7 @@ func _on_pressed():
 	$\"../..\".resume.emit()
 "
 
-[sub_resource type="GDScript" id="GDScript_sf5sh"]
+[sub_resource type="GDScript" id="GDScript_efhuh"]
 resource_name = "abandon"
 script/source = "extends GameMenuButton
 
@@ -26,7 +26,7 @@ func _on_pressed():
 
 func abandon():
 	get_tree().paused = false
-	get_tree().change_scene_to_file(\"res://main_menu/main_menu.tscn\")
+	get_tree().change_scene_to_packed(Menus.main)
 "
 
 [node name="PauseMenu" type="Control"]
@@ -70,4 +70,4 @@ is_focused = true
 [node name="Abandon" parent="VBoxContainer" instance=ExtResource("1_56xxn")]
 layout_mode = 2
 text = "ABANDON"
-script = SubResource("GDScript_sf5sh")
+script = SubResource("GDScript_efhuh")

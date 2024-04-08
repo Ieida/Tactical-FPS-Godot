@@ -21,6 +21,8 @@ config/icon="res://icon.svg"
 
 Settings="*res://settings/settings.tscn"
 Mission="*res://missions/mission.tscn"
+Menus="*res://menus/menus.gd"
+CommandConsole="*res://command_console/command_console.tscn"
 
 [display]
 
