@@ -8,6 +8,10 @@ var res: Resource
 
 func _enter_tree():
 	load_from_disk()
+	
+	## Apply settings
+	DisplayServer.window_set_vsync_mode(settings[&"vsync"])
+	DisplayServer.window_set_mode(settings[&"window_mode"])
 
 func get_setting(setting: StringName) -> Variant:
 	return res.get_meta(setting)
