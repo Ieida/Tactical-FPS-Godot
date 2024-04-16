@@ -1,5 +1,5 @@
 extends Command
 class_name CloseCommand
 
-func run(args):
+func run(_args):
 	CommandConsole.close()

@@ -26,3 +26,4 @@ func load_from_disk():
 	for setting in settings:
 		if not res.has_meta(setting):
 			res.set_meta(setting, settings[setting])
+	save()

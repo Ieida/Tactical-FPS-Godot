@@ -1,5 +1,5 @@
 extends Resource
 class_name Command
 
-func run(args):
+func run(_args):
 	pass
