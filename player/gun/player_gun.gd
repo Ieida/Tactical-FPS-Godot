@@ -13,7 +13,6 @@ func _ready():
 	gun.recoil.connect(_on_gun_recoil)
 	load_mag(magazine)
 	insert_magazine(magazine)
-	gun.push_slide()
 	
 	## Turn off laser by default
 	if laser and laser.is_on: laser.toggle_laser()
@@ -21,22 +20,21 @@ func _ready():
 	## Turn off flashlight by default
 	if flashlight and flashlight._is_on: flashlight.toggle_flashlight()
 
-func _input(event):
-	if is_holstered: return
-	if event.is_action("trigger"):
-		if event.is_pressed():
-			press_trigger()
-		elif event.is_released():
-			release_trigger()
 
-func _process(_delta):
+func _unhandled_input(event):
 	if not is_holstered:
-		if flashlight and Input.is_action_just_pressed("flashlight_toggle"):
+		if event.is_action("trigger"):
+			if event.is_pressed():
+				press_trigger()
+			elif event.is_released():
+				release_trigger()
+		elif flashlight and event.is_action_pressed("flashlight_toggle"):
 			toggle_flashlight()
-		if Input.is_action_just_pressed("reload"):
+		elif event.is_action_pressed("reload"):
 			reload()
-		if laser and Input.is_action_just_pressed("laser_toggle"):
+		elif laser and event.is_action_pressed("laser_toggle"):
 			toggle_laser()
+
 
 #region Gun Functions
 func can_holster() -> bool:
@@ -73,11 +71,8 @@ func reload():
 	
 	await insert_magazine(magazine)
 	
-	if gun.is_slide_lock_activated: await gun.deactivate_slide_lock()
-	elif not gun._chambered_bullet: await gun.push_slide()
-	
-	is_reloading = false
 	animation_player.queue("idle")
+	is_reloading = false
 
 func rack_slide():
 	animation_player.play("rack_slide")

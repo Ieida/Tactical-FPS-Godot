@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dxvjgw1h1ln2f"]
+[gd_scene load_steps=10 format=3 uid="uid://dxvjgw1h1ln2f"]
 
 [ext_resource type="Texture2D" uid="uid://div4ic8dsq3cn" path="res://missions/training/scene/kloofendal_43d_clear_puresky_4k.hdr" id="1_hieav"]
 [ext_resource type="PackedScene" uid="uid://r60v8078b8a7" path="res://weapons/guns/pistol/pistol.tscn" id="1_n10n4"]
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="3_6ypxr"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_lvpdo"]
 panorama = ExtResource("1_hieav")
@@ -79,6 +80,22 @@ func _process(delta):
 	position.z = clampf(position.z + -i * zoom_speed * delta, 0.3, 2)
 "
 
+[sub_resource type="GDScript" id="GDScript_06pky"]
+resource_name = "ui"
+script/source = "extends CanvasLayer
+
+
+@export var back: GameMenuButton
+
+
+func _ready():
+	back.pressed.connect(_on_back_pressed)
+
+
+func _on_back_pressed():
+	get_tree().change_scene_to_file(\"res://menus/main/main_menu.tscn\")
+"
+
 [node name="WeaponAssembly" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -88,27 +105,16 @@ environment = SubResource("Environment_3p1yx")
 transform = Transform3D(0.707107, 0.5, -0.5, 0, 0.707107, 0.707107, 0.707107, -0.5, 0.5, 0, 0, 0)
 shadow_enabled = true
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="MenuButton" type="MenuButton" parent="Control" node_paths=PackedStringArray("camera", "pistol")]
-layout_mode = 1
+[node name="MenuButton" type="MenuButton" parent="." node_paths=PackedStringArray("camera", "pistol")]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 4.0
+offset_left = -31.0
+offset_top = -15.5
+offset_right = 31.0
+offset_bottom = 15.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Muzzle"
@@ -119,8 +125,8 @@ popup/item_0/id = 0
 popup/item_1/text = "None"
 popup/item_1/id = 1
 script = SubResource("GDScript_mfqbp")
-camera = NodePath("../../Camera3D")
-pistol = NodePath("../../Pistol")
+camera = NodePath("../Camera3D")
+pistol = NodePath("../Pistol")
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("pistol")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.3)
@@ -129,3 +135,30 @@ pistol = NodePath("../Pistol")
 
 [node name="Pistol" parent="." instance=ExtResource("1_n10n4")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="UI" type="CanvasLayer" parent="." node_paths=PackedStringArray("back")]
+layer = -1
+script = SubResource("GDScript_06pky")
+back = NodePath("Control/MarginContainer/MenuButton")
+
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_bottom = 200
+
+[node name="MenuButton" parent="UI/Control/MarginContainer" instance=ExtResource("3_6ypxr")]
+layout_mode = 2
+size_flags_vertical = 8
+text = "BACK"

@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://hitbox/hitbox.gd" id="12_viptu"]
 [ext_resource type="PackedScene" uid="uid://dhuk1q3csypw2" path="res://sound/emitter/sound_emitter.tscn" id="16_8v017"]
 [ext_resource type="Script" path="res://sound/alarming_sound.gd" id="17_xiceh"]
+[ext_resource type="PackedScene" uid="uid://epkhfvgvd7nt" path="res://menus/pause/pause_menu.tscn" id="21_y5uxw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yy7gy"]
 height = 1.5
@@ -742,43 +743,6 @@ func fade(t: float):
 	color.a = lerp(0.0, 1.0, t)
 "
 
-[sub_resource type="GDScript" id="GDScript_t5u88"]
-resource_name = "pause_menu"
-script/source = "extends Node
-
-var scene_instance: Node
-
-func _ready():
-	pass
-
-func _process(_delta):
-	if Input.is_action_just_pressed(\"ui_cancel\"):
-		if is_paused:
-			resume.call_deferred()
-		else:
-			pause.call_deferred()
-	
-	if is_paused and not get_tree().paused:
-		resume.call_deferred()
-	elif not is_paused and get_tree().paused:
-		pause.call_deferred()
-
-var is_paused: bool = false
-func pause():
-	is_paused = true
-	get_tree().paused = true
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	scene_instance = Menus.pause.instantiate()
-	add_child(scene_instance)
-	scene_instance.resume.connect(resume)
-
-func resume():
-	is_paused = false
-	get_tree().paused = false
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	scene_instance.queue_free()
-"
-
 [node name="Player" type="Node3D" node_paths=PackedStringArray("camera", "death_fade")]
 script = ExtResource("1_ugqs2")
 camera = NodePath("CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera")
@@ -789,7 +753,8 @@ collision_layer = 4
 script = ExtResource("2_bxk1o")
 camera = NodePath("Bobbing/BodyMiddlePivot/PlayerCamera")
 max_speed = 2.0
-speed = 2.0
+speed = 1.0
+run_speed = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
@@ -799,7 +764,7 @@ shape = SubResource("CapsuleShape3D_yy7gy")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 shape = SubResource("SeparationRayShape3D_d8cd5")
 
-[node name="Target" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health") groups=["player"]]
+[node name="Hitbox" type="Area3D" parent="CharacterBody3D" node_paths=PackedStringArray("health") groups=["player"]]
 collision_layer = 2
 collision_mask = 0
 monitoring = false
@@ -807,7 +772,7 @@ script = ExtResource("12_viptu")
 health = NodePath("../../Components/Health")
 damage_multiplier = 0.1
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Target"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Hitbox"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
 shape = SubResource("CapsuleShape3D_p6x6h")
 
@@ -842,14 +807,14 @@ script = ExtResource("2_jgt6g")
 body = NodePath("../../..")
 shake_intensity = 1000.0
 
-[node name="Target" type="Area3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera" node_paths=PackedStringArray("health") groups=["player"]]
+[node name="HeadHitbox" type="Area3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera" node_paths=PackedStringArray("health") groups=["player"]]
 collision_layer = 2
 collision_mask = 0
 monitoring = false
 script = ExtResource("12_viptu")
 health = NodePath("../../../../../Components/Health")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/Target"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/HeadHitbox"]
 shape = SubResource("SphereShape3D_m7j0n")
 
 [node name="NightVisionLight" type="SpotLight3D" parent="CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera"]
@@ -971,6 +936,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="NightVisionLayer" type="CanvasLayer" parent="UILayer/UI"]
 layer = 0
@@ -982,6 +948,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(1, 1, 1, 0)
 script = SubResource("GDScript_jfra3")
 light = NodePath("../../../../CharacterBody3D/Bobbing/BodyMiddlePivot/PlayerCamera/NightVisionLight")
@@ -996,9 +963,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0, 0, 0, 0)
 script = SubResource("GDScript_hh8np")
 
-[node name="Pause" type="Node" parent="UILayer/UI"]
-process_mode = 3
-script = SubResource("GDScript_t5u88")
+[node name="PauseMenu" parent="UILayer/UI" instance=ExtResource("21_y5uxw")]
+layout_mode = 1

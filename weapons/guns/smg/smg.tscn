@@ -21,6 +21,4 @@ cast_shadow = 0
 [node name="Muzzle" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0171994, -0.222615)
 
-[node name="Flash" parent="Muzzle" instance=ExtResource("3_kc17s")]
-
 [editable path="SMG_Full_West2"]

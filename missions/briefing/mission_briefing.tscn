@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_xetdr"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4usdo"]
-font_size = 64
+font_size = 40
 
 [sub_resource type="GDScript" id="GDScript_yt1bb"]
 resource_name = "start"
@@ -24,8 +24,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nkvfh")
-title = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/Title")
-objectives_container = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScrollContainer/VBoxContainer")
+title = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Title")
+objectives_container = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScrollContainer/Objectives")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -36,90 +36,56 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="LeftMargin" type="Control" parent="HBoxContainer"]
-custom_minimum_size = Vector2(256, 0)
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 4
 
-[node name="TopMargin" type="Control" parent="HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 96)
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 3
+size_flags_horizontal = 4
+size_flags_vertical = 0
 text = "Title"
 label_settings = SubResource("LabelSettings_4usdo")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TopMargin" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 32)
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Margin" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(40, 0)
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 566)
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
+[node name="Objectives" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="Margin2" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(40, 0)
+[node name="MenuButton" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_xetdr")]
 layout_mode = 2
-
-[node name="BottomMargin2" type="Control" parent="HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 32)
-layout_mode = 2
-
-[node name="MenuButton" parent="HBoxContainer/VBoxContainer" instance=ExtResource("1_xetdr")]
-layout_mode = 2
-size_flags_horizontal = 0
+size_flags_vertical = 8
 text = "START"
 script = SubResource("GDScript_yt1bb")
 is_focused = true
-
-[node name="BottomMargin" type="Control" parent="HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 128)
-layout_mode = 2
-
-[node name="RightMargin" type="Control" parent="HBoxContainer"]
-custom_minimum_size = Vector2(256, 0)
-layout_mode = 2

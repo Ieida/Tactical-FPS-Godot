@@ -26,12 +26,17 @@ func _ready():
 	InputMap.action_add_event(&\"toggle_command_console\", e)
 	line_edit.grab_focus()
 
+
+func _unhandled_input(event):
+	get_viewport().set_input_as_handled()
+	
+	if event.is_action_pressed(&\"ui_cancel\"):
+		close()
+
+
 func _process(_delta):
 	if Input.is_action_just_pressed(&\"toggle_command_console\"):
 		open()
-	
-	if Input.is_action_just_pressed(&\"ui_cancel\"):
-		close()
 	
 	if visible:
 		var s = size
@@ -127,11 +132,11 @@ script = ExtResource("3_lnhw6")
 [sub_resource type="Resource" id="Resource_ff1qa"]
 script = ExtResource("2_1hxau")
 
-[sub_resource type="Resource" id="Resource_ka7jh"]
-script = ExtResource("1_8mg0o")
-
 [sub_resource type="Resource" id="Resource_ek5pb"]
 script = ExtResource("4_p1vmy")
+
+[sub_resource type="Resource" id="Resource_ka7jh"]
+script = ExtResource("1_8mg0o")
 
 [sub_resource type="GDScript" id="GDScript_6gpsy"]
 resource_name = "command_line"
@@ -143,7 +148,7 @@ process_mode = 3
 transparent_bg = true
 use_hdr_2d = true
 title = "Command Console"
-position = Vector2i(100, 100)
+position = Vector2i(100, 36)
 size = Vector2i(500, 500)
 script = SubResource("GDScript_hrn2y")
 commands = {

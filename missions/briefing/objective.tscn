@@ -19,51 +19,47 @@ font_size = 24
 [sub_resource type="LabelSettings" id="LabelSettings_nqkpj"]
 
 [node name="Objective" type="PanelContainer" node_paths=PackedStringArray("title", "description")]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 61.0
+grow_horizontal = 2
 size_flags_vertical = 4
 script = SubResource("GDScript_oucyt")
-title = NodePath("HBoxContainer/VBoxContainer/Title")
-description = NodePath("HBoxContainer/VBoxContainer/HBoxContainer/Description")
+title = NodePath("MarginContainer/HBoxContainer/VBoxContainer/Title")
+description = NodePath("MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer/Description")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(1280, 0)
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
-color = Color(0.16, 0.16, 0.16, 1)
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="Margin" type="Control" parent="HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(20, 0)
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Title" type="Label" parent="HBoxContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Title"
 label_settings = SubResource("LabelSettings_8myom")
 autowrap_mode = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="Margin" type="Control" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(40, 0)
-layout_mode = 2
-
-[node name="Description" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Description" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer/MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "Description."
 label_settings = SubResource("LabelSettings_nqkpj")
 autowrap_mode = 3
-
-[node name="Margin2" type="Control" parent="HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2

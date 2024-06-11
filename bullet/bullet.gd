@@ -2,7 +2,8 @@ extends Node3D
 class_name Bullet
 
 @export var recoil: float
-@export_range(0.0, 1.0) var spread: float
+## Angle of spread
+@export var spread: float
 @export var damage: Damage
 @export var shrapnel_effect: PackedScene
 

@@ -1,12 +1,13 @@
-extends Node3D
+class_name Hitbox extends Node3D
 
-class_name Hitbox
 
 signal hit_recieved(info: HitboxHitInfo)
+
 
 @export var health: Health
 @export var damage_multiplier: float = 1
 @export var hit_particle_effects: PackedScene
+
 
 func hit(info: HitboxHitInfo):
 	if hit_particle_effects:

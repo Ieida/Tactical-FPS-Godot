@@ -20,7 +20,6 @@ func _ready():
 	var m = gun.magazine
 	load_mag(m)
 	gun.load_magazine(m)
-	gun.push_slide()
 	
 	$Health.depleted.connect(_on_health_depleted)
 	#$CharacterBody3D/SoundReciever.recieved.connect(_on_sound_recieved)

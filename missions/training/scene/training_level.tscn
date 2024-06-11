@@ -39,7 +39,7 @@ sky_material = SubResource("PhysicalSkyMaterial_nf0t5")
 background_mode = 2
 sky = SubResource("Sky_gp5q0")
 ambient_light_source = 1
-reflected_light_source = 2
+reflected_light_source = 1
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_6drfh"]
 size = Vector2(1000, 1000)

@@ -19,7 +19,7 @@ muzzle = NodePath("Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachm
 _rpm = 400.0
 fire_mode = 1
 recoil_multiplier = 0.5
-spread_multiplier = 0.5
+spread_multiplier = 0.2
 muzzle_flash = ExtResource("2_jly2l")
 
 [node name="Pistol_Full_West2" parent="." instance=ExtResource("1_ttrhm")]

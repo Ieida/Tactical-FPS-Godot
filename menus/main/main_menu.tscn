@@ -1,38 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://bua7tispoh4rk"]
+[gd_scene load_steps=3 format=3 uid="uid://bua7tispoh4rk"]
 
-[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_m53k7"]
-
-[sub_resource type="GDScript" id="GDScript_xs0i3"]
-resource_name = "controls"
-script/source = "extends GameMenuButton
-
-func _on_pressed():
-	get_tree().change_scene_to_packed(Menus.controls)
-"
-
-[sub_resource type="GDScript" id="GDScript_d3nv7"]
-resource_name = "mission_select"
-script/source = "extends GameMenuButton
-
-func _on_pressed():
-	get_tree().change_scene_to_packed(Menus.mission_select)
-"
-
-[sub_resource type="GDScript" id="GDScript_u5uj4"]
-resource_name = "settings"
-script/source = "extends GameMenuButton
-
-func _on_pressed():
-	get_tree().change_scene_to_packed(Menus.settings)
-"
-
-[sub_resource type="GDScript" id="GDScript_u70fi"]
-resource_name = "quit"
-script/source = "extends GameMenuButton
-
-func _on_pressed():
-	get_tree().quit()
-"
+[ext_resource type="Script" path="res://menus/main/main_menu.gd" id="1_pnla5"]
+[ext_resource type="PackedScene" uid="uid://ijpe2x3qryg0" path="res://menus/main/menu.tscn" id="2_aa8r3"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -41,6 +10,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_pnla5")
+main = ExtResource("2_aa8r3")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -50,39 +21,3 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
-
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -116.0
-offset_right = 250.0
-offset_bottom = 116.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="Controls" parent="VBoxContainer" instance=ExtResource("1_m53k7")]
-layout_mode = 2
-text = "CONTROLS"
-script = SubResource("GDScript_xs0i3")
-is_focused = true
-
-[node name="MissionSelect" parent="VBoxContainer" instance=ExtResource("1_m53k7")]
-layout_mode = 2
-text = "MISSION SELECT"
-script = SubResource("GDScript_d3nv7")
-
-[node name="Settings" parent="VBoxContainer" instance=ExtResource("1_m53k7")]
-layout_mode = 2
-text = "SETTINGS"
-script = SubResource("GDScript_u5uj4")
-
-[node name="Quit" parent="VBoxContainer" instance=ExtResource("1_m53k7")]
-layout_mode = 2
-text = "EXIT GAME"
-script = SubResource("GDScript_u70fi")

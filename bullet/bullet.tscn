@@ -12,7 +12,7 @@ amount = 10.0
 [node name="Bullet" type="Node3D"]
 script = ExtResource("1_6ugfq")
 recoil = 10.0
-spread = 0.1
+spread = 10.0
 damage = SubResource("Resource_viix1")
 shrapnel_effect = ExtResource("3_56c41")
 

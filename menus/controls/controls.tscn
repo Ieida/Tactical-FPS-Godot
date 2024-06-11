@@ -1,42 +1,29 @@
 [gd_scene load_steps=5 format=3 uid="uid://drejltycp02o7"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_6m0pc"]
+[ext_resource type="Script" path="res://menus/controls/controls.gd" id="1_8udy7"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_jacfy"]
-font_size = 50
+[sub_resource type="LabelSettings" id="LabelSettings_5qfws"]
+font_size = 64
 
-[sub_resource type="GDScript" id="GDScript_mf7w4"]
-resource_name = "controls_label"
-script/source = "extends Label
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e5etq"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+draw_center = false
 
-func _ready():
-	text = \"\"
-	var actions = InputMap.get_actions()
-	for action in actions:
-		if action.begins_with(\"ui\"): continue
-		text += action.capitalize()
-		text += \"\\n\"
-		for event in InputMap.action_get_events(action):
-			text += event.as_text()
-			text += \"\\n\"
-		text += \"\\n\"
-"
-
-[sub_resource type="GDScript" id="GDScript_2wkmd"]
-resource_name = "back"
-script/source = "extends GameMenuButton
-
-func _on_pressed():
-	get_tree().change_scene_to_packed(Menus.main)
-"
-
-[node name="Controls" type="Control"]
+[node name="Controls" type="Control" node_paths=PackedStringArray("action_container", "scroll_container")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(960, 540)
+script = ExtResource("1_8udy7")
+action_container = NodePath("MarginContainer/VBoxContainer/ScrollContainer/ActionContainer")
+scroll_container = NodePath("MarginContainer/VBoxContainer/ScrollContainer")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -47,50 +34,39 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="FlowContainer" type="BoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 3
-alignment = 1
-vertical = true
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 150
 
-[node name="ScrollContainer" type="ScrollContainer" parent="FlowContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "CONTROLS"
+label_settings = SubResource("LabelSettings_5qfws")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-metadata/_edit_use_anchors_ = true
+theme_override_styles/panel = SubResource("StyleBoxFlat_e5etq")
+follow_focus = true
 
-[node name="Label" type="Label" parent="FlowContainer/ScrollContainer"]
+[node name="ActionContainer" type="HFlowContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
 layout_mode = 2
-size_flags_horizontal = 6
-size_flags_vertical = 2
-text = "PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER
-PLACEHOLDER"
-label_settings = SubResource("LabelSettings_jacfy")
-horizontal_alignment = 1
-script = SubResource("GDScript_mf7w4")
+size_flags_horizontal = 3
 
-[node name="Back" parent="FlowContainer" instance=ExtResource("1_6m0pc")]
+[node name="MenuButton" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_6m0pc")]
 layout_mode = 2
-size_flags_horizontal = 6
 text = "BACK"
-script = SubResource("GDScript_2wkmd")
-is_focused = true

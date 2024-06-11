@@ -18,15 +18,11 @@ size = Vector2(0.1, 0.1)
 resource_name = "flash"
 script/source = "extends GPUParticles3D
 
+
 func _ready():
-	$Smoke.finished.connect(_on_finished)
-
-func _on_finished():
-	queue_free()
-
-func start():
 	emitting = true
-	$Smoke.emitting = true
+	await finished
+	queue_free()
 "
 
 [sub_resource type="Curve" id="Curve_e632k"]
@@ -82,7 +78,6 @@ draw_pass_1 = SubResource("QuadMesh_bnddl")
 script = SubResource("GDScript_5rq47")
 
 [node name="Smoke" type="GPUParticles3D" parent="."]
-visible = false
 emitting = false
 amount = 3
 lifetime = 3.0

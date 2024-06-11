@@ -3,6 +3,20 @@
 [ext_resource type="LabelSettings" uid="uid://3xq6nc18qxqt" path="res://menus/label_settings.tres" id="1_clyps"]
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="2_lp03r"]
 
+[sub_resource type="GDScript" id="GDScript_e4rdo"]
+resource_name = "settings_menu"
+script/source = "extends Menu
+
+
+func _ready():
+	$ScrollContainer/BoxContainer/Back.pressed.connect(_on_back_pressed)
+
+
+func _on_back_pressed():
+	Settings.save()
+	back.emit()
+"
+
 [sub_resource type="GDScript" id="GDScript_7k5dc"]
 resource_name = "vsync"
 script/source = "extends OptionButton
@@ -67,15 +81,6 @@ func _on_value_changed(new_value: float):
 [sub_resource type="LabelSettings" id="LabelSettings_d6474"]
 font_size = 30
 
-[sub_resource type="GDScript" id="GDScript_2hldw"]
-resource_name = "back"
-script/source = "extends GameMenuButton
-
-func _on_pressed():
-	Settings.save()
-	get_tree().change_scene_to_packed(Menus.main)
-"
-
 [node name="SettingsMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -83,15 +88,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
+pivot_offset = Vector2(960, 540)
+script = SubResource("GDScript_e4rdo")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 clip_contents = false
@@ -185,5 +183,4 @@ label_settings = SubResource("LabelSettings_d6474")
 layout_mode = 2
 size_flags_vertical = 6
 text = "BACK"
-script = SubResource("GDScript_2hldw")
-is_focused = true
+script = null
