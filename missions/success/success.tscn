@@ -10,7 +10,7 @@ resource_name = "main_menu"
 script/source = "extends GameMenuButton
 
 func _on_pressed():
-	get_tree().change_scene_to_packed(Menus.main)
+	get_tree().change_scene_to_file(\"res://menus/main/main_menu.tscn\")
 "
 
 [node name="Success" type="Control"]

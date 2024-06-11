@@ -18,6 +18,11 @@ func _ready():
 		action_container.add_child(a)
 
 
+func _unhandled_input(event):
+	if is_visible_in_tree():
+		get_viewport().set_input_as_handled()
+
+
 func _filter_ui(a: StringName):
 	return not a.begins_with("ui")
 
@@ -27,4 +32,4 @@ func _on_action_pressed(a: UIInputAction):
 
 
 func _on_back_pressed():
-	back.emit()
+	close()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://s3ma5hsk7jky"]
+[gd_scene load_steps=4 format=3 uid="uid://s3ma5hsk7jky"]
 
 [ext_resource type="Script" path="res://missions/briefing/mission_briefing.gd" id="1_nkvfh"]
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_xetdr"]
@@ -6,35 +6,19 @@
 [sub_resource type="LabelSettings" id="LabelSettings_4usdo"]
 font_size = 40
 
-[sub_resource type="GDScript" id="GDScript_yt1bb"]
-resource_name = "start"
-script/source = "extends GameMenuButton
-
-var scene: String
-
-func _on_pressed():
-	Mission.start()
-"
-
-[node name="MissionBriefing" type="Control" node_paths=PackedStringArray("title", "objectives_container")]
+[node name="MissionBriefing" type="Control" node_paths=PackedStringArray("title", "objectives_container", "start", "back")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(960, 540)
 script = ExtResource("1_nkvfh")
 title = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Title")
 objectives_container = NodePath("MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/ScrollContainer/Objectives")
-
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
+start = NodePath("MarginContainer/VBoxContainer/Start")
+back = NodePath("MarginContainer/VBoxContainer/Back")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -83,9 +67,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 16
 
-[node name="MenuButton" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_xetdr")]
+[node name="Start" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_xetdr")]
 layout_mode = 2
-size_flags_vertical = 8
-text = "START"
-script = SubResource("GDScript_yt1bb")
-is_focused = true
+text = "LAUNCH MISSION"
+
+[node name="Back" parent="MarginContainer/VBoxContainer" instance=ExtResource("1_xetdr")]
+layout_mode = 2
+text = "HOLD"

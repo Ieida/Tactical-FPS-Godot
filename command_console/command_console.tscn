@@ -25,6 +25,7 @@ func _ready():
 	e.keycode = KEY_QUOTELEFT
 	InputMap.action_add_event(&\"toggle_command_console\", e)
 	line_edit.grab_focus()
+	close()
 
 
 func _unhandled_input(event):

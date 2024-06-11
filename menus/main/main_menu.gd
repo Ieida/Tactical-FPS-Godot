@@ -1,25 +1,31 @@
-class_name MainMenu extends Control
+class_name MainMenu extends Menu
 
 
-@export var main: PackedScene
-
-
-var active_menu: Menu
+@export var controls: GameMenuButton
+@export var mission_select: GameMenuButton
+@export var settings: GameMenuButton
+@export var quit: GameMenuButton
 
 
 func _ready():
-	switch_to(main.instantiate())
+	controls.pressed.connect(_on_controls_pressed)
+	mission_select.pressed.connect(_on_mission_select_pressed)
+	settings.pressed.connect(_on_settings_pressed)
+	quit.pressed.connect(_on_quit_pressed)
+	open()
 
 
-func _on_back():
-	switch_to(main.instantiate())
+func _on_controls_pressed():
+	switch_to_sub_menu(&"controls")
 
 
-func switch_to(menu: Menu):
-	if active_menu:
-		await active_menu.close()
-	add_child(menu)
-	active_menu = menu
-	active_menu.back.connect(_on_back)
-	active_menu.go_to.connect(switch_to)
-	active_menu.open()
+func _on_mission_select_pressed():
+	switch_to_sub_menu(&"mission_select")
+
+
+func _on_settings_pressed():
+	switch_to_sub_menu(&"settings")
+
+
+func _on_quit_pressed():
+	get_tree().quit()

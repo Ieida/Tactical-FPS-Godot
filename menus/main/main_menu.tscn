@@ -1,23 +1,132 @@
-[gd_scene load_steps=3 format=3 uid="uid://bua7tispoh4rk"]
+[gd_scene load_steps=11 format=3 uid="uid://bua7tispoh4rk"]
 
 [ext_resource type="Script" path="res://menus/main/main_menu.gd" id="1_pnla5"]
-[ext_resource type="PackedScene" uid="uid://ijpe2x3qryg0" path="res://menus/main/menu.tscn" id="2_aa8r3"]
+[ext_resource type="PackedScene" uid="uid://drejltycp02o7" path="res://menus/controls/controls.tscn" id="3_3ijs2"]
+[ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="3_30k8s"]
+[ext_resource type="PackedScene" uid="uid://cw24iadb7cj58" path="res://menus/mission_select/mission_select.tscn" id="4_xi5k8"]
+[ext_resource type="PackedScene" uid="uid://couhcksmophv1" path="res://menus/settings/settings_menu.tscn" id="5_grrxt"]
 
-[node name="MainMenu" type="Control"]
+[sub_resource type="LabelSettings" id="LabelSettings_akrjs"]
+font_size = 64
+
+[sub_resource type="GDScript" id="GDScript_xs0i3"]
+resource_name = "controls"
+script/source = "extends GameMenuButton
+
+func _on_pressed():
+	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_d3nv7"]
+resource_name = "mission_select"
+script/source = "extends GameMenuButton
+
+func _on_pressed():
+	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_u5uj4"]
+resource_name = "settings"
+script/source = "extends GameMenuButton
+
+func _on_pressed():
+	pass
+"
+
+[sub_resource type="GDScript" id="GDScript_u70fi"]
+resource_name = "quit"
+script/source = "extends GameMenuButton
+
+func _on_pressed():
+	pass
+"
+
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("controls", "mission_select", "settings", "quit")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(960, 540)
 script = ExtResource("1_pnla5")
-main = ExtResource("2_aa8r3")
+controls = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Controls")
+mission_select = NodePath("MarginContainer/VBoxContainer/VBoxContainer/MissionSelect")
+settings = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Settings")
+quit = NodePath("MarginContainer/VBoxContainer/VBoxContainer/Quit")
+sub_menus = {
+"controls": NodePath("SubMenus/Controls"),
+"mission_select": NodePath("SubMenus/MissionSelect"),
+"settings": NodePath("SubMenus/SettingsMenu")
+}
 
-[node name="Background" type="ColorRect" parent="."]
-layout_mode = 1
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" type="ColorRect" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 200
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "Tactical FPS"
+label_settings = SubResource("LabelSettings_akrjs")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Controls" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_30k8s")]
+layout_mode = 2
+text = "CONTROLS"
+script = SubResource("GDScript_xs0i3")
+is_focused = true
+
+[node name="MissionSelect" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_30k8s")]
+layout_mode = 2
+text = "MISSION SELECT"
+script = SubResource("GDScript_d3nv7")
+
+[node name="Settings" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_30k8s")]
+layout_mode = 2
+text = "SETTINGS"
+script = SubResource("GDScript_u5uj4")
+
+[node name="Quit" parent="MarginContainer/VBoxContainer/VBoxContainer" instance=ExtResource("3_30k8s")]
+layout_mode = 2
+text = "EXIT GAME"
+script = SubResource("GDScript_u70fi")
+
+[node name="SubMenus" type="CanvasLayer" parent="."]
+
+[node name="Controls" parent="SubMenus" instance=ExtResource("3_3ijs2")]
+
+[node name="MissionSelect" parent="SubMenus" instance=ExtResource("4_xi5k8")]
+
+[node name="SettingsMenu" parent="SubMenus" instance=ExtResource("5_grrxt")]

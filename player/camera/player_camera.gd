@@ -71,7 +71,7 @@ func _ready():
 	pass
 
 
-func _input(event):
+func _unhandled_input(event):
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
 			var s = Settings.get_setting("sensitivity")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cw24iadb7cj58"]
+[gd_scene load_steps=4 format=3 uid="uid://cw24iadb7cj58"]
 
 [ext_resource type="Resource" uid="uid://c3ggqnvkkh7ri" path="res://missions/missions_db.tres" id="1_4jfvl"]
+[ext_resource type="PackedScene" uid="uid://s3ma5hsk7jky" path="res://missions/briefing/mission_briefing.tscn" id="2_e5rhr"]
 
 [sub_resource type="GDScript" id="GDScript_48gob"]
 resource_name = "mission_select"
@@ -12,25 +13,32 @@ const mission_button: PackedScene = preload(\"res://menus/mission_select/mission
 
 @export var missions_db: MissionsDB
 @export var button_container: Container
-
+@export var mission_briefing: MissionBriefing
+@export var back: Button
 
 
 func _enter_tree():
 	for mission in missions_db.missions:
 		var m = mission_button.instantiate()
+		m.mission_pressed.connect(_on_mission_pressed)
 		button_container.add_child(m)
 		m.info = mission
 
 
 func _ready():
-	$ScrollContainer/GridContainer/Back.pressed.connect(_on_back_pressed)
+	back.pressed.connect(_on_back_pressed)
 
 
 func _on_back_pressed():
-	back.emit()
+	close()
+
+
+func _on_mission_pressed(info: MissionInfo):
+	mission_briefing.set_info(info)
+	switch_to_sub_menu(&\"mission_briefing\")
 "
 
-[node name="MissionSelect" type="Control" node_paths=PackedStringArray("button_container")]
+[node name="MissionSelect" type="Control" node_paths=PackedStringArray("button_container", "mission_briefing", "back")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -40,7 +48,12 @@ grow_vertical = 2
 pivot_offset = Vector2(960, 540)
 script = SubResource("GDScript_48gob")
 missions_db = ExtResource("1_4jfvl")
-button_container = NodePath("ScrollContainer/GridContainer")
+button_container = NodePath("ScrollContainer/HFlowContainer")
+mission_briefing = NodePath("SubMenus/MissionBriefing")
+back = NodePath("ScrollContainer/HFlowContainer/Back")
+sub_menus = {
+"mission_briefing": NodePath("SubMenus/MissionBriefing")
+}
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
@@ -49,17 +62,20 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-horizontal_scroll_mode = 0
+follow_focus = true
 
-[node name="GridContainer" type="GridContainer" parent="ScrollContainer"]
+[node name="HFlowContainer" type="HFlowContainer" parent="ScrollContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
-columns = 4
 
-[node name="Back" type="Button" parent="ScrollContainer/GridContainer"]
+[node name="Back" type="Button" parent="ScrollContainer/HFlowContainer"]
 custom_minimum_size = Vector2(384, 270)
 layout_mode = 2
 text = "BACK"
+
+[node name="SubMenus" type="CanvasLayer" parent="."]
+
+[node name="MissionBriefing" parent="SubMenus" instance=ExtResource("2_e5rhr")]

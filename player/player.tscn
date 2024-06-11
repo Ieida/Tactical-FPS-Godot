@@ -650,23 +650,23 @@ func _ready():
 	grenade.holster()
 	switch_to(primary)
 
-func _process(_delta):
-	if Input.is_action_just_pressed(\"primary\"):
+func _unhandled_input(event):
+	if event.is_action_pressed(\"primary\"):
 		switch_to(primary)
-	elif Input.is_action_just_pressed(\"secondary\"):
+	elif event.is_action_pressed(\"secondary\"):
 		switch_to(secondary)
-	elif Input.is_action_just_pressed(\"grenade\"):
+	elif event.is_action_pressed(\"grenade\"):
 		switch_to(grenade)
 
 func switch_to(weapon: PlayerWeapon):
 	if weapon == active_weapon or (active_weapon and not active_weapon.can_holster()): return
 	
-	set_process(false)
+	set_process_unhandled_input(false)
 	if active_weapon:
 		await active_weapon.holster()
 	active_weapon = weapon
 	await weapon.unholster()
-	set_process(true)
+	set_process_unhandled_input(true)
 "
 
 [sub_resource type="Shader" id="Shader_sm83g"]

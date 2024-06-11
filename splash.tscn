@@ -24,7 +24,7 @@ func _ready():
 	#DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, false)
 	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
 	#get_window().transparent_bg = false
-	get_tree().change_scene_to_packed(Menus.main)
+	get_tree().change_scene_to_file(\"res://menus/main/main_menu.tscn\")
 "
 
 [node name="Splash" type="Control"]

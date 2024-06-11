@@ -15,7 +15,7 @@ height = 0.15
 
 [node name="Pistol" type="Node3D" node_paths=PackedStringArray("muzzle")]
 script = ExtResource("1_bq8bq")
-muzzle = NodePath("Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D/Muzzle")
+muzzle = NodePath("Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D/Muzzle/MuzzleEnd")
 _rpm = 400.0
 fire_mode = 1
 recoil_multiplier = 0.5
@@ -43,5 +43,8 @@ transform = Transform3D(1, 2.84217e-14, 6.56173e-14, 7.98283e-14, 1.78814e-07, -
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.075)
 mesh = SubResource("CylinderMesh_bifkb")
 skeleton = NodePath("../../../../../..")
+
+[node name="MuzzleEnd" type="Node3D" parent="Pistol_Full_West2/Pistol_Full_West_Rig/Skeleton3D/BoneAttachment3D/Muzzle"]
+transform = Transform3D(1, -6.74076e-34, 0, -6.46234e-27, 1, 1.35525e-20, 3.87741e-26, 0, 1, 0, 0, -0.15)
 
 [editable path="Pistol_Full_West2"]

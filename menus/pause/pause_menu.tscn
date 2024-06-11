@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://epkhfvgvd7nt"]
+[gd_scene load_steps=6 format=3 uid="uid://epkhfvgvd7nt"]
 
 [ext_resource type="PackedScene" uid="uid://cupa3ej4bslnb" path="res://menus/button/menu_button.tscn" id="1_56xxn"]
 [ext_resource type="Script" path="res://menus/pause/pause_menu.gd" id="1_ui7v6"]
+[ext_resource type="Shader" path="res://menus/pause/pause_menu_background_blur.gdshader" id="2_r27nd"]
+[ext_resource type="PackedScene" uid="uid://drejltycp02o7" path="res://menus/controls/controls.tscn" id="3_ixc1t"]
 
-[node name="PauseMenu" type="Control"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gtfsf"]
+shader = ExtResource("2_r27nd")
+shader_parameter/color = Vector4(0.25, 0.25, 0.25, 1)
+shader_parameter/lod = 2.0
+
+[node name="PauseMenu" type="Control" node_paths=PackedStringArray("background", "controls")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -13,6 +20,23 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(960, 540)
 script = ExtResource("1_ui7v6")
+background = NodePath("Background")
+controls = NodePath("VBoxContainer/Controls")
+sub_menus = {
+"controls": NodePath("SubMenus/Controls")
+}
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+material = SubResource("ShaderMaterial_gtfsf")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.498039)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -27,20 +51,20 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 20
 
 [node name="Resume" parent="VBoxContainer" instance=ExtResource("1_56xxn")]
 layout_mode = 2
 text = "RESUME"
-color = Color(0.972549, 0.972549, 1, 1)
-skew = Vector2(0.5, 0)
-content_margins = Vector4(45, 15, 45, 15)
-border_width = Vector4(0, 0, 0, 0)
+
+[node name="Controls" parent="VBoxContainer" instance=ExtResource("1_56xxn")]
+layout_mode = 2
+text = "CONTROLS"
 
 [node name="Abandon" parent="VBoxContainer" instance=ExtResource("1_56xxn")]
 layout_mode = 2
 text = "ABANDON"
-color = Color(0.972549, 0.972549, 1, 1)
-skew = Vector2(0.5, 0)
-content_margins = Vector4(45, 15, 45, 15)
-border_width = Vector4(0, 0, 0, 0)
+
+[node name="SubMenus" type="CanvasLayer" parent="."]
+
+[node name="Controls" parent="SubMenus" instance=ExtResource("3_ixc1t")]

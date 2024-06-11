@@ -1,8 +1,14 @@
 class_name PauseMenu extends Menu
 
 
+@export var background: CanvasLayer
+@export var controls: GameMenuButton
+
+
 func _ready():
 	hide()
+	background.hide()
+	controls.pressed.connect(_on_controls_pressed)
 	$VBoxContainer/Resume.pressed.connect(resume)
 	$VBoxContainer/Abandon.pressed.connect(abandon)
 
@@ -18,25 +24,22 @@ func _unhandled_input(event):
 			pause()
 
 
+func _on_controls_pressed():
+	switch_to_sub_menu(&"controls")
+
+
 func abandon():
 	hide()
 	get_tree().change_scene_to_file("res://menus/main/main_menu.tscn")
 
 
-func close():
-	var t = create_tween().set_parallel(true)
-	t.tween_property(self, "modulate", Color.TRANSPARENT, 0.5)
-	await t.finished
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-
 func pause():
-	show()
+	background.show()
 	open()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
 func resume():
-	await close()
-	hide()
+	close()
+	background.hide()
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

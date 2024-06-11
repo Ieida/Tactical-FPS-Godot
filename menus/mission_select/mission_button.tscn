@@ -4,15 +4,20 @@
 resource_name = "training"
 script/source = "extends Button
 
+
+signal mission_pressed(info: MissionInfo)
+
+
 @export var info: MissionInfo
+
 
 func _ready():
 	pressed.connect(_on_pressed)
 	text = info.title.to_upper()
 
+
 func _on_pressed():
-	Mission._info = info
-	get_tree().change_scene_to_file(\"res://missions/briefing/mission_briefing.tscn\")
+	mission_pressed.emit(info)
 "
 
 [node name="MissionButton" type="Button"]
