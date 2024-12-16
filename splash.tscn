@@ -7,9 +7,10 @@ resource_name = "logo"
 script/source = "extends TextureRect
 
 func _ready():
-	modulate = Color.TRANSPARENT
 	var t = create_tween()
-	t.tween_property(self, \"modulate\", Color.WHITE, 0.5)
+	t.tween_property(self, \"modulate\", Color.WHITE, 0.5).from(Color.TRANSPARENT)
+	await t.finished
+	get_tree().change_scene_to_file(\"res://menus/main/main_menu.tscn\")
 "
 
 [sub_resource type="GDScript" id="GDScript_yr3ih"]
@@ -17,13 +18,7 @@ resource_name = "loader"
 script/source = "extends Node
 
 func _ready():
-	#DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, true)
-	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, true)
-	#get_window().transparent_bg = true
 	await get_tree().create_timer(1).timeout
-	#DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_TRANSPARENT, false)
-	DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
-	#get_window().transparent_bg = false
 	get_tree().change_scene_to_file(\"res://menus/main/main_menu.tscn\")
 "
 

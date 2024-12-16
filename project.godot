@@ -34,6 +34,7 @@ window/stretch/aspect="expand"
 
 [editor]
 
+movie_writer/movie_file="C:/Users/bunny/Documents/GitHub/Tactical-FPS-Godot/.movies/test.avi"
 run/main_run_args="--rendering-driver opengl3"
 
 [filesystem]
